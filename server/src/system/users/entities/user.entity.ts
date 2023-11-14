@@ -1,6 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    CreateDateColumn,
+    UpdateDateColumn,
+    OneToMany
+} from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
+import { DocEntity } from 'src/system/doc/entities/doc.entity'
+import { CategoryEntity } from 'src/system/category/entities/category.entity'
 
 @Entity('sys_user')
 export class UserEntity {
@@ -40,4 +49,10 @@ export class UserEntity {
     @ApiProperty({ type: Number, description: 'vip等级，默认0' })
     @Column({ type: 'int', default: 0, comment: 'vip等级，默认0' })
     public vip: number
+
+    @OneToMany(() => DocEntity, (dto) => dto.user)
+    doc: DocEntity[]
+
+    @OneToMany(() => CategoryEntity, (dto) => dto.user)
+    category: CategoryEntity[]
 }

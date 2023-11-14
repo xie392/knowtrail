@@ -1,4 +1,3 @@
-
 import { customAlphabet } from 'nanoid'
 
 // import { RedisKeyPrefix } from '../enums/redis-key-prefix.enum'
@@ -55,7 +54,7 @@ export function objAttrToCamelOrUnderline(
 
 /**
  * 生成 id
- * @param {number} 
+ * @param {number}
  * @returns
  */
 export function generateId(len: number = 10) {

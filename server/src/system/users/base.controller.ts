@@ -20,8 +20,8 @@ import { CreateUserPipe, CreateUserPipeSchema } from './pipe/create-user.pipe'
 // import { Request } from 'express'
 // import * as useragent from 'express-useragent'
 
-@Controller()
 @ApiTags('登录注册')
+@Controller()
 export class BaseController {
     constructor(private readonly usersService: UsersService) {}
 

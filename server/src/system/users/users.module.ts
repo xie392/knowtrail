@@ -13,23 +13,18 @@ import { UserEntity } from './entities/user.entity'
 
 import { AuthModule } from '../auth/auth.module'
 
+import { JwtConfig } from '../../common/utils/jwt'
+import { JwtImplService } from '../../common/utils/jwt'
+
+
 @Module({
     imports: [
         TypeOrmModule.forFeature([UserEntity]),
         forwardRef(() => AuthModule),
-        JwtModule.registerAsync({
-            imports: [ConfigModule],
-            useFactory: async (config: ConfigService) => ({
-                secret: config.get('jwt.secretkey'),
-                signOptions: {
-                    expiresIn: config.get('jwt.expiresin')
-                }
-            }),
-            inject: [ConfigService]
-        })
+        JwtModule.registerAsync(JwtConfig)
     ],
     controllers: [UsersController, BaseController],
-    providers: [UsersService],
-    exports: [UsersService],
+    providers: [UsersService,JwtImplService],
+    exports: [UsersService]
 })
 export class UsersModule {}

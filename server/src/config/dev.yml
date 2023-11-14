@@ -40,17 +40,16 @@ redis:
 # jwt 配置
 jwt:
     secretkey: 'zANDwNQVFzxlfG9myPxVWAkq4iXJEPhI'
-    expiresin: '2h'
-    refreshExpiresIn: '12h'
-    
+    expiresin: '7d'
+    refreshExpiresIn: '14d'
+
 # 权限 白名单配置
 perm:
     router:
-        whitelist:
-            [
+        whitelist: [
                 { path: '/api/register', method: 'POST' },
                 { path: '/api/login', method: 'POST' },
-                { path: '/api/users', method: 'GET' },
+                { path: '/api/users', method: 'GET' }
                 # { path: '/api/{id}', method: 'GET' },
                 # { path: '/api/oss/upload', method: 'POST' }
             ]

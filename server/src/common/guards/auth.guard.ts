@@ -12,7 +12,7 @@ import { ALLOW_ANON } from '../decorators/allow-anon.decorator'
 
 import { UsersService } from '../../system/users/users.service'
 
-import { ResultData } from '../../common/utils/result'
+// import { ResultData } from '../../common/utils/result'
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -36,6 +36,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         if (!accessToken) throw new ForbiddenException('请先登录')
         // 验证 token , 查看是否过期
         const atUserId = this.userService.verifyToken(accessToken)
+        // 全局变量
         if (!atUserId) throw new UnauthorizedException('当前登录已过期，请重新登录')
         return this.activate(ctx)
     }

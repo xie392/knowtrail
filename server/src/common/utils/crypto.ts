@@ -9,7 +9,6 @@ export function encryptPassword(value: string): string {
     return MD5(value).toString()
 }
 
-
 /**
  * 生成 id
  */

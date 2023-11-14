@@ -3,15 +3,17 @@ import { APP_GUARD } from '@nestjs/core'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 
-import { UsersModule } from './system/users/users.module'
-import { MessageModule } from './system/message/message.module'
-
 import configuration from './config/index'
 
-import { RedisClientOptions } from '@liaoliaots/nestjs-redis'
-import { RedisModule } from './common/lib/redis/redis.module'
+// import { RedisClientOptions } from '@liaoliaots/nestjs-redis'
+// import { RedisModule } from './common/lib/redis/redis.module'
 
 import { JwtAuthGuard } from './common/guards/auth.guard'
+
+import { AuthModule } from './system/auth/auth.module'
+import { UsersModule } from './system/users/users.module'
+import { DocModule } from './system/doc/doc.module'
+import { CategoryModule } from './system/category/category.module'
 
 @Module({
     imports: [
@@ -37,23 +39,25 @@ import { JwtAuthGuard } from './common/guards/auth.guard'
             }
         }),
         // libs redis
-        RedisModule.forRootAsync(
-            {
-                imports: [ConfigModule],
-                inject: [ConfigService],
-                useFactory: (config: ConfigService) => {
-                    return {
-                        closeClient: true,
-                        readyLog: true,
-                        errorLog: true,
-                        config: config.get<RedisClientOptions>('redis')
-                    }
-                }
-            },
-            true
-        ),
+        // RedisModule.forRootAsync(
+        //     {
+        //         imports: [ConfigModule],
+        //         inject: [ConfigService],
+        //         useFactory: (config: ConfigService) => {
+        //             return {
+        //                 closeClient: true,
+        //                 readyLog: true,
+        //                 errorLog: true,
+        //                 config: config.get<RedisClientOptions>('redis')
+        //             }
+        //         }
+        //     },
+        //     true
+        // ),
+        AuthModule,
         UsersModule,
-        MessageModule
+        DocModule,
+        CategoryModule
     ],
     providers: [
         {

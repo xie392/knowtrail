@@ -15,12 +15,13 @@ import { UserEntity } from './entities/user.entity'
 
 import { ResultData } from '../../common/utils/result'
 import { HttpCode } from '../../common/utils/constants'
-import { RedisService } from '../../common/lib/redis/redis.service'
+// import { RedisService } from '../../common/lib/redis/redis.service'
 import { validEmail, validPassword } from '../../common/utils/validate'
 import { encryptPassword } from '../../common/utils/crypto'
 import { generateId } from '../../common/utils/utils'
 
 import * as dayjs from 'dayjs'
+import { JwtImplService } from '../../common/utils/jwt'
 
 @Injectable()
 export class UsersService {
@@ -31,7 +32,7 @@ export class UsersService {
         private readonly userManager: EntityManager,
         private readonly jwtService: JwtService,
         private readonly config: ConfigService,
-        private readonly redisService: RedisService
+        private readonly jwtImplService: JwtImplService
     ) {}
 
     /**
@@ -42,17 +43,22 @@ export class UsersService {
     async login(user: LoginUserDto): Promise<ResultData> {
         let data = null
         const checkPassword = encryptPassword(user.password)
+        console.log('password', checkPassword)
+
         if (validEmail(user.account)) {
-            data = await this.userRepo.findOne({
-                where: { email: user.account, password: checkPassword }
+            data = await this.userRepo.findOneBy({
+                email: user.account,
+                password: checkPassword
             })
         } else {
-            data = await this.userRepo.findOne({
-                where: { nick_name: user.account, password: checkPassword }
+            data = await this.userRepo.findOneBy({
+                nick_name: user.account,
+                password: checkPassword
             })
         }
         if (!data) return ResultData.fail(HttpCode.BadRequest, '帐号或密码错误')
-        const token = this.generateToken({ id: data.id })
+        // const token = this.generateToken({ id: data.id })
+        const token = this.jwtImplService.generateToken({ id: data.id })
         const result = {
             data: { ...data },
             accessToken: token.accessToken,
@@ -77,17 +83,13 @@ export class UsersService {
         if (password !== confirmPassword)
             return ResultData.fail(HttpCode.BadRequest, '两次密码不一致')
         // 检查邮箱是否已经被注册
-        const checkUser = await this.userRepo.findOne({ where: { email: account } })
+        const checkUser = await this.userRepo.findOneBy({ email: account })
         if (checkUser)
             return ResultData.fail(HttpCode.BadRequest, '当前邮箱已存在，请调整后重新注册')
-        const time = new Date()
-        // const nan = nanoid.customAlphabet('1234567890abcdefghigklmnopqrstuvwxyz', 10)
         const userData = {
             id: generateId(),
             email: account,
             password: encryptPassword(password),
-            create_time: time,
-            update_time: time,
             // TODO: 后续两个值由前端提供
             avatar: '',
             nick_name: ''
@@ -97,8 +99,9 @@ export class UsersService {
         const result = await this.userManager.transaction(async (transactionalEntityManager) => {
             return await transactionalEntityManager.save<UserEntity>(data)
         })
-        const formatTime = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
-        const token = this.generateToken({ id: data.id })
+        const formatTime = dayjs(result.create_time).format('YYYY-MM-DD HH:mm:ss')
+        // const token = this.generateToken({ id: data.id })
+        const token = this.jwtImplService.generateToken({ id: data.id })
         const res = {
             data: {
                 ...result,
@@ -137,40 +140,27 @@ export class UsersService {
         return ResultData.ok({ accessToken })
     }
 
-    // findAll() {
-    //     return `This action returns all users`
-    // }
-
-    // findOne(id: number) {
-    //     return `This action returns a #${id} user`
-    // }
-
-    // update(id: number, updateUserDto: UpdateUserDto) {
-    //     return `This action updates a #${id} user`
-    // }
-
-    // remove(id: number) {
-    //     return `This action removes a #${id} user`
-    // }
-
-    // async findOneById(id: string): Promise<UserEntity> {
-    // const redisKey = getRedisKey(RedisKeyPrefix.USER_INFO, id)
-    // const result = await this.redisService.hGetAll(redisKey)
-    // // plainToInstance 去除 password slat
-    // let user = plainToInstance(UserEntity, result, { enableImplicitConversion: true })
-    // if (!user?.id) {
-    //     user = await this.userRepo.findOne({ where: { id } })
-    //     user = plainToInstance(UserEntity, { ...user }, { enableImplicitConversion: true })
-    //     await this.redisService.hmset(
-    //         redisKey,
-    //         instanceToPlain(user),
-    //         ms(this.config.get<string>('jwt.expiresin')) / 1000
-    //     )
-    // }
-    // user.password = ''
-    // user.salt = ''
-    // return null
-    // }
+    async findOneById(id: string): Promise<UserEntity> {
+        // const redisKey = getRedisKey(RedisKeyPrefix.USER_INFO, id)
+        // const result = await this.redisService.hGetAll(redisKey)
+        const result = await this.userRepo.findOne({ where: { id } })
+        // plainToInstance 去除 password slat
+        let user = plainToInstance(UserEntity, result, { enableImplicitConversion: true })
+        if (!user?.id) {
+            user = await this.userRepo.findOne({ where: { id } })
+            user = plainToInstance(UserEntity, { ...user }, { enableImplicitConversion: true })
+            // await this.redisService.hmset(
+            //     redisKey,
+            //     instanceToPlain(user),
+            //     ms(this.config.get<string>('jwt.expiresin')) / 1000
+            // )
+            // await
+            return user
+        }
+        user.password = ''
+        // user.salt = ''
+        return null
+    }
 
     /**
      * 生成 token 与 刷新 token

@@ -15,7 +15,7 @@ services:
 
   servers:
     build:
-      context: ./servers
+      context: ./server
       dockerfile: ./Dockerfile
     command: npm run start:docker
     restart: always
@@ -28,7 +28,7 @@ services:
       - redis
 
   mysql:
-    image: mysql:5
+    image: mysql:8
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always
     ports:
