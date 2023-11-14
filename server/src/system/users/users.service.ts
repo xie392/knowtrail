@@ -21,7 +21,7 @@ import { encryptPassword } from '../../common/utils/crypto'
 import { generateId } from '../../common/utils/utils'
 
 import * as dayjs from 'dayjs'
-import { JwtImplService } from '../../common/utils/jwt'
+import { EmailService } from 'src/tool/email/email.service'
 
 @Injectable()
 export class UsersService {
@@ -32,7 +32,7 @@ export class UsersService {
         private readonly userManager: EntityManager,
         private readonly jwtService: JwtService,
         private readonly config: ConfigService,
-        private readonly jwtImplService: JwtImplService
+        private readonly emailService: EmailService
     ) {}
 
     /**
@@ -57,8 +57,8 @@ export class UsersService {
             })
         }
         if (!data) return ResultData.fail(HttpCode.BadRequest, '帐号或密码错误')
-        // const token = this.generateToken({ id: data.id })
-        const token = this.jwtImplService.generateToken({ id: data.id })
+        const token = this.generateToken({ id: data.id })
+        // const token = this.jwtImplService.generateToken({ id: data.id })
         const result = {
             data: { ...data },
             accessToken: token.accessToken,
@@ -100,8 +100,8 @@ export class UsersService {
             return await transactionalEntityManager.save<UserEntity>(data)
         })
         const formatTime = dayjs(result.create_time).format('YYYY-MM-DD HH:mm:ss')
-        // const token = this.generateToken({ id: data.id })
-        const token = this.jwtImplService.generateToken({ id: data.id })
+        const token = this.generateToken({ id: data.id })
+        // const token = this.jwtImplService.generateToken({ id: data.id })
         const res = {
             data: {
                 ...result,
@@ -113,6 +113,19 @@ export class UsersService {
         }
         delete res.data.password
         return ResultData.ok(instanceToPlain(res))
+    }
+
+    /**
+     * 发送验证码
+     */
+    async sendCaptcha(email: string, captcha: string): Promise<ResultData> {
+        // 验证邮箱
+        if (!validEmail(email)) return ResultData.fail(HttpCode.BadRequest, '邮箱格式错误')
+        const isSendSuccess = await this.emailService.sendMail({ email, captcha })
+        if (isSendSuccess) {
+            return ResultData.ok(null, '发送成功')
+        }
+        return ResultData.fail(HttpCode.BadRequest, '发送失败')
     }
 
     /**
@@ -141,24 +154,13 @@ export class UsersService {
     }
 
     async findOneById(id: string): Promise<UserEntity> {
-        // const redisKey = getRedisKey(RedisKeyPrefix.USER_INFO, id)
-        // const result = await this.redisService.hGetAll(redisKey)
         const result = await this.userRepo.findOne({ where: { id } })
         // plainToInstance 去除 password slat
-        let user = plainToInstance(UserEntity, result, { enableImplicitConversion: true })
-        if (!user?.id) {
-            user = await this.userRepo.findOne({ where: { id } })
-            user = plainToInstance(UserEntity, { ...user }, { enableImplicitConversion: true })
-            // await this.redisService.hmset(
-            //     redisKey,
-            //     instanceToPlain(user),
-            //     ms(this.config.get<string>('jwt.expiresin')) / 1000
-            // )
-            // await
+        const user = plainToInstance(UserEntity, result, { enableImplicitConversion: true })
+        if (user) {
+            user.password = ''
             return user
         }
-        user.password = ''
-        // user.salt = ''
         return null
     }
 

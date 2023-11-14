@@ -18,6 +18,7 @@ import { HttpExceptionsFilter } from './common/lib/log4js/http-exceptions-filter
 import { ExceptionsFilter } from './common/lib/log4js/exceptions-filter'
 
 import * as Chalk from 'chalk'
+import * as session from 'express-session'
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -68,6 +69,9 @@ async function bootstrap() {
 
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }))
+    app.use(
+        session({ secret: 'XiaoMan', name: 'xm.session', rolling: true, cookie: { maxAge: null } })
+    )
 
     app.use(logger)
     // 使用全局拦截器打印出参

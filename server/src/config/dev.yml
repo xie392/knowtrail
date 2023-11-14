@@ -43,17 +43,19 @@ jwt:
     expiresin: '7d'
     refreshExpiresIn: '14d'
 
-# 权限 白名单配置
-perm:
-    router:
-        whitelist: [
-                { path: '/api/register', method: 'POST' },
-                { path: '/api/login', method: 'POST' },
-                { path: '/api/users', method: 'GET' }
-                # { path: '/api/{id}', method: 'GET' },
-                # { path: '/api/oss/upload', method: 'POST' }
-            ]
-
-# 初始密码， 重置密码
-user:
-    initialPassword: 'Q123456'
+email:
+    transport:
+        # 邮箱服务器地址
+        host: 'smtp.qq.com'
+        # 服务器端口 默认 465
+        port: 465
+        auth: 
+            # 用户邮箱
+            user: 'xie392@foxmail.com'
+            # 授权码
+            pass: 'filbvwhjyrtsdige'
+    # 是否开启预览，开启了这个属性，在调试模式下会自动打开一个网页，预览邮件
+    preview: false
+    defaults:
+        from: '知迹 <xie392@foxmail.com>'
+                

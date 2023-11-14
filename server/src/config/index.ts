@@ -1,8 +1,6 @@
 import { readFileSync } from 'fs'
 import * as yaml from 'js-yaml'
 import { join } from 'path'
-import * as fs from 'fs'
-import { error } from 'console'
 
 const configFileName = {
     development: 'dev',

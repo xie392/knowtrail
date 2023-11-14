@@ -7,12 +7,8 @@ import {
     Injectable,
     UnauthorizedException
 } from '@nestjs/common'
-
-import { ALLOW_ANON } from '../decorators/allow-anon.decorator'
-
+import { ALLOW_ANON } from '../../common/decorators/allow-anon.decorator'
 import { UsersService } from '../../system/users/users.service'
-
-// import { ResultData } from '../../common/utils/result'
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {

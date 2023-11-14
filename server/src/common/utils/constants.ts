@@ -34,5 +34,5 @@ export enum ErrorMessage {
     UnprocessableEntity = 'Unprocessable Entity'
 }
 
-export const secret = 'KnowTaril'
-export const port = 3000
+// export const secret = 'KnowTaril'
+// export const port = 3000

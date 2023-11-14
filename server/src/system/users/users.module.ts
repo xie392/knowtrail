@@ -9,22 +9,28 @@ import { UsersController } from './users.controller'
 import { BaseController } from './base.controller'
 
 import { UserEntity } from './entities/user.entity'
-// import { UserLoginHistoryEntity } from './entities/user-login-history.entity'
 
-import { AuthModule } from '../auth/auth.module'
-
-import { JwtConfig } from '../../common/utils/jwt'
-import { JwtImplService } from '../../common/utils/jwt'
-
+import { AuthModule } from '../../tool/auth/auth.module'
+import { EmailModule } from 'src/tool/email/email.module'
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([UserEntity]),
         forwardRef(() => AuthModule),
-        JwtModule.registerAsync(JwtConfig)
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            useFactory: async (config: ConfigService) => ({
+                secret: config.get('jwt.secretkey'),
+                signOptions: {
+                    expiresIn: config.get('jwt.expiresin')
+                }
+            }),
+            inject: [ConfigService]
+        }),
+        forwardRef(() => EmailModule)
     ],
     controllers: [UsersController, BaseController],
-    providers: [UsersService,JwtImplService],
+    providers: [UsersService],
     exports: [UsersService]
 })
 export class UsersModule {}

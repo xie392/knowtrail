@@ -15,10 +15,6 @@ import { ResultData } from '../../common/utils/result'
 import { HttpCode } from '../../common/utils/constants'
 import { CategoryEntity } from '../category/entities/category.entity'
 
-import { JwtService } from '@nestjs/jwt'
-import { getUserId } from '../../common/utils/jwt'
-import { JwtImplService } from '../../common/utils/jwt'
-
 interface DocParams {
     id: string
     password?: string
@@ -33,9 +29,7 @@ export class DocService {
         @InjectRepository(DocEntity)
         private readonly docRepo: Repository<DocEntity>,
         @InjectEntityManager()
-        private readonly docManager: EntityManager,
-        // private readonly jwtService: JwtService,
-        private readonly jwtImplService: JwtImplService
+        private readonly docManager: EntityManager
     ) {}
 
     /**
@@ -70,12 +64,12 @@ export class DocService {
             : ResultData.fail(HttpCode.NotFound, '文档不存在')
     }
 
-    async create(dto: CreateDocDto, token: string): Promise<ResultData> {
-        const userId = this.jwtImplService.getUserId(token)
+    async create(dto: CreateDocDto, user: UserEntity): Promise<ResultData> {
+        // const userId = this.jwtImplService.getUserId(token)
         // const userId = getUserId(this.jwtService, token)
-        console.log('userId', userId)
-        if (!userId) return ResultData.fail(HttpCode.Unauthorized, 'token 验证失败')
-        return ResultData.ok('11')
+        // console.log('userId', userId)
+        // if (!userId) return ResultData.fail(HttpCode.Unauthorized, 'token 验证失败')
+        return ResultData.ok(user)
     }
 }
 
