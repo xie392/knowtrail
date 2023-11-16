@@ -46,7 +46,7 @@ const { isLogin } = storeToRefs(userStore)
                     </router-link>
                 </t-space>
                 <template #operations>
-                    <div class="flex">
+                    <div class="flex items-center">
                         <t-icon class="t-menu__operations-icon" name="search" />
 
                         <div v-if="isLogin" class="flex items-center gap-6">

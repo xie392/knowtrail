@@ -6,7 +6,10 @@ import workspace from './children/workspace'
 import settings from './children/settings'
 import knowledge from './children/knowledge'
 
-const routes: RouteRecordRaw[] = [
+/**
+ * 白名单路由
+ */
+export const baseRoutes: RouteRecordRaw[] = [
     {
         path: '/',
         alias: '/about',
@@ -18,10 +21,6 @@ const routes: RouteRecordRaw[] = [
             layout: true
         }
     },
-    ...playground,
-    ...workspace,
-    ...settings,
-    ...knowledge,
     {
         path: '/:name',
         name: 'user',
@@ -50,6 +49,17 @@ const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: '/forgot',
+        name: 'forgot',
+        component: () => import('@/views/auth/forgot/index.vue'),
+        meta: {
+            keepAlive: false,
+            layout: false,
+            title: '重置密码',
+            auth: false
+        }
+    },
+    {
         path: '/error',
         name: 'nerror',
         component: () => import('@/views/error/error.vue'),
@@ -71,6 +81,14 @@ const routes: RouteRecordRaw[] = [
             auth: false
         }
     }
+]
+
+const routes: RouteRecordRaw[] = [
+    ...baseRoutes,
+    ...playground,
+    ...workspace,
+    ...settings,
+    ...knowledge
 ]
 
 const router = createRouter({

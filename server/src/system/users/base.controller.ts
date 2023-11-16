@@ -11,7 +11,7 @@ import { UserEntity } from './entities/user.entity'
 import { LoginUserPipe, LoginUserPipeSchema } from './pipe/login-user.pipe'
 import { CreateUserPipe, CreateUserPipeSchema } from './pipe/create-user.pipe'
 
-@ApiTags('登录注册')
+@ApiTags('登录相关')
 @Controller()
 export class BaseController {
     constructor(private readonly usersService: UsersService) {}

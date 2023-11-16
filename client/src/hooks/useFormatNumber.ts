@@ -1,3 +1,8 @@
+/**
+ * 格式化数字
+ * @param number
+ * @returns
+ */
 export const useFormatNumber = (number: number): string => {
     if (number > 100000000) {
         return (number / 100000000).toFixed(1) + '亿'
@@ -7,3 +12,4 @@ export const useFormatNumber = (number: number): string => {
     }
     return number.toString()
 }
+

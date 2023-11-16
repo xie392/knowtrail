@@ -11,7 +11,7 @@ export class EmailService {
      * 发送邮件验证码
      * @param data 邮件主体信息
      */
-    async sendMail(data:SednMailDto) {
+    async sendMail(data: SednMailDto) {
         try {
             const sendMailOptions: ISendMailOptions = {
                 to: data.email,

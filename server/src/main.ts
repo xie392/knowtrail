@@ -19,12 +19,14 @@ import { ExceptionsFilter } from './common/lib/log4js/exceptions-filter'
 
 import * as Chalk from 'chalk'
 import * as session from 'express-session'
+// import * as cors from 'cors'
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         cors: true
     })
 
+    // app.use(cors())
     // 设置访问频率
     app.use(
         rateLimit({
