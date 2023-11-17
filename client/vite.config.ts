@@ -33,7 +33,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
             viteMockServe({
                 mockPath: 'mock',
                 // 如果不需要mock，可以把enable改为false
-                enable: true,
+                enable: false,
                 ignore: (filename: string) => filename.includes('ignore')
             })
         ],
@@ -51,6 +51,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
                 '/api': {
                     target:
                         mode === 'development' ? http.VITE_DEV_BASE_URL : http.VITE_PRO_BASE_URL,
+                    changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/api/, '')
                 }
             }

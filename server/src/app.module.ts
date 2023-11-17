@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
-import configuration from './config/index'
+import { RedisClientOptions } from '@liaoliaots/nestjs-redis'
 
+import configuration from './config/index'
+import { RedisModule } from './common/lib/redis/redis.module'
 import { JwtAuthGuard } from './tool/auth/auth.guard'
 import { AuthModule } from './tool/auth/auth.module'
 import { UsersModule } from './system/users/users.module'
@@ -34,6 +36,22 @@ import { EmailModule } from './tool/email/email.module'
                 } as TypeOrmModuleOptions
             }
         }),
+        // libs redis
+        RedisModule.forRootAsync(
+            {
+                imports: [ConfigModule],
+                inject: [ConfigService],
+                useFactory: (config: ConfigService) => {
+                    return {
+                        closeClient: true,
+                        readyLog: true,
+                        errorLog: true,
+                        config: config.get<RedisClientOptions>('redis')
+                    }
+                }
+            },
+            true
+        ),
         AuthModule,
         UsersModule,
         DocModule,

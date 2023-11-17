@@ -10,10 +10,13 @@ export const useBaseStore = defineStore(
         const theme = ref<themeOptions>('light')
         // 是否折叠(用于工作台侧边栏的知识库收起展开)
         const collapse = ref<boolean>(false)
+        // 发送邮箱验证码的时间
+        const lastSentTime = ref<number>(0)
 
         return {
             theme,
-            collapse
+            collapse,
+            lastSentTime
         }
     },
     {

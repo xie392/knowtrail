@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UsePipes, Get, Req, Res } from '@nestjs/common'
+import { Controller, Post, Body, UsePipes, Get, Req } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger'
 import { UsersService } from './users.service'
 import { ApiResult } from '../../common/decorators/api-result.decorator'
@@ -10,6 +10,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto'
 import { UserEntity } from './entities/user.entity'
 import { LoginUserPipe, LoginUserPipeSchema } from './pipe/login-user.pipe'
 import { CreateUserPipe, CreateUserPipeSchema } from './pipe/create-user.pipe'
+import { HttpCode } from '../../common/utils/constants'
 
 @ApiTags('登录相关')
 @Controller()
@@ -32,7 +33,11 @@ export class BaseController {
     @ApiResult(UserEntity)
     @AllowAnon()
     @UsePipes(new CreateUserPipe(CreateUserPipeSchema))
-    async create(@Body() user: CreateUserDto): Promise<ResultData> {
+    async create(@Body() user: CreateUserDto, @Req() req): Promise<ResultData> {
+        // 验证验证码
+        if (user.captcha !== req.session.captcha) {
+            return ResultData.fail(HttpCode.BadRequest, '验证码错误')
+        }
         return await this.usersService.create(user)
     }
 
@@ -56,7 +61,12 @@ export class BaseController {
     @AllowAnon()
     async sendCaptcha(@Body('email') email: string, @Req() req): Promise<ResultData> {
         const captcha = Math.random().toString().slice(-6)
-        req.session.code = captcha
+        const { lastSentTime } = req.session.lastSentTime || {}
+        if (lastSentTime && new Date().getTime() - lastSentTime < 60 * 1000) {
+            return ResultData.fail(HttpCode.BadRequest, '验证码发送过于频繁，请稍后再试')
+        }
+        req.session.captcha = captcha
+        req.session.lastSentTime = new Date().getTime()
         return await this.usersService.sendCaptcha(email, captcha)
     }
 }

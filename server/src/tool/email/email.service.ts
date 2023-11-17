@@ -24,6 +24,8 @@ export class EmailService {
                 }
             }
             const result = await this.mailerService.sendMail(sendMailOptions)
+            // console.log('result', result)
+            
             if (result) return true
             return false
         } catch (error) {

@@ -10,8 +10,8 @@ import { useRouter, useRoute } from 'vue-router'
 
 const formData = reactive({ account: '123@qq.com', password: '123456' })
 const rules = {
-    account: [{ required: true, message: '账号不能为空', type: 'error' }],
-    password: [{ required: true, message: '密码不能为空', type: 'error' }]
+    account: [{ required: true, message: '账号不能为空', type: 'warning' }],
+    password: [{ required: true, message: '密码不能为空', type: 'warning' }]
 }
 const userStore = storeToRefs(useUserStore())
 const route = useRoute()
@@ -85,9 +85,7 @@ const onSubmit = async ({ validateResult, firstError }) => {
         </t-form>
         <p class="mt-5 flex justify-between">
             <router-link to="/register" class="text-textLink text-[0.89rem]">注册</router-link>
-            <router-link to="/forgot" class="text-textSecondary text-[0.89rem]"
-                >重置密码</router-link
-            >
+            <router-link to="/forget" class="text-textSecondary text-[0.89rem]">重置密码</router-link>
         </p>
     </Container>
 </template>

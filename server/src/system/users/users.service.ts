@@ -121,13 +121,14 @@ export class UsersService {
     async sendCaptcha(email: string, captcha: string): Promise<ResultData> {
         // 验证邮箱
         if (!validEmail(email)) return ResultData.fail(HttpCode.BadRequest, '邮箱格式错误')
+        // console.log('user', user)
         const isSendSuccess = await this.emailService.sendMail({ email, captcha })
         if (isSendSuccess) {
             return ResultData.ok(null, '发送成功')
         }
         return ResultData.fail(HttpCode.BadRequest, '发送失败')
     }
-
+ 
     /**
      * 验证 token
      * @param token
@@ -150,6 +151,7 @@ export class UsersService {
      */
     refreshToken(refreshToken: string): ResultData {
         const accessToken = this.jwtService.sign({ refreshToken })
+        // refreshToken
         return ResultData.ok({ accessToken })
     }
 

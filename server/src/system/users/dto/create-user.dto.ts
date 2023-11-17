@@ -16,4 +16,9 @@ export class CreateUserDto {
     @ApiProperty({ description: '确认密码' })
     @IsString({ message: ' confirmPassword 类型错误，正确类型 string' })
     readonly confirmPassword: string
+
+    @ApiProperty({ description: '验证码' })
+    @IsString({ message: 'captcha 类型错误，正确类型 string' })
+    @IsNotEmpty({ message: 'captcha 不能为空' })
+    readonly captcha: string
 }

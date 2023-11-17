@@ -22,6 +22,6 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to) => {
     // useLoading(false)zhiji
-    const title = to.meta.title ? to.meta.title + '· 知迹' : '知迹'
+    const title = to.meta.title ? to.meta.title + ' · 知迹' : '知迹'
     useHead({ title })
 })

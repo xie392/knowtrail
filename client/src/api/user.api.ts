@@ -46,7 +46,7 @@ export class UserService {
      * @param data.email 邮箱
      * @returns
      */
-    static EmailCodeApi(data: EmailCodeData): Promise<Response> {
+    static sendEmailApi(data: EmailCodeData): Promise<Response> {
         return this.http({ url: '/captcha', method: 'post', data })
     }
 }

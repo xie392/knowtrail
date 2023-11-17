@@ -49,9 +49,9 @@ export const baseRoutes: RouteRecordRaw[] = [
         }
     },
     {
-        path: '/forgot',
-        name: 'forgot',
-        component: () => import('@/views/auth/forgot/index.vue'),
+        path: '/forget',
+        name: 'forget',
+        component: () => import('@/views/auth/forget/index.vue'),
         meta: {
             keepAlive: false,
             layout: false,
@@ -61,7 +61,7 @@ export const baseRoutes: RouteRecordRaw[] = [
     },
     {
         path: '/error',
-        name: 'nerror',
+        name: 'error',
         component: () => import('@/views/error/error.vue'),
         meta: {
             keepAlive: false,

@@ -49,13 +49,16 @@ email:
         host: 'smtp.qq.com'
         # 服务器端口 默认 465
         port: 465
-        auth: 
+        auth:
             # 用户邮箱
-            user: 'xie392@foxmail.com'
+            user: 'ymzdjiang@qq.com'
             # 授权码
             pass: 'filbvwhjyrtsdige'
     # 是否开启预览，开启了这个属性，在调试模式下会自动打开一个网页，预览邮件
     preview: false
     defaults:
-        from: '知迹 <xie392@foxmail.com>'
-                
+        from: '知迹 <ymzdjiang@qq.com>'
+
+session:
+    secret: 'zANDwNQVFzxlfG9myPxVWAkq4iXJEPhI'
+    name: 'session'

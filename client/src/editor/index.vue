@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import EditorJS from '@editorjs/editorjs'
 import { onMounted, ref } from 'vue'
-import { usePlaceholder } from '@/hooks/usePlaceholder'
+// import { usePlaceholder } from '@/hooks/usePlaceholder'
 import { lang, tools } from './config'
 
 const editorRef = ref<HTMLElement | null>(null)
@@ -18,7 +18,7 @@ onMounted(() => {
         i18n: lang,
         holder: 'editor',
         tools,
-        placeholder: usePlaceholder()
+        // placeholder: usePlaceholder()
     })
     window.__EDITOR__ = editor.value
 })

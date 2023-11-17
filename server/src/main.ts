@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { NestExpressApplication } from '@nestjs/platform-express'
+// import { VersioningType } from '@nestjs/common'
 
 import rateLimit from 'express-rate-limit'
 import { ConfigService } from '@nestjs/config'
@@ -19,14 +20,20 @@ import { ExceptionsFilter } from './common/lib/log4js/exceptions-filter'
 
 import * as Chalk from 'chalk'
 import * as session from 'express-session'
-// import * as cors from 'cors'
 
 async function bootstrap() {
-    const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-        cors: true
+    const app = await NestFactory.create<NestExpressApplication>(AppModule)
+
+    // 设置跨域
+    app.enableCors({
+        credentials: true,
+        origin: true
     })
 
-    // app.use(cors())
+    // app.use(cors({
+    //     origin: true,
+    //     credentials: true
+    // }))
     // 设置访问频率
     app.use(
         rateLimit({
@@ -72,7 +79,12 @@ async function bootstrap() {
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }))
     app.use(
-        session({ secret: 'XiaoMan', name: 'xm.session', rolling: true, cookie: { maxAge: null } })
+        session({
+            secret: config.get<string>('session.secret'),
+            name: config.get<string>('session.name'),
+            rolling: true,
+            cookie: { maxAge: 30 * 60 * 60 * 1000 }
+        })
     )
 
     app.use(logger)

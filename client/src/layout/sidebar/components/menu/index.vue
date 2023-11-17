@@ -24,7 +24,7 @@ const menus = [
         </t-menu-item>
 
         <t-divider />
-
+        <!-- 知识库 -->
         <Collapse />
     </t-menu>
 </template>
