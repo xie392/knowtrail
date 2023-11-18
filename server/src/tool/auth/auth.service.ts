@@ -11,7 +11,6 @@ export class AuthService {
     ) {}
 
     async validateUser(payload: { id: string }): Promise<UserEntity> {
-        console.log('validateUser', payload)
         return await this.UserService.findOneById(payload.id)
     }
 }

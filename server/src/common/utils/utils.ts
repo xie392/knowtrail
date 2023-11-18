@@ -48,6 +48,22 @@ export function objAttrToCamelOrUnderline(
  * @returns
  */
 export function generateId(len: number = 10) {
-    const randomId = customAlphabet('123456789abcdefghijklmnopqrstuvwxyz', len)
+    const randomId = customAlphabet('123456789', len)
     return randomId()
+}
+
+
+/**
+ * 生成验证码
+ * @description: 生成验证码
+ */
+export function createCaptcha(req: Request & { session: any }) {
+    const captcha = Math.random().toString().slice(-6)
+    const { lastSentTime } = req.session.lastSentTime || {}
+    if (lastSentTime && new Date().getTime() - lastSentTime < 60 * 1000) {
+        return { captcha: captcha, msg: '验证码发送过于频繁，请稍后再试', success: false }
+    }
+    req.session.captcha = captcha
+    req.session.lastSentTime = new Date().getTime()
+    return { captcha: captcha, msg: '发送成功', success: true }
 }

@@ -24,6 +24,7 @@ export class UserService {
      * @param data.account 账号
      * @param data.password 密码
      * @param data.confirmPassword 确认密码
+     * @param data.captcha 验证码
      * @returns
      */
     static RegisterApi(data: RegisterData): Promise<Response> {
@@ -46,7 +47,19 @@ export class UserService {
      * @param data.email 邮箱
      * @returns
      */
-    static sendEmailApi(data: EmailCodeData): Promise<Response> {
-        return this.http({ url: '/captcha', method: 'post', data })
+    static sendEmailApi(data: EmailCodeData, type: 'forget' | 'register'): Promise<Response> {
+        return this.http({ url: `/captcha/${type}`, method: 'post', data })
+    }
+
+    /**
+     * 重置密码
+     * @param data
+     * @param data.account 账号
+     * @param data.password 密码
+     * @param data.confirmPassword 确认密码
+     * @param data.captcha 验证码
+     */
+    static forgetPasswordApi(data: RegisterData): Promise<Response> {
+        return this.http({ url: '/forget', method: 'post', data })
     }
 }

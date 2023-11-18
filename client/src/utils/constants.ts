@@ -38,5 +38,12 @@ export enum RouteName {
     // 编辑页
     EDIT = 'edit',
     // 编辑器
-    EDITOR = 'editor',
+    EDITOR = 'editor'
+}
+
+export enum CaptchaType {
+    // 注册
+    REGISTER = 'register',
+    // 找回密码
+    FORGET = 'forget'
 }

@@ -8,11 +8,13 @@ import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import CheckEmail from '../components/check-email.vue'
 import { useEmail } from '@/hooks/useEmail'
+import { validPassword } from '@/utils/validate'
+import { joinPath } from '@/utils/utils'
 
 const formData = reactive({
     account: '1728129873@qq.com',
-    password: '1',
-    confirmPassword: '1',
+    password: '123456qq',
+    confirmPassword: '123456qq',
     captcha: ''
 })
 const rules = {
@@ -28,12 +30,16 @@ const visable = ref<boolean>(true)
 
 const onSubmit = async ({ validateResult, firstError }) => {
     if (validateResult === true) {
+        if (!validPassword(formData.password)) return MessagePlugin.warning('密码强度不够')
+        if (formData.password !== formData.confirmPassword)
+            return MessagePlugin.warning('两次密码不一致')
+
         const { success, message } = await useEmail(formData.account)
         if (success) {
             visable.value = false
             MessagePlugin.success(message)
         } else {
-            MessagePlugin.error(message)
+            MessagePlugin.warning(message)
         }
     } else {
         MessagePlugin.warning(firstError)
@@ -41,7 +47,12 @@ const onSubmit = async ({ validateResult, firstError }) => {
 }
 
 const register = async () => {
-    const {code,data,msg} = await UserService.RegisterApi(formData)
+    if (!formData.captcha) return MessagePlugin.warning('验证码不能为空')
+    const { code, data, msg } = await UserService.RegisterApi(formData)
+    if (code !== 200) return MessagePlugin.error(msg || '注册失败')
+    userStore.user.value = data
+    userStore.isLogin.value = true
+    route.query?.redirect ? router.push(route.query.redirect as string) : router.push('/')
 }
 </script>
 
@@ -105,7 +116,11 @@ const register = async () => {
                 </t-form-item>
             </t-form>
             <p class="mt-5 flex justify-between">
-                <router-link to="/login" class="text-textLink text-[0.89rem]">登录</router-link>
+                <router-link
+                    :to="'/login' + joinPath($route.fullPath)"
+                    class="text-textLink text-[0.89rem]"
+                    >登录</router-link
+                >
             </p>
         </div>
         <div v-show="!visable">

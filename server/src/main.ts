@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { NestExpressApplication } from '@nestjs/platform-express'
-// import { VersioningType } from '@nestjs/common'
-
 import rateLimit from 'express-rate-limit'
 import { ConfigService } from '@nestjs/config'
 import helmet from 'helmet'
@@ -11,15 +9,14 @@ import { mw as requestIpMw } from 'request-ip'
 
 import * as express from 'express'
 import * as path from 'path'
+import * as Chalk from 'chalk'
+import * as session from 'express-session'
 
 import { logger } from './common/lib/log4js/logger.middleware'
 import { Logger } from './common/lib/log4js/log4j.util'
 import { TransformInterceptor } from './common/lib/log4js/transform.interceptor'
 import { HttpExceptionsFilter } from './common/lib/log4js/http-exceptions-filter'
 import { ExceptionsFilter } from './common/lib/log4js/exceptions-filter'
-
-import * as Chalk from 'chalk'
-import * as session from 'express-session'
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule)
@@ -30,10 +27,6 @@ async function bootstrap() {
         origin: true
     })
 
-    // app.use(cors({
-    //     origin: true,
-    //     credentials: true
-    // }))
     // 设置访问频率
     app.use(
         rateLimit({
@@ -43,7 +36,6 @@ async function bootstrap() {
     )
 
     const config = app.get(ConfigService)
-
     const prefix = config.get<string>('app.prefix')
 
     // 设置 api 访问前缀
@@ -83,7 +75,7 @@ async function bootstrap() {
             secret: config.get<string>('session.secret'),
             name: config.get<string>('session.name'),
             rolling: true,
-            cookie: { maxAge: 30 * 60 * 60 * 1000 }
+            cookie: { maxAge: 10 * 60 * 1000 }
         })
     )
 

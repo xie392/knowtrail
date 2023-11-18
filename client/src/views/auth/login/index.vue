@@ -7,6 +7,7 @@ import { UserService } from '@/api/user.api'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
+import { joinPath } from '@/utils/utils'
 
 const formData = reactive({ account: '123@qq.com', password: '123456' })
 const rules = {
@@ -25,7 +26,7 @@ const onSubmit = async ({ validateResult, firstError }) => {
         userStore.isLogin.value = true
         route.query?.redirect ? router.push(route.query.redirect as string) : router.push('/')
     } else {
-        MessagePlugin.warning(firstError)
+        MessagePlugin.error(firstError)
     }
 }
 </script>
@@ -84,8 +85,16 @@ const onSubmit = async ({ validateResult, firstError }) => {
             </t-form-item>
         </t-form>
         <p class="mt-5 flex justify-between">
-            <router-link to="/register" class="text-textLink text-[0.89rem]">注册</router-link>
-            <router-link to="/forget" class="text-textSecondary text-[0.89rem]">重置密码</router-link>
+            <router-link
+                :to="'/register' + joinPath($route.fullPath)"
+                class="text-textLink text-[0.89rem]"
+                >注册</router-link
+            >
+            <router-link
+                :to="'/forget' + joinPath($route.fullPath)"
+                class="text-textSecondary text-[0.89rem]"
+                >重置密码</router-link
+            >
         </p>
     </Container>
 </template>

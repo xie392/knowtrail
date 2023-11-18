@@ -2,6 +2,7 @@ import { UserService } from '@/api/user.api'
 import { validEmail } from '@/utils/validate'
 import { useBaseStore } from '@/stores/index'
 import { storeToRefs } from 'pinia'
+import { CaptchaType } from '@/utils/constants'
 
 interface EmailResult {
     success: boolean
@@ -13,7 +14,10 @@ interface EmailResult {
  * @param email 邮箱
  * @returns
  */
-export async function useEmail(email: string): Promise<EmailResult> {
+export async function useEmail(
+    email: string,
+    type: CaptchaType = CaptchaType.REGISTER
+): Promise<EmailResult> {
     // 1. 验证邮箱
     if (!validEmail(email)) {
         return { success: false, message: '邮箱格式不正确' }
@@ -25,7 +29,7 @@ export async function useEmail(email: string): Promise<EmailResult> {
     }
 
     // 3. 发送验证码
-    return await sendVerificationCode(email)
+    return await sendVerificationCode(email, type)
 }
 
 /**
@@ -48,9 +52,9 @@ function isRecentlySent(): boolean {
  * @param email - 邮箱地址
  * @returns Promise<EmailResult> - Promise对象，包含发送结果和消息
  */
-async function sendVerificationCode(email: string): Promise<EmailResult> {
+async function sendVerificationCode(email: string, type: CaptchaType): Promise<EmailResult> {
     const { lastSentTime } = storeToRefs(useBaseStore())
-    const { code, msg } = await UserService.sendEmailApi({ email })
+    const { code, msg } = await UserService.sendEmailApi({ email }, type)
 
     if (code === 200) {
         // 更新上次发送时间

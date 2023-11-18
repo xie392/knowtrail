@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common'
 import * as joi from 'joi'
 import { LoginUserDto } from '../dto/login-user.dto'
-import { ErrorMessage } from '../../../common/utils/constants'
 
 @Injectable()
 export class LoginUserPipe implements PipeTransform {
@@ -11,7 +10,7 @@ export class LoginUserPipe implements PipeTransform {
         const { error } = this.schema.validate(value)
 
         if (error) {
-            throw new BadRequestException('ValidationError:' + ErrorMessage.NoContent)
+            throw new BadRequestException('验证失败: 缺少内容！')
         }
         return value
     }

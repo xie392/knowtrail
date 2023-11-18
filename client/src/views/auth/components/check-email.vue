@@ -39,7 +39,7 @@ const sendEmail = async () => {
                 <t-icon name="code" />
             </template>
         </t-input>
-        <t-button theme="primary" size="large" block>验证</t-button>
+        <t-button theme="primary" size="large" block @click="emits('submit')">验证</t-button>
     </div>
     <p class="mt-5 flex text-[0.89rem]">
         没有收到验证码？

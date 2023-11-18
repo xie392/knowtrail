@@ -5,7 +5,8 @@ const menus = [
     { name: '开始', icon: 'time', path: '/workspace/dashboard' },
     { name: '收藏', icon: 'star', path: '/workspace/collections' },
     { name: '关注', icon: 'user-add', path: '/workspace/focus' },
-    { name: '模板', icon: 'template', path: '/workspace/templates' }
+    { name: '模板', icon: 'template', path: '/workspace/templates' },
+    { name: '广场', icon: 'book', path: '/playground'  }
 ]
 </script>
 

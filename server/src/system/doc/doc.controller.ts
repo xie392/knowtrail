@@ -20,7 +20,6 @@ import { ApiResult } from '../../common/decorators/api-result.decorator'
 import { AllowAnon } from '../../common/decorators/allow-anon.decorator'
 import { DocEntity } from './entities/doc.entity'
 
-
 @ApiTags('文档相关')
 @Controller('doc')
 export class DocController {
@@ -46,8 +45,6 @@ export class DocController {
     @ApiOperation({ summary: '创建文档' })
     @ApiBody({ type: CreateDocDto })
     create(@Body() dto: CreateDocDto, @Req() req) {
-        // return '11'
-        console.log("req",req.user);
         return this.docService.create(dto, req.user)
     }
 }

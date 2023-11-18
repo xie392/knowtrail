@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import { Logger } from './log4j.util'
 
+/**
+ * 日志记录器中间件
+ * @param req 请求对象
+ * @param res 响应对象
+ * @param next 下一个中间件函数
+ */
 export function logger(req: Request, res: Response, next: NextFunction) {
     const statusCode = res.statusCode
     const logFormat = `

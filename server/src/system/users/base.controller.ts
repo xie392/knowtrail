@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UsePipes, Get, Req } from '@nestjs/common'
+import { Controller, Post, Body, UsePipes, Get, Req, Query, Param } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger'
 import { UsersService } from './users.service'
 import { ApiResult } from '../../common/decorators/api-result.decorator'
@@ -7,10 +7,13 @@ import { ResultData } from '../../common/utils/result'
 import { LoginUserDto } from './dto/login-user.dto'
 import { CreateUserDto } from './dto/create-user.dto'
 import { RefreshTokenDto } from './dto/refresh-token.dto'
+import { ForgetPasswordDto } from './dto/forget-password.dto'
 import { UserEntity } from './entities/user.entity'
 import { LoginUserPipe, LoginUserPipeSchema } from './pipe/login-user.pipe'
 import { CreateUserPipe, CreateUserPipeSchema } from './pipe/create-user.pipe'
 import { HttpCode } from '../../common/utils/constants'
+import { createCaptcha } from '../../common/utils/utils'
+import { CaptchaType } from '../../common/utils/constants'
 
 @ApiTags('登录相关')
 @Controller()
@@ -56,17 +59,27 @@ export class BaseController {
         // return this.usersService.logout()
     }
 
-    @Post('captcha')
+    @Post('captcha/:type')
     @ApiOperation({ summary: '验证码' })
     @AllowAnon()
-    async sendCaptcha(@Body('email') email: string, @Req() req): Promise<ResultData> {
-        const captcha = Math.random().toString().slice(-6)
-        const { lastSentTime } = req.session.lastSentTime || {}
-        if (lastSentTime && new Date().getTime() - lastSentTime < 60 * 1000) {
-            return ResultData.fail(HttpCode.BadRequest, '验证码发送过于频繁，请稍后再试')
+    async sendCaptcha(
+        @Body('email') email: string,
+        @Param('type') type: CaptchaType,
+        @Req() req
+    ): Promise<ResultData> {
+        const { captcha, msg, success } = createCaptcha(req)
+        if (!success) return ResultData.fail(HttpCode.BadRequest, msg)
+        return await this.usersService.sendCaptcha(email, captcha, type)
+    }
+
+    @Post('forget')
+    @ApiOperation({ summary: '重置密码' })
+    @AllowAnon()
+    async forget(@Body() dto: ForgetPasswordDto, @Req() req): Promise<ResultData> {
+        // 验证验证码
+        if (dto.captcha !== req.session.captcha) {
+            return ResultData.fail(HttpCode.BadRequest, '验证码错误')
         }
-        req.session.captcha = captcha
-        req.session.lastSentTime = new Date().getTime()
-        return await this.usersService.sendCaptcha(email, captcha)
+        return await this.usersService.forget(dto)
     }
 }

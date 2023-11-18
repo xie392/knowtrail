@@ -15,13 +15,15 @@ import { UserEntity } from './entities/user.entity'
 
 import { ResultData } from '../../common/utils/result'
 import { HttpCode } from '../../common/utils/constants'
-// import { RedisService } from '../../common/lib/redis/redis.service'
+import { RedisService } from '../../common/lib/redis/redis.service'
 import { validEmail, validPassword } from '../../common/utils/validate'
 import { encryptPassword } from '../../common/utils/crypto'
 import { generateId } from '../../common/utils/utils'
+import { CaptchaType } from '../../common/utils/constants'
 
 import * as dayjs from 'dayjs'
 import { EmailService } from 'src/tool/email/email.service'
+import { ForgetPasswordDto } from './dto/forget-password.dto'
 
 @Injectable()
 export class UsersService {
@@ -32,7 +34,8 @@ export class UsersService {
         private readonly userManager: EntityManager,
         private readonly jwtService: JwtService,
         private readonly config: ConfigService,
-        private readonly emailService: EmailService
+        private readonly emailService: EmailService,
+        private readonly redisService: RedisService
     ) {}
 
     /**
@@ -58,14 +61,11 @@ export class UsersService {
         }
         if (!data) return ResultData.fail(HttpCode.BadRequest, '帐号或密码错误')
         const token = this.generateToken({ id: data.id })
-        // const token = this.jwtImplService.generateToken({ id: data.id })
         const result = {
-            data: { ...data },
+            data: { ...instanceToPlain(data) },
             accessToken: token.accessToken,
             refreshToken: token.refreshToken
         }
-        // 不需要显示密码
-        delete result.data.password
         return ResultData.ok(result)
     }
 
@@ -92,43 +92,66 @@ export class UsersService {
             password: encryptPassword(password),
             // TODO: 后续两个值由前端提供
             avatar: '',
-            nick_name: ''
+            nick_name: '随机用户1'
         }
         // plainToInstance  忽略转换 @Exclude 装饰器
         const data = plainToInstance(UserEntity, userData, { ignoreDecorators: true })
         const result = await this.userManager.transaction(async (transactionalEntityManager) => {
             return await transactionalEntityManager.save<UserEntity>(data)
         })
-        const formatTime = dayjs(result.create_time).format('YYYY-MM-DD HH:mm:ss')
         const token = this.generateToken({ id: data.id })
-        // const token = this.jwtImplService.generateToken({ id: data.id })
         const res = {
             data: {
-                ...result,
-                create_time: formatTime,
-                update_time: formatTime
+                ...instanceToPlain(result)
             },
             accessToken: token.accessToken,
             refreshToken: token.refreshToken
         }
-        delete res.data.password
-        return ResultData.ok(instanceToPlain(res))
+        return ResultData.ok(res)
     }
 
     /**
      * 发送验证码
      */
-    async sendCaptcha(email: string, captcha: string): Promise<ResultData> {
+    async sendCaptcha(email: string, captcha: string, type: CaptchaType): Promise<ResultData> {
+        if (type === CaptchaType.REGISTER) {
+            const checkUser = await this.userRepo.findOneBy({ email })
+            if (checkUser)
+                return ResultData.fail(HttpCode.BadRequest, '当前邮箱已存在，请调整后重新注册')
+        }
         // 验证邮箱
         if (!validEmail(email)) return ResultData.fail(HttpCode.BadRequest, '邮箱格式错误')
-        // console.log('user', user)
         const isSendSuccess = await this.emailService.sendMail({ email, captcha })
         if (isSendSuccess) {
             return ResultData.ok(null, '发送成功')
         }
         return ResultData.fail(HttpCode.BadRequest, '发送失败')
     }
- 
+
+    /**
+     * 忘记密码
+     */
+    async forget(dto: ForgetPasswordDto): Promise<ResultData> {
+        const { account: email, password, confirmPassword } = dto
+        if (!validEmail(email)) return ResultData.fail(HttpCode.BadRequest, '邮箱格式错误')
+        if (password != confirmPassword)
+            return ResultData.fail(HttpCode.BadRequest, '两次密码不一致')
+        if (!validPassword(password))
+            return ResultData.fail(HttpCode.BadRequest, '密码必须有数字+字母组成，且长度至少8位数')
+        const checkUser = await this.userRepo.findOneBy({ email })
+        if (checkUser) {
+            if (checkUser.password === encryptPassword(password))
+                return ResultData.fail(HttpCode.BadRequest, '新密码不能与旧密码相同')
+            const { id } = checkUser
+            await this.userRepo.update(id, {
+                password: encryptPassword(password)
+            })
+            return ResultData.ok(null)
+        } else {
+            return ResultData.fail(HttpCode.BadRequest, '当前邮箱未注册')
+        }
+    }
+
     /**
      * 验证 token
      * @param token

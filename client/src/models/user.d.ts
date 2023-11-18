@@ -1,3 +1,5 @@
+import type { type } from 'os'
+
 /**
  * 登录参数
  */
@@ -20,6 +22,11 @@ export type RegisterData = LoginData & {
      * 确认密码
      */
     confirmPassword: string
+
+    /**
+     * 验证码
+     */
+    captcha: string
 }
 
 /**
@@ -41,3 +48,5 @@ export interface EmailCodeData {
      */
     email: string
 }
+
+export type CaptchaType = 'forget' | 'register'
