@@ -55,6 +55,7 @@ declare module 'vue' {
     TOption: typeof import('tdesign-vue-next')['Option']
     TPopconfirm: typeof import('tdesign-vue-next')['Popconfirm']
     TPopup: typeof import('tdesign-vue-next')['Popup']
+    Tree: typeof import('./src/components/tree/index.vue')['default']
     TSelect: typeof import('tdesign-vue-next')['Select']
     TSpace: typeof import('tdesign-vue-next')['Space']
     TSubmenu: typeof import('tdesign-vue-next')['Submenu']

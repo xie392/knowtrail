@@ -21,9 +21,11 @@ import Header from './components/header/index.vue'
             </Sidebar>
         </div>
         <div class="flex-1">
-            <Header />
-            <Home v-if="$route.name !== 'editor'" />
-            <router-views v-else />
+            <Home v-if="!$route.params.id" />
+            <div v-else>
+                <Header />
+                <router-views />
+            </div>
         </div>
     </div>
 </template>

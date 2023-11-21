@@ -2,18 +2,15 @@
 import { reactive } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 import GithubIcon from '@/components/icon/GithubIcon.vue'
-import Container from '../components/container.vue'
+import Container from '../components/container/index.vue'
 import { UserService } from '@/api/user.api'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { joinPath } from '@/utils/utils'
+import { LoginRules } from '@/utils/constants'
 
 const formData = reactive({ account: '123@qq.com', password: '123456' })
-const rules = {
-    account: [{ required: true, message: '账号不能为空', type: 'warning' }],
-    password: [{ required: true, message: '密码不能为空', type: 'warning' }]
-}
 const userStore = storeToRefs(useUserStore())
 const route = useRoute()
 const router = useRouter()
@@ -49,7 +46,7 @@ const onSubmit = async ({ validateResult, firstError }) => {
             :data="formData"
             :colon="true"
             :label-width="0"
-            :rules="rules"
+            :rules="LoginRules"
             @submit="onSubmit"
             class="max-w-[350px]"
         >

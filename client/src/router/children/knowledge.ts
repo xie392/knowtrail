@@ -11,8 +11,7 @@ export default [
             }
         ],
         meta: {
-            layout: false,
-            auth: false
+            layout: false
         }
     }
 ]

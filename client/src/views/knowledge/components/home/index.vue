@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div>Home</div>
+    <div class="w-full h-full">Home</div>
 </template>
 
 <style scoped></style>

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
-import Container from '../components/container.vue'
+import Container from '../components/container/index.vue'
 import { UserService } from '@/api/user.api'
 import { useRouter, useRoute } from 'vue-router'
-import CheckEmail from '../components/check-email.vue'
+import CheckEmail from '../components/check-email/index.vue'
 import { useEmail } from '@/hooks/useEmail'
 import { validPassword } from '@/utils/validate'
 import { joinPath } from '@/utils/utils'
-import { CaptchaType } from '@/utils/constants'
+import { CaptchaType, CommonRules } from '@/utils/constants'
 
 const formData = reactive({
     account: '1728129873@qq.com',
@@ -16,13 +16,6 @@ const formData = reactive({
     confirmPassword: '123456qq1',
     captcha: ''
 })
-const rules = {
-    account: [{ required: true, message: '账号不能为空', type: 'warning' }],
-    captcha: [{ required: true, message: '邮箱验证码不能为空', type: 'warning' }],
-    password: [{ required: true, message: '密码不能为空', type: 'warning' }],
-    confirmPassword: [{ required: true, message: '确认密码不能为空', type: 'warning' }]
-}
-
 const route = useRoute()
 const router = useRouter()
 const visable = ref<boolean>(true)
@@ -45,7 +38,7 @@ const onSubmit = async ({ validateResult, firstError }) => {
     }
 }
 
-const forget = async () => {
+const submit = async () => {
     if (!formData.captcha) return MessagePlugin.warning('验证码不能为空')
     const { code, msg } = await UserService.forgetPasswordApi(formData)
     if (code !== 200) return MessagePlugin.error(msg || '重置失败')
@@ -63,7 +56,7 @@ const forget = async () => {
                 :data="formData"
                 :colon="true"
                 :label-width="0"
-                :rules="rules"
+                :rules="CommonRules"
                 @submit="onSubmit"
                 class="max-w-[350px]"
             >
@@ -125,7 +118,7 @@ const forget = async () => {
                 :email="formData.account"
                 v-model:captcha="formData.captcha"
                 @close="visable = true"
-                @submit="forget"
+                @submit="submit"
             />
         </div>
     </Container>

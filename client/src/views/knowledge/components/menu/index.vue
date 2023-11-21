@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import Tree from '@/components/tree/index.vue'
 
 const treeRef = ref<HTMLElement | null>(null)
 
@@ -23,17 +24,28 @@ const items = [
 
 <template>
     <div class="px-3">
-        <div
+        <RouterLink
             class="list py-2 px-2 flex items-center gap-3 cursor-pointer mb-2"
-            :class="$route.name === 'knowledgeEditor' && 'list-active'"
+            :class="!$route.params.id && 'list-active'"
+            :to="`/knowledge/${$route.params.pid}`"
         >
             <t-icon name="home" class="icon"></t-icon>
             <span class="text-[0.875rem] select-none">首页</span>
-        </div>
+        </RouterLink>
         <t-space direction="vertical" style="width: 100%">
-            <t-tree ref="treeRef" :data="items" :activable="true" empty="还没有文档" expandAll>
+            <!-- <t-tree
+                ref="treeRef"
+                :data="items"
+                :activable="true"
+                empty="还没有文档"
+                expandAll
+                :onClick="
+                    ({ node }) => $router.push(`/knowledge/${$route.params.pid}/${node.value}`)
+                "
+            >
                 <template #operations="{ node }">操作</template>
-            </t-tree>
+            </t-tree> -->
+            <Tree :items="items" />
         </t-space>
     </div>
 </template>

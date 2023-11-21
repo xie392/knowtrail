@@ -1,5 +1,3 @@
-import type { type } from 'os'
-
 /**
  * 登录参数
  */

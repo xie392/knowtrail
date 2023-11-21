@@ -1,30 +1,40 @@
 <script setup lang="ts">
-import { onMounted, nextTick, ref } from 'vue'
-import type EditorJS from '@editorjs/editorjs'
+import { useDocStore } from '@/stores/doc'
+import { storeToRefs } from 'pinia'
+import { Status } from '@/utils/constants'
 
-// const editor = ref<EditorJS>()
-const readOnly = ref<boolean>(false)
+const docStore = useDocStore()
+const { doc, readonly } = storeToRefs(docStore)
 
-// onMounted(async () => {
-//     await nextTick()
-//     console.log('editor', window.__EDITOR__)
-//     if (!window.__EDITOR__) return
-//     editor.value = window.__EDITOR__
-//     readOnly.value = editor.value?.readOnly?.isEnabled || false
-// })
+const sumbit = (type: Status) => {
+    readonly.value = type === Status.EDIT ? false : true
+    // 更新
+    if (type === Status.PREVIEW) {
+        // TODO: 更新接口
+    }
+}
 </script>
 
 <template>
     <div
         class="w-full h-14 bg-bgPrimary flex justify-between items-center px-5 sticky top-0 z-50 border-b border-gray-200"
     >
-        <div>笔记</div>
+        <div>
+            <h2
+                class="max-w-[400px] text-ellipsis whitespace-nowrap overflow-hidden"
+                :title="doc.title"
+            >
+                {{ doc.title }}
+            </h2>
+        </div>
         <div class="flex gap-2">
-            <t-button variant="text">
+            <!-- <t-button variant="text">
                 <template #icon>
                     <t-icon name="star"></t-icon>
                 </template>
-            </t-button>
+            </t-button> -->
+            <t-button theme="primary" v-if="readonly" @click="sumbit(Status.EDIT)">编辑</t-button>
+            <t-button theme="primary" v-else @click="sumbit(Status.PREVIEW)">更新</t-button>
         </div>
     </div>
 </template>
