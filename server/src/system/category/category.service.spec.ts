@@ -12,7 +12,7 @@ describe('CategoryService', () => {
         service = module.get<CategoryService>(CategoryService)
     })
 
-    it('should be defined', () => {
-        expect(service).toBeDefined()
+    it('createDefaultCategory', () => {
+        expect(service.createDefaultCategory({ id: '11111' } as any)).toBeDefined()
     })
 })

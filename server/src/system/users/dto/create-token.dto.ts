@@ -2,8 +2,8 @@ import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateTokenDto {
     @ApiProperty({ description: 'token' })
-    accessToken: string
+    readonly accessToken: string
 
     @ApiProperty({ description: '刷新 token' })
-    refreshToken: string
+    readonly refreshToken: string
 }

@@ -24,6 +24,7 @@ import { CaptchaType } from '../../common/utils/constants'
 import * as dayjs from 'dayjs'
 import { EmailService } from 'src/tool/email/email.service'
 import { ForgetPasswordDto } from './dto/forget-password.dto'
+import { CategoryService } from '../category/category.service'
 
 @Injectable()
 export class UsersService {
@@ -35,7 +36,8 @@ export class UsersService {
         private readonly jwtService: JwtService,
         private readonly config: ConfigService,
         private readonly emailService: EmailService,
-        private readonly redisService: RedisService
+        private readonly redisService: RedisService,
+        private readonly categoryService: CategoryService
     ) {}
 
     /**
@@ -87,7 +89,7 @@ export class UsersService {
         if (checkUser)
             return ResultData.fail(HttpCode.BadRequest, '当前邮箱已存在，请调整后重新注册')
         const userData = {
-            id: generateId(),
+            id: generateId(6),
             email: account,
             password: encryptPassword(password),
             // TODO: 后续两个值由前端提供
@@ -107,6 +109,8 @@ export class UsersService {
             accessToken: token.accessToken,
             refreshToken: token.refreshToken
         }
+        // 为新用户创建默认知识库 异步 开线程池
+        this.categoryService.createDefaultCategory(data)
         return ResultData.ok(res)
     }
 

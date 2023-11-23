@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Tree from '@/components/tree/index.vue'
+import { CategoryService } from '@/api/category.api'
+import { useRoute } from 'vue-router'
 
 const treeRef = ref<HTMLElement | null>(null)
 
@@ -20,12 +22,22 @@ const items = [
         label: '2'
     }
 ]
+
+// 获取知识库详情
+const route = useRoute()
+const GetCategoryById = async () => {
+    const { data } = await CategoryService.GetCategoryByIdApi(route.params.pid as string)
+    if (data) {
+        console.log('data', data)
+    }
+}
+// GetCategoryById()
 </script>
 
 <template>
     <div class="px-3">
         <RouterLink
-            class="list py-2 px-2 flex items-center gap-3 cursor-pointer mb-2"
+            class="list py-2 px-2 flex items-center gap-3 cursor-pointer my-2"
             :class="!$route.params.id && 'list-active'"
             :to="`/knowledge/${$route.params.pid}`"
         >

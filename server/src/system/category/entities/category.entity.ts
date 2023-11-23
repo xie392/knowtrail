@@ -10,8 +10,8 @@ import {
 } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
-import { DocEntity } from 'src/system/doc/entities/doc.entity'
-import { UserEntity } from 'src/system/users/entities/user.entity'
+import { DocEntity } from '../../doc/entities/doc.entity'
+import { UserEntity } from '../../users/entities/user.entity'
 
 @Entity('sys_category')
 export class CategoryEntity {
@@ -32,12 +32,12 @@ export class CategoryEntity {
     public description: string
 
     @ApiProperty({ type: String, description: '状态 1 正常 0 私有 2需要密码' })
-    @Column({ type: 'int', comment: '状态 1 正常 0 私有 2需要密码', default: 1 })
+    @Column({ type: 'int', comment: '状态 1正常  0 私有 2需要密码', default: 0 })
     public status: number
 
     @ApiProperty({ type: String, description: '知识库密码，私有时可能需要' })
     @Exclude({ toPlainOnly: true })
-    @Column({ type: 'varchar', comment: '知识库密码，私有时可能需要' })
+    @Column({ type: 'varchar', comment: '知识库密码，私有时可能需要', default: null })
     public password: string
 
     @ApiProperty({ type: Date, description: '创建时间' })
@@ -53,12 +53,21 @@ export class CategoryEntity {
     public user_id: string
 
     @ApiProperty({ type: Number, description: '收藏数' })
-    @Column({ type: 'int', default: 1, comment: '收藏数' })
+    @Column({ type: 'int', default: 0, comment: '收藏数' })
     public started_count: number
+
+    @ApiProperty({ type: Number, description: '是否默认知识库' })
+    @Column({ type: 'int', default: 0, comment: '是否默认知识库' })
+    public default: number
 
     @ApiProperty({ type: Number, description: '是否隐藏' })
     @Column({ type: 'int', default: 1, comment: '是否隐藏' })
+    @Exclude({ toPlainOnly: true })
     public hidden: number
+
+    @ApiProperty({ type: String, description: '协作者 id' })
+    @Column({ type: 'varchar', comment: '协作者 id', default: '' })
+    public coauthor_id: string
 
     @ApiProperty({ type: String, description: '作者' })
     @ManyToOne(() => UserEntity, (dto) => dto.category)

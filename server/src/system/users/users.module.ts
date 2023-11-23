@@ -12,6 +12,7 @@ import { UserEntity } from './entities/user.entity'
 
 import { AuthModule } from '../../tool/auth/auth.module'
 import { EmailModule } from 'src/tool/email/email.module'
+import { CategoryModule } from '../category/category.module'
 
 @Module({
     imports: [
@@ -27,7 +28,8 @@ import { EmailModule } from 'src/tool/email/email.module'
             }),
             inject: [ConfigService]
         }),
-        forwardRef(() => EmailModule)
+        forwardRef(() => EmailModule),
+        forwardRef(() => CategoryModule)
     ],
     controllers: [UsersController, BaseController],
     providers: [UsersService],

@@ -4,11 +4,10 @@ import type { Docs } from '@/models/doc'
 import { Status } from '@/utils/constants'
 
 const defineDoc: Docs = {
-    id: '1222',
-    pid: '1',
-    title: '未命名文档',
-    content: '文本内容',
-    cover: ''
+    id: '',
+    title: '',
+    content: '',
+    pid: ''
 }
 
 export const useDocStore = defineStore(

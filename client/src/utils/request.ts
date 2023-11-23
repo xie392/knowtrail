@@ -14,7 +14,7 @@ request.interceptors.request.use(
     (config) => {
         const { isLogin, user } = useLogin()
         if (isLogin.value) {
-            config.headers.Authorization = `Bearer ${user.value.accessToken}`
+            config.headers.Authorization = user.value.accessToken
         }
         return config
     },

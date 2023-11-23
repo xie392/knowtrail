@@ -32,6 +32,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         if (!accessToken) throw new ForbiddenException('请先登录')
         // 验证 token , 查看是否过期
         const atUserId = this.userService.verifyToken(accessToken)
+        // console.log('userId', atUserId, accessToken)
         // 全局变量
         if (!atUserId) throw new UnauthorizedException('当前登录已过期，请重新登录')
         return this.activate(ctx)

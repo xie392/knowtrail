@@ -2,15 +2,19 @@
 import { useDocStore } from '@/stores/doc'
 import { storeToRefs } from 'pinia'
 import { Status } from '@/utils/constants'
+import { DocService } from '@/api/doc.api'
 
 const docStore = useDocStore()
 const { doc, readonly } = storeToRefs(docStore)
 
-const sumbit = (type: Status) => {
+const sumbit = async (type: Status) => {
     readonly.value = type === Status.EDIT ? false : true
     // 更新
     if (type === Status.PREVIEW) {
         // TODO: 更新接口
+        // const { code, data, msg } = await DocService.CreateDocApi(doc.value)
+        // if (code !== 200) return
+        // console.log('data', data, msg)
     }
 }
 </script>

@@ -4,12 +4,12 @@ import type { CreateDoc, DocListParams, DocParams } from '@/models/doc'
 /**
  * 文档接口集合类
  */
-export class DocService {
+export class CategoryService {
     private static readonly http: typeof request = request
-    private static readonly prefix: string = 'doc'
+    private static readonly prefix: string = 'category'
 
     /**
-     * 创建文档
+     * 创建知识库
      * @param data
      * @param data.title    文档标题
      * @param data.content  文档内容
@@ -19,7 +19,7 @@ export class DocService {
      * @param data.password 文档密码
      * @returns
      */
-    static CreateDocApi(data?: CreateDoc): Promise<Response> {
+    static CreateCategoryApi(data?: CreateDoc): Promise<Response> {
         return this.http({ url: `/${this.prefix}/create`, method: 'post', data })
     }
 
@@ -35,8 +35,8 @@ export class DocService {
      * @param data.password 文档密码
      * @returns
      */
-    static UpdateDocApi(id: string, data: CreateDoc): Promise<Response> {
-        return this.http({ url: `/${this.prefix}/update/${id}`, method: 'patch', data })
+    static UpdateCategoryApi(data: CreateDoc): Promise<Response> {
+        return this.http({ url: `/${this.prefix}/update`, method: 'patch', data })
     }
 
     /**
@@ -45,7 +45,7 @@ export class DocService {
      * @param password 文档密码
      * @returns
      */
-    static GetDocByIdApi(id: string, password?: string): Promise<Response> {
+    static GetCategoryByIdApi(id: string, password?: string): Promise<Response> {
         return this.http({ url: `/${this.prefix}/${id}`, method: 'get', params: { password } })
     }
 
@@ -54,7 +54,7 @@ export class DocService {
      * @param id 文档 id
      * @returns
      */
-    static DeleteDocApi(id: string): Promise<Response> {
+    static DeleteCategoryApi(id: string): Promise<Response> {
         return this.http({ url: `/${this.prefix}/${id}`, method: 'delete' })
     }
 
@@ -65,7 +65,7 @@ export class DocService {
      * @param params.page 页码
      * @returns
      */
-    static GetDocListApi(params: DocListParams): Promise<Response> {
+    static GetCategoryListApi(params?: DocListParams): Promise<Response> {
         return this.http({ url: `/${this.prefix}/list`, method: 'get', params })
     }
 

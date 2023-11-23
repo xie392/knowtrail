@@ -20,7 +20,7 @@ export class DocEntity {
     public id: string
 
     @ApiProperty({ type: String, description: '文档标题' })
-    @Column({ type: 'varchar', comment: '文档标题' })
+    @Column({ type: 'varchar', comment: '文档标题', default: null })
     public title: string
 
     @ApiProperty({ type: String, description: '封面' })
@@ -49,7 +49,7 @@ export class DocEntity {
     public user_id: string
 
     @ApiProperty({ type: Number, description: '文章内容' })
-    @Column({ type: 'varchar', comment: '文章内容' })
+    @Column({ type: 'varchar', comment: '文章内容', default: null })
     public content: string
 
     @ApiProperty({ type: String, description: '知识库 id' })
@@ -61,16 +61,19 @@ export class DocEntity {
     public hidden: number
 
     @ApiProperty({ type: Number, description: '点赞数' })
-    @Column({ type: 'int', default: 1, comment: '点赞数' })
+    @Column({ type: 'int', default: 0, comment: '点赞数' })
     public like_count: number
 
     @ApiProperty({ type: Number, description: '收藏数' })
-    @Column({ type: 'int', default: 1, comment: '收藏数' })
+    @Column({ type: 'int', default: 0, comment: '收藏数' })
     public started_count: number
 
-    @ApiProperty({ type: Number, description: '文档父级 id' })
-    @Column({ type: 'bigint', default: null, comment: '文档父级 id' })
-    public p_id: string
+    // @ApiProperty({ type: Number, description: '文档父级 id' })
+    // @Column({ type: 'bigint', default: null, comment: '文档父级 id' })
+    // public p_id: string
+    @ApiProperty({ type: String, description: '协作者 id' })
+    @Column({ type: 'varchar', comment: '协作者 id', default: '' })
+    public coauthor_id: string
 
     @ApiProperty({ type: String, description: '标签类型' })
     @Column({ type: 'varchar', default: null, comment: '标签类型' })
