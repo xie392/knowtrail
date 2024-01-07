@@ -15,6 +15,7 @@ module.exports = {
   rules: {
     "vue/multi-word-component-names": "off",
     "vue/no-dupe-keys": "off",
-    "no-async-promise-executor": "off"
+    "no-async-promise-executor": "off",
+    "vue/no-mutating-props": ["error", { ignoreDefaultValues: true }]
   }
 }

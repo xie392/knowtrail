@@ -37,29 +37,23 @@ const GetCategoryById = async () => {
 <template>
     <div class="px-3">
         <RouterLink
-            class="list py-2 px-2 flex items-center gap-3 cursor-pointer my-2"
+            class="list py-2 px-5 flex items-center gap-3 cursor-pointer my-2"
             :class="!$route.params.id && 'list-active'"
             :to="`/knowledge/${$route.params.pid}`"
         >
-            <t-icon name="home" class="icon"></t-icon>
+            <t-icon name="home" class=""></t-icon>
             <span class="text-[0.875rem] select-none">首页</span>
         </RouterLink>
-        <t-space direction="vertical" style="width: 100%">
-            <!-- <t-tree
-                ref="treeRef"
-                :data="items"
-                :activable="true"
-                empty="还没有文档"
-                expandAll
-                :onClick="
-                    ({ node }) => $router.push(`/knowledge/${$route.params.pid}/${node.value}`)
-                "
-            >
-                <template #operations="{ node }">操作</template>
-            </t-tree> -->
-            <Tree :items="items" />
-        </t-space>
+        <!-- <div class="py-2 px-5 flex items-center cursor-pointer my-2">
+            <div class="flex items-center gap-3">
+                <t-icon name="list" class=" w-8"></t-icon>
+                <span class="text-[0.875rem] select-none">目录</span>
+            </div>
+        </div> -->
+        <!-- <t-space direction="vertical" style="width: 100%"> -->
+        <!-- </t-space> -->
     </div>
+    <Tree :items="items" />
 </template>
 
 <style scoped lang="scss">

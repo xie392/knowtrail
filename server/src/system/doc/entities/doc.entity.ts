@@ -68,9 +68,10 @@ export class DocEntity {
     @Column({ type: 'int', default: 0, comment: '收藏数' })
     public started_count: number
 
-    // @ApiProperty({ type: Number, description: '文档父级 id' })
-    // @Column({ type: 'bigint', default: null, comment: '文档父级 id' })
-    // public p_id: string
+    @ApiProperty({ type: Number, description: '文档父级 id' })
+    @Column({ type: 'bigint', default: null, comment: '文档父级 id' })
+    public p_id: string
+    
     @ApiProperty({ type: String, description: '协作者 id' })
     @Column({ type: 'varchar', comment: '协作者 id', default: '' })
     public coauthor_id: string

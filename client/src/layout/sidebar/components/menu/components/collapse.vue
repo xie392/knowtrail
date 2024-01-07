@@ -36,10 +36,13 @@ const { collapse } = storeToRefs(useBaseStore())
         </router-link>
     </div>
 
-    <div class="w-full flex flex-col gap-1 h-[210px] overflow-y-auto books" v-show="!collapse">
+    <div
+        class="w-full flex flex-col gap-1 max-h-[200px] overflow-y-auto scrollbar-none"
+        v-show="!collapse"
+    >
         <div
             class="list w-full px-4 py-1 flex items-center justify-between cursor-pointer"
-            v-for="v in 10"
+            v-for="v in 4"
             :key="v"
         >
             <div class="flex items-center gap-2 relative">
@@ -73,9 +76,5 @@ const { collapse } = storeToRefs(useBaseStore())
 <style scoped>
 .list:hover .icon {
     opacity: 1;
-}
-
-.books::-webkit-scrollbar {
-    display: none;
 }
 </style>

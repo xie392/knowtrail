@@ -25,6 +25,23 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
     (response) => {
+        const { status } = response
+
+        switch (status) {
+            case 401:
+                // 未登录
+                console.log('未登录')
+                break
+            case 403:
+                // 无权限
+                break
+            case 404:
+                // 资源不存在
+                break
+            case 500:
+                // 服务器错误
+                break
+        }
         return response.data
     },
     (error) => {

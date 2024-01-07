@@ -8,24 +8,25 @@ interface SidebarProps {
     footer?: boolean
 }
 
-const props = withDefaults(defineProps<SidebarProps>(), {
-    footer: true
-})
+withDefaults(defineProps<SidebarProps>(), { footer: true })
 </script>
 
 <template>
-    <div class="w-[260px] relative h-screen py-3">
-        <div class="h-[calc(100vh-100px)] overflow-y-auto overflow-x-hidden">
-            <Header></Header>
+    <div class="w-[260px] relative h-screen">
+        <div
+            class="overflow-y-auto overflow-x-hidden pt-3"
+            :class="footer ? 'h-[calc(100vh-112px)]' : 'h-screen pb-0'"
+        >
+            <Header />
             <slot name="header">
                 <t-space class="w-full pt-5" direction="vertical" size="small">
                     <Search />
-                    <Menu></Menu>
+                    <Menu />
                 </t-space>
             </slot>
         </div>
         <slot name="footer">
-            <Footer v-if="props.footer"></Footer>
+            <Footer v-if="footer"></Footer>
         </slot>
     </div>
 </template>

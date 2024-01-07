@@ -34,6 +34,8 @@ export default {
         shadow1: 'var(--td-shadow-1)',
         shadow2: 'var(--td-shadow-2)',
         shadow3: 'var(--td-shadow-3)',
+
+        hover: 'var(--td-bg-color-container-hover)'
       }
     },
   },

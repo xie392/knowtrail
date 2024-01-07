@@ -49,6 +49,12 @@ body {
     background: var(--td-scrollbar-hover-color);
 }
 
+.scrollbar-none {
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 768px) {
     body {
         font-size: 14px;
