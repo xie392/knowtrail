@@ -23,3 +23,10 @@ export enum Status {
 }
 
 export const HeaderWhiteList: string[] = ['home', 'playground', 'notes', 'books', 'read']
+
+// Token
+export const TOKEN = '__TOKEN__'
+// ID
+export const ID = '__USER_ID__'
+// 数据库名
+export const DATA_BASE_NAME = '__DATA_BASE_'

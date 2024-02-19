@@ -1,35 +1,23 @@
 <script setup lang="ts">
 import AomaoEditor from 'aomao/index'
-import { useDocStore } from '@/stores/doc'
-import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
-import { ref } from 'vue'
-import type { Docs } from '@/models/doc'
 
-const docStore = useDocStore()
-const { doc, readonly } = storeToRefs(docStore)
-const { pid, id } = useRoute().params
+const { id } = useRoute().params as { id: string }
 
-/**
- * 初始化
- */
-const init = async () => {
-    if (doc.value.id === id) {
-        readonly.value = false
-    } else {
-        readonly.value = true
-    }
+const getDocDetail = async () => {
+    if (!id) return
+
+    // 获取
+
 }
-init()
+getDocDetail()
 </script>
 
 <template>
-    <!-- <div class="w-full"> -->
     <div class="flex w-full">
         <AomaoEditor />
         <div class="w-[300px] mt-5 min-h-min p-5"></div>
     </div>
-    <!-- </div> -->
 </template>
 
 <style scoped></style>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Header from '@/layout/header/index.vue'
-import { HeaderWhiteList } from '@/utils/constants'
+import { baseRoutes } from '@/router'
 </script>
 
 <template>
-    <Header v-if="HeaderWhiteList.includes($route.name as string)"></Header>
+    <Header v-if="baseRoutes.find((v) => v.name === $route.name)"></Header>
     <router-views />
 </template>

@@ -13,10 +13,7 @@ defineExpose({
 </script>
 
 <template>
-    <div
-        class="w-full h-screen fixed top-0 z-50 bg-bgSecondary flex justify-center items-center"
-        v-if="visable"
-    >
+    <div class="w-full h-screen fixed top-0 z-50 bg-bgSecondary flex justify-center items-center" v-if="visable">
         <div class="loader"></div>
     </div>
 </template>
@@ -109,6 +106,7 @@ defineExpose({
 }
 
 @keyframes shake {
+
     65%,
     80%,
     88%,

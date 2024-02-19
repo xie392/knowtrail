@@ -49,8 +49,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
             open: false,
             proxy: {
                 '/api': {
-                    target:
-                        mode === 'development' ? http.VITE_DEV_BASE_URL : http.VITE_PRO_BASE_URL,
+                    target: mode === 'development' ? http.VITE_DEV_BASE_URL : http.VITE_PRO_BASE_URL,
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/api/, '')
                 }

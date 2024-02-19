@@ -10,7 +10,7 @@ import BookIcon from '@/components/icon/BookIcon.vue'
                 class="flex text-[0.95rem] font-bold max-w-[110px] whitespace-nowrap overflow-hidden text-ellipsis select-none"
                 title="hahh"
             >
-                知识库
+                知识库11
             </span>
             <!-- 'https'   -->
             <t-icon name="earth" style="width: 12px; height: 12px" class="icon"></t-icon>
