@@ -6,7 +6,7 @@
 # 这个脚本，是为了每日重新初始化启动演示项目
 
 # 打开工作目录
-cd /root/knowtril
+cd /root/knowtril/packages
 
 # 关闭所有服务，并销毁卷积，方便初始化数据库
 docker compose -f "docker-compose.yaml" down --volumes
