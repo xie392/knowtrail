@@ -72,7 +72,7 @@ const handleCilck = async (id: string) => {
                 </template>
             </t-input>
             <div class="max-h-[300px] overflow-y-auto mt-2">
-                <t-list :split="true">
+                <t-list :split="true" v-if="!!categoryList.length">
                     <t-list-item
                         v-for="(item, index) in categoryList"
                         :key="index"
@@ -91,6 +91,7 @@ const handleCilck = async (id: string) => {
                         </div>
                     </t-list-item>
                 </t-list>
+                <p class="mt-2 text-[0.87rem] text-[#bab9b9] text-center" v-else>暂无数据</p>
             </div>
         </t-dialog>
     </div>
