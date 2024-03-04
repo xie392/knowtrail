@@ -12,7 +12,7 @@ import { CategoryEntity } from './entities/category.entity'
 export class CategoryController {
     constructor(private readonly categoryService: CategoryService) {}
 
-    @Post('cretae')
+    @Post('create')
     @ApiOperation({ summary: '创建知识库' })
     create(@Body() dto: CreateCategoryDto, @Req() req) {
         return this.categoryService.create(dto, req.user)

@@ -34,7 +34,7 @@ const { isLogin } = storeToRefs(userStore)
 <template>
     <div class="border-b border-gray-200 h-14 sticky top-0 z-30 bg-bgPrimary overflow-hidden">
         <t-header class="w-full h-full max-w-[1280px] mx-auto mob:hidden" :class="props.className">
-            <t-head-menu theme="light" :value="$route.name">
+            <t-head-menu theme="light" :value="$route.name as string">
                 <template #logo>
                     <Logo />
                 </template>

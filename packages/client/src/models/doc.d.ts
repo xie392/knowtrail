@@ -14,7 +14,9 @@ export interface CreateDoc {
     content?: string
     cover?: string
     tag_type?: string
-    pid: string
+    pid?: string
+    description?: string
+    status?: number
 } 
  
 export type UpdateDoc = {  id: string } & CreateDoc

@@ -20,7 +20,7 @@ import Header from './components/header/index.vue'
                 </template>
             </Sidebar>
         </div>
-        <div class="flex-1">
+        <div class="flex-1 min-h-screen">
             <Home v-if="!$route.params.id" />
             <div v-else>
                 <Header />

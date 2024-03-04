@@ -29,13 +29,26 @@ export class CategoryService {
         private readonly docManager: EntityManager
     ) {}
 
-    create(dto: CreateCategoryDto, user: UserEntity) {
-        console.log('data', dto, user)
-        return null
-        // const data = plainToInstance(UserEntity, userData, { ignoreDecorators: true })
-        // const result = await this.userManager.transaction(async (transactionalEntityManager) => {
-        //     return await transactionalEntityManager.save<UserEntity>(data)
-        // })
+    async create(dto: CreateCategoryDto, user: UserEntity) {
+        try {
+            if (!dto.title) return ResultData.fail(HttpCode.BadRequest, '创建知识库失败')
+            if (dto.description && dto.description.length > 500)
+                return ResultData.fail(HttpCode.BadRequest, '描述内容超出字数要求')
+            let data: any = {
+                ...dto,
+                id: generateId(8),
+                user_id: user.id,
+                status: dto?.password ? 2 : 0
+            }
+            data = plainToInstance(CategoryEntity, data, { ignoreDecorators: true })
+            const result = await this.docManager.transaction(async (transactionalEntityManager) => {
+                return await transactionalEntityManager.save<CategoryEntity>(data)
+            })
+            return ResultData.ok(instanceToPlain(result))
+        } catch (error) {
+            console.log('创建知识库失败', error)
+            return ResultData.fail(HttpCode.BadRequest, '创建知识库失败')
+        }
     }
 
     /**
@@ -47,8 +60,6 @@ export class CategoryService {
     async createDefaultCategory(user: UserEntity) {
         const dto = {
             id: generateId(),
-            create_time: new Date(),
-            update_time: new Date(),
             user_id: user.id,
             default: 1,
             title: '默认知识库',
