@@ -92,6 +92,7 @@ export class DocService {
             }
             data = {
                 ...dto,
+                title: dto.title || '未命名文档',
                 id: generateId(8),
                 user_id: user.id,
                 category_id: category?.id ? category.id : dto.pid

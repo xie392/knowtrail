@@ -9,6 +9,11 @@ import TemplateModal from '@/components/modal/template-modal/index.vue'
 // import { DocService } from '@/api/doc.api'
 // import { MessagePlugin } from 'tdesign-vue-next'
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { DocService } from '@/api/doc.api'
+import { MessagePlugin } from 'tdesign-vue-next'
+import { useDocStore } from '@/stores/doc'
+import { storeToRefs } from 'pinia'
 
 interface Options {
     name: string
@@ -21,8 +26,33 @@ const add_modal = ref<boolean>(false)
 const books_modal = ref<boolean>(false)
 const template_modal = ref<boolean>(false)
 
+const route = useRoute()
+const router = useRouter()
+const pid = route.params.pid as string
+
+const docStore = useDocStore()
+const { readonly } = storeToRefs(docStore)
+
 const options: Options[] = [
-    { name: '新建文档', icon: DocIcon, onclick: async () => (add_modal.value = true) },
+    {
+        name: '新建文档',
+        icon: DocIcon,
+        onclick: async () => {
+            console.log('pid', pid)
+            if (pid) {
+                // 创建知识库
+                const { code, data } = await DocService.CreateDocApi({ pid })
+                if (code !== 200) return MessagePlugin.error('创建知识库失败')
+                // is_cretaed.value = true
+                // readonly.value = false
+                // doc.value = data
+                router.push(`/knowledge/${pid}/${data.id}`)
+                return
+            }
+
+            add_modal.value = true
+        }
+    },
     {
         name: '新建知识库',
         icon: LibraryIcon,

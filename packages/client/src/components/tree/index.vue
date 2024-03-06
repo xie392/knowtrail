@@ -65,6 +65,7 @@ const renderTree = (items: Item[], container: HTMLElement, isFrist: boolean) => 
 }
 
 let frist = true
+
 watch(
     () => props.items,
     () => {

@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { CategoryService } from '@/api/category.api'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+
+interface Options {
+    name: string
+    icon: any
+    divider?: boolean
+    onclick: () => void
+}
 
 const route = useRoute()
 
@@ -12,7 +19,39 @@ const getCtegoryList = async () => {
     console.log('data', data)
     doc.value = data
 }
-getCtegoryList()
+
+watch(
+    route,
+    () => {
+        getCtegoryList()
+    },
+    { immediate: true }
+)
+
+const options: Options[] = [
+    {
+        name: '重命名',
+        icon: 'add',
+        onclick: async () => {}
+    },
+    {
+        name: '编辑首页',
+        icon: 'add',
+
+        onclick: () => {}
+    },
+    {
+        name: '更多设置',
+        icon: 'add',
+        divider: true,
+        onclick: async () => {}
+    },
+    {
+        name: '删除',
+        icon: 'add',
+        onclick: async () => {}
+    }
+]
 </script>
 
 <template>
@@ -36,22 +75,35 @@ getCtegoryList()
                         分享
                     </t-button>
 
-                    <t-popup showArrow placement="left-top" trigger="click">
-                        <t-button variant="outline">触发元素</t-button>
-                        <template #content>
-                            <div>
-                                <t-button variant="text" class="w-[200px] mb-2" block>触发元素</t-button>
-                                <t-button variant="text" class="w-[200px] mb-2" block>触发元素</t-button>
-                                <t-button variant="text" class="w-[200px] mb-2" block>触发元素</t-button>
-                            </div>
-                        </template>
-                    </t-popup>
+                    <t-dropdown placement="left-top" trigger="click">
+                        <t-button variant="outline" shape="square">
+                            <template #icon>
+                                <t-icon name="add" size="small" />
+                            </template>
+                        </t-button>
+
+                        <t-dropdown-menu>
+                            <t-dropdown-item
+                                style="max-width: 150px"
+                                v-for="(item, index) in options"
+                                :key="index"
+                                :value="index"
+                                @click="item.onclick"
+                            >
+                                <div class="flex items-center gap-2 px-2 py-1 min-w-[120px]">
+                                    <t-icon :name="item.icon"></t-icon>
+                                    <span class="text-[0.9rem]">{{ item.name }}</span>
+                                </div>
+                                <t-divider v-if="item!.divider" />
+                            </t-dropdown-item>
+                        </t-dropdown-menu>
+                    </t-dropdown>
                 </t-space>
             </div>
 
             <div class="w-full py-10">
-                <h3>欢迎来到知识库</h3>
-                <p>{{ doc?.description }}</p>
+                <p v-if="doc?.description">{{ doc?.description }}</p>
+                <h3 v-else>欢迎来到知识库</h3>
             </div>
         </div>
     </div>

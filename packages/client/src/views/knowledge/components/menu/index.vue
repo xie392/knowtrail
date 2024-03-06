@@ -19,7 +19,6 @@ const GetCategoryById = async () => {
     docList.value = data
     tree.value = convertToTree(data.doc)
 }
-GetCategoryById()
 
 const { doc } = storeToRefs(useDocStore())
 
@@ -32,6 +31,15 @@ watch(
             tree.value = convertToTree(docList.value.doc)
         }
     }
+)
+
+watch(
+    route,
+    () => {
+        
+        GetCategoryById()
+    },
+    { immediate: true }
 )
 </script>
 
