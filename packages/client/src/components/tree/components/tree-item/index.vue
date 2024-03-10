@@ -84,6 +84,7 @@ const handlerClick = (e: MouseEvent) => {
                 :title="item.title"
                 :style="{ maxWidth: `${defaultWidth - level * paddingLeft}px` }"
                 :data-id="item.id"
+                :id="`tree_${item.id}`"
             >
                 {{ item.title }}
             </p>

@@ -1,6 +1,6 @@
 export interface TreeOptions {
     id: string
-    p_id: string
+    pid: string
     children?: TreeOptions[]
     [key: string]: any
 }
@@ -14,7 +14,7 @@ export interface TreeOptions {
 const findTree = (trees: TreeOptions[], data: TreeOptions, is_update = false) => {
     for (let i = 0; i < trees.length; i++) {
         const element = trees[i]
-        if (element.id === data.p_id) {
+        if (element.id === data.pid) {
             if (!element.children) element.children = []
             // is_update ? Object.assign(element, data) : element.children.push(data)
             if (is_update) {
@@ -35,7 +35,7 @@ const findTree = (trees: TreeOptions[], data: TreeOptions, is_update = false) =>
  * @returns
  */
 export const addDataToTree = (trees: TreeOptions[], item: TreeOptions) => {
-    if (!item.p_id) {
+    if (!item.pid) {
         return trees.push(item)
     }
     findTree(trees, item)
@@ -49,12 +49,12 @@ export const addDataToTree = (trees: TreeOptions[], item: TreeOptions) => {
  */
 export const convertToTree = (data: TreeOptions[]) => {
     const result = []
-    const map: TreeOptions = { id: '', p_id: '', children: [] }
+    const map: TreeOptions = { id: '', pid: '', children: [] }
     for (const item of data) {
         map[item.id] = { ...item, children: [], label: item.title, value: item.id }
     }
     for (const item of data) {
-        const parent = map[item.p_id]
+        const parent = map[item.pid]
         if (parent) {
             parent.children.push(map[item.id])
         } else {

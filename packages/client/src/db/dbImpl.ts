@@ -8,6 +8,7 @@ export class dbImpl implements DBMixin {
     public db: Dexie
     public defaultKey: string
     public tables: { [key: string]: string } = {}
+    TableSplitIcon: any
 
     constructor(options: serviceOptions) {
         if (!options.db) throw new Error('++++未找到数据库实例++++')

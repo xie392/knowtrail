@@ -5,10 +5,10 @@ import { CategoryService } from '@/api/category.api'
 import { DocService } from '@/api/doc.api'
 import { useRouter } from 'vue-router'
 import { MessagePlugin } from 'tdesign-vue-next'
-// import UserDBStore from '@/db'
+import UserDBStore from '@/db'
 // import { DocType } from '@/shared'
-import { storeToRefs } from 'pinia'
-import { useDocStore } from '@/stores/doc'
+// import { storeToRefs } from 'pinia'
+// import { useDocStore } from '@/stores/doc'
 
 const props = defineProps<{ visible: boolean }>()
 const emits = defineEmits(['update:visible'])
@@ -39,16 +39,17 @@ const categoryList = computed(() => {
 
 // 选择
 const router = useRouter()
-const docStore = useDocStore()
-const { doc, readonly, is_cretaed } = storeToRefs(docStore)
+// const docStore = useDocStore()
+// const { doc, readonly, is_cretaed } = storeToRefs(docStore)
 const handleCilck = async (id: string) => {
     // 创建文档
     const { code, data } = await DocService.CreateDocApi({ pid: id })
     if (code === 200) {
-        is_cretaed.value = true
-        visible.value = false
-        readonly.value = false
-        doc.value = data
+        // is_cretaed.value = true
+        // visible.value = false
+        // readonly.value = false
+        // doc.value = data
+        UserDBStore.add(UserDBStore.tables.doc, { ...data, readonly: false })
         return router.push(`/knowledge/${id}/${data.id}`)
     }
     MessagePlugin.error('创建文档失败')

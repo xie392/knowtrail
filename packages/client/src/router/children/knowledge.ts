@@ -7,7 +7,8 @@ export default [
             {
                 path: ':id',
                 name: 'editor',
-                component: () => import('@/views/knowledge/page/index.vue')
+                component: () => import('@/views/knowledge/page/index.vue'),
+                // keepAlive: false
             }
         ],
         meta: {

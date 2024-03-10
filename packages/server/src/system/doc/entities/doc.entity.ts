@@ -70,7 +70,7 @@ export class DocEntity {
 
     @ApiProperty({ type: Number, description: '文档父级 id' })
     @Column({ type: 'bigint', default: null, comment: '文档父级 id' })
-    public p_id: string
+    public pid: string
     
     @ApiProperty({ type: String, description: '协作者 id' })
     @Column({ type: 'varchar', comment: '协作者 id', default: '' })

@@ -1,46 +1,52 @@
 <script setup lang="ts">
-// import { ref } from 'vue'
 import Tree from '@/components/tree/index.vue'
 import { CategoryService } from '@/api/category.api'
 import { useRoute } from 'vue-router'
-// import { useTree, type TreeOptions } from '@/hooks/useTree'
-import { ref, watch } from 'vue'
-import { convertToTree, type TreeOptions } from '@/shared'
-import { useDocStore } from '@/stores/doc'
-import { storeToRefs } from 'pinia'
-// import type { Docs } from '@/models/doc'
+import { onActivated, watch } from 'vue'
+import UserDBStore from '@/db'
 
-const docList = ref<any>()
-const tree = ref<TreeOptions[]>([])
 const route = useRoute()
 const GetCategoryById = async () => {
     const { data } = await CategoryService.GetCategoryByIdApi(route.params.pid as string)
     if (!data) return
-    docList.value = data
-    tree.value = convertToTree(data.doc)
-}
 
-const { doc } = storeToRefs(useDocStore())
+    const docs = await UserDBStore.findOneById(UserDBStore.tables.docs, 'id', route.params.pid as string)
 
-watch(
-    () => doc.value.title,
-    (val) => {
-        const item = docList.value?.doc?.find((v: any) => v.id === doc.value?.id)
-        if (item) {
-            item.title = val
-            tree.value = convertToTree(docList.value.doc)
-        }
+    const list = docs ? { ...docs, ...data } : data
+
+    if (docs) {
+        await UserDBStore.update(UserDBStore.tables.docs, 'id', route.params.pid as string, {
+            ...docs,
+            ...data
+        })
+    } else {
+        await UserDBStore.add(UserDBStore.tables.docs, data)
     }
-)
+
+    list?.doc?.forEach(async (item: any) => {
+        const doc = await UserDBStore.findOneById(UserDBStore.tables.doc, 'id', item.id)
+        if (doc) {
+            await UserDBStore.update(UserDBStore.tables.doc, 'id', item.id, {
+                ...doc,
+                ...item
+            })
+        } else {
+            await UserDBStore.add(UserDBStore.tables.doc, {
+                ...item,
+                readonly: true
+            })
+        }
+    })
+}
 
 watch(
     route,
     () => {
-        
         GetCategoryById()
     },
     { immediate: true }
 )
+
 </script>
 
 <template>
@@ -53,16 +59,8 @@ watch(
             <t-icon name="home" class=""></t-icon>
             <span class="text-[0.875rem] select-none">首页</span>
         </RouterLink>
-        <!-- <div class="py-2 px-5 flex items-center cursor-pointer my-2">
-            <div class="flex items-center gap-3">
-                <t-icon name="list" class=" w-8"></t-icon>
-                <span class="text-[0.875rem] select-none">目录</span>
-            </div>
-        </div> -->
-        <!-- <t-space direction="vertical" style="width: 100%"> -->
-        <!-- </t-space> -->
     </div>
-    <Tree :items="tree" />
+    <Tree />
 </template>
 
 <style scoped lang="scss">

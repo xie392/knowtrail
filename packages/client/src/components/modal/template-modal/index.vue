@@ -11,7 +11,6 @@ const visible = computed({
         emits('update:visible', value)
     }
 })
-console.log('visible', props.visible)
 </script>
 
 <template>

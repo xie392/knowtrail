@@ -2,40 +2,47 @@
 import { useRoute } from 'vue-router'
 import { DocService } from '@/api/doc.api'
 import { STATUS } from '@/shared'
-import { useDocStore } from '@/stores/doc'
-import { storeToRefs } from 'pinia'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { omit } from 'lodash-es'
-import { watch } from 'vue'
+import UserDBStore from '@/db'
+import { liveQuery } from 'dexie'
+import { useObservable } from '@vueuse/rxjs'
+import type { Ref } from 'vue'
+import type { DOC } from '@/db/type'
 
-const { doc, readonly, last_doc_id } = storeToRefs(useDocStore())
 const route = useRoute()
+const id = route.params.id as string
 
-const updateDocReadonly = async (type?: STATUS, id?: string) => {
-    if (type === STATUS.PREVIEW) {
-        const { code, data } = await DocService.UpdateDocApi(
-            id ?? (route.params.id as string),
-            // @ts-ignore
-            omit(doc.value, ['create_time', 'update_time', 'author'])
-        )
-        if (code !== 200) return MessagePlugin.error('更新文档失败')
-        readonly.value = true
-        doc.value = data
-    } else {
-        readonly.value = false
+const doc: Ref<DOC> = useObservable(
+    // @ts-ignore
+    liveQuery(() => UserDBStore.findOneById(UserDBStore.tables.doc, 'id', id))
+)
+
+const updateDocReadonly = async (type?: STATUS) => {
+    try {
+        const docs = await UserDBStore.findOneById(UserDBStore.tables.doc, 'id', id)
+        if (type === STATUS.PREVIEW) {
+            const { code, data } = await DocService.UpdateDocApi(
+                id,
+                // @ts-ignore
+                omit(doc.value, ['create_time', 'update_time', 'author'])
+            )
+            if (code !== 200) return MessagePlugin.error('更新文档失败')
+            await UserDBStore.update(UserDBStore.tables.doc, 'id', id, {
+                ...docs,
+                ...data,
+                readonly: true
+            })
+        } else {
+            await UserDBStore.update(UserDBStore.tables.doc, 'id', id, {
+                ...docs,
+                readonly: false
+            })
+        }
+    } catch (error: any) {
+        MessagePlugin.error(error.message ?? '未知错误')
     }
 }
-
-last_doc_id.value = route.params.id as string
-watch(
-    () => route.params.id,
-    () => {
-        if (!readonly.value) {
-            updateDocReadonly(STATUS.PREVIEW, last_doc_id.value)
-            last_doc_id.value = route.params.id as string
-        }
-    }
-)
 </script>
 
 <template>
@@ -53,7 +60,7 @@ watch(
                     <t-icon name="star"></t-icon>
                 </template>
             </t-button>
-            <t-button theme="primary" v-if="readonly" @click="updateDocReadonly(STATUS.EDIT)">编辑</t-button>
+            <t-button theme="primary" v-if="doc?.readonly" @click="updateDocReadonly(STATUS.EDIT)">编辑</t-button>
             <t-button theme="primary" v-else @click="updateDocReadonly(STATUS.PREVIEW)">更新</t-button>
         </div>
     </div>
