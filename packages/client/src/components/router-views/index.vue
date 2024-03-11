@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+
+defineProps<{ key?: string }>()
 </script>
 
 <template>
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="{ Component }" :key="key ?? ($route.name as string)">
         <!-- <transition :name="($route.meta.transition as string) ?? 'slide-fade'"> -->
         <keep-alive>
             <component :is="Component" :key="$route.name" v-if="$route.meta.keepAlive ?? true" />

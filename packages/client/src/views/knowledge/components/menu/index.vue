@@ -2,7 +2,7 @@
 import Tree from '@/components/tree/index.vue'
 import { CategoryService } from '@/api/category.api'
 import { useRoute } from 'vue-router'
-import { onActivated, watch } from 'vue'
+import { watch } from 'vue'
 import UserDBStore from '@/db'
 
 const route = useRoute()
@@ -11,9 +11,8 @@ const GetCategoryById = async () => {
     if (!data) return
 
     const docs = await UserDBStore.findOneById(UserDBStore.tables.docs, 'id', route.params.pid as string)
-
-    const list = docs ? { ...docs, ...data } : data
-
+    
+    // 更新文档库
     if (docs) {
         await UserDBStore.update(UserDBStore.tables.docs, 'id', route.params.pid as string, {
             ...docs,
@@ -23,7 +22,7 @@ const GetCategoryById = async () => {
         await UserDBStore.add(UserDBStore.tables.docs, data)
     }
 
-    list?.doc?.forEach(async (item: any) => {
+    data?.doc?.forEach(async (item: any) => {
         const doc = await UserDBStore.findOneById(UserDBStore.tables.doc, 'id', item.id)
         if (doc) {
             await UserDBStore.update(UserDBStore.tables.doc, 'id', item.id, {
@@ -46,7 +45,6 @@ watch(
     },
     { immediate: true }
 )
-
 </script>
 
 <template>

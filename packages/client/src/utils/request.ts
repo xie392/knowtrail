@@ -29,29 +29,29 @@ request.interceptors.response.use(
         return response.data
     },
     (error) => {
-        const { status } = error.response
+        // const { status } = error.response
 
-        const userStore = useUserStore()
+        // const userStore = useUserStore()
 
-        console.log('useUserStore', userStore)
+        // console.log('useUserStore', userStore)
 
-        switch (status) {
-            case 401:
-                // 未登录
-                console.log('未登录')
-                userStore.isLogin = false
-                location.reload()
-                break
-            case 403:
-                // 无权限
-                break
-            case 404:
-                // 资源不存在
-                break
-            case 500:
-                // 服务器错误
-                break
-        }
+        // switch (status) {
+        //     case 401:
+        //         // 未登录
+        //         console.log('未登录')
+        //         userStore.isLogin = false
+        //         location.reload()
+        //         break
+        //     case 403:
+        //         // 无权限
+        //         break
+        //     case 404:
+        //         // 资源不存在
+        //         break
+        //     case 500:
+        //         // 服务器错误
+        //         break
+        // }
         return Promise.reject(error)
     }
 )

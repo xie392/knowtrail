@@ -8,12 +8,12 @@ export default [
                 path: ':id',
                 name: 'editor',
                 component: () => import('@/views/knowledge/page/index.vue'),
-                // keepAlive: false
+                keepAlive: false
             }
         ],
         meta: {
             layout: false,
-            // keepAlive: false
+            keepAlive: false
         }
     }
 ]

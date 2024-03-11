@@ -15,7 +15,7 @@ import Header from './components/header/index.vue'
                     <div class="mt-4">
                         <Title class="mb-8" />
                         <Search class="mb-3" />
-                        <Menu />
+                        <Menu :key="$route.fullPath + Math.random()" />
                     </div>
                 </template>
             </Sidebar>
@@ -23,8 +23,8 @@ import Header from './components/header/index.vue'
         <div class="flex-1 min-h-screen">
             <Home v-if="!$route.params.id" />
             <div v-else>
-                <Header />
-                <router-views />
+                <Header :key="$route.fullPath + Math.random()" />
+                <router-views :key="$route.fullPath + Math.random()" />
             </div>
         </div>
     </div>
