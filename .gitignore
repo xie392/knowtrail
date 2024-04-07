@@ -10,6 +10,9 @@
 /dist
 **/node_modules
 
+/packages/server/dist
+/packages/client/dist
+
 # Logs
 logs
 *.log
