@@ -44,3 +44,6 @@ const findTree = (thisTree,data)=>{
 const ta = tree(data)
 console.log(findTree(ta,{ id: 8, pid: 6 }));
 console.log(JSON.stringify(ta,null,2));
+
+
+
