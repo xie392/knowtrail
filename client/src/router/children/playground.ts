@@ -22,15 +22,15 @@ export default [
                     title: '知识库',
                     auth: false
                 }
-            },
-            {
-                path: 'read/:id',
-                name: 'read',
-                component: () => import('@/views/playground/read/index.vue'),
-                meta: {
-                    auth: false
-                }
             }
+            // {
+            //     path: 'read/:pid/:id',
+            //     name: 'read',
+            //     component: () => import('@/views/playground/read/index.vue'),
+            //     meta: {
+            //         auth: false
+            //     }
+            // }
         ],
         meta: {
             auth: false

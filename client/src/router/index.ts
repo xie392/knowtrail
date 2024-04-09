@@ -32,7 +32,8 @@ export const baseRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/doc/index.vue'),
         meta: {
             title: '文档',
-            layout: true
+            layout: true,
+            keepAlive: false
         }
     },
     {

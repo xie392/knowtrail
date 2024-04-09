@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository, In, EntityManager } from 'typeorm'
+import { Repository, EntityManager } from 'typeorm'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import { instanceToPlain, plainToInstance } from 'class-transformer'
 // import { genSalt, hash, compare, genSaltSync, hashSync } from 'bcryptjs'
 
 import { CreateUserDto } from './dto/create-user.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
+// import { UpdateUserDto } from './dto/update-user.dto'
 import { LoginUserDto } from './dto/login-user.dto'
 import { CreateTokenDto } from './dto/create-token.dto'
 
@@ -15,13 +15,12 @@ import { UserEntity } from './entities/user.entity'
 
 import { ResultData } from '../../common/utils/result'
 import { HttpCode } from '../../common/utils/constants'
-import { RedisService } from '../../common/lib/redis/redis.service'
+// import { RedisService } from '../../common/lib/redis/redis.service'
 import { validEmail, validPassword } from '../../common/utils/validate'
 import { encryptPassword } from '../../common/utils/crypto'
 import { generateId } from '../../common/utils/utils'
 import { CaptchaType } from '../../common/utils/constants'
 
-import * as dayjs from 'dayjs'
 import { EmailService } from 'src/tool/email/email.service'
 import { ForgetPasswordDto } from './dto/forget-password.dto'
 import { CategoryService } from '../category/category.service'
@@ -36,7 +35,7 @@ export class UsersService {
         private readonly jwtService: JwtService,
         private readonly config: ConfigService,
         private readonly emailService: EmailService,
-        private readonly redisService: RedisService,
+        // private readonly redisService: RedisService,
         private readonly categoryService: CategoryService
     ) {}
 

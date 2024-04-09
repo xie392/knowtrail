@@ -12,6 +12,7 @@ import { UsersModule } from './system/users/users.module'
 import { DocModule } from './system/doc/doc.module'
 import { CategoryModule } from './system/category/category.module'
 import { EmailModule } from './tool/email/email.module'
+import { UploadModule } from './upload/upload.module'
 
 @Module({
     imports: [
@@ -37,26 +38,27 @@ import { EmailModule } from './tool/email/email.module'
             }
         }),
         // libs redis
-        RedisModule.forRootAsync(
-            {
-                imports: [ConfigModule],
-                inject: [ConfigService],
-                useFactory: (config: ConfigService) => {
-                    return {
-                        closeClient: true,
-                        readyLog: true,
-                        errorLog: true,
-                        config: config.get<RedisClientOptions>('redis')
-                    }
-                }
-            },
-            true
-        ),
+        // RedisModule.forRootAsync(
+        //     {
+        //         imports: [ConfigModule],
+        //         inject: [ConfigService],
+        //         useFactory: (config: ConfigService) => {
+        //             return {
+        //                 closeClient: true,
+        //                 readyLog: true,
+        //                 errorLog: true,
+        //                 config: config.get<RedisClientOptions>('redis')
+        //             }
+        //         }
+        //     },
+        //     true
+        // ),
         AuthModule,
         UsersModule,
         DocModule,
         CategoryModule,
-        EmailModule
+        EmailModule,
+        UploadModule
     ],
     providers: [
         {
@@ -64,5 +66,6 @@ import { EmailModule } from './tool/email/email.module'
             useClass: JwtAuthGuard
         }
     ]
+    // controllers: [UploadController]
 })
 export class AppModule {}

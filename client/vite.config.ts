@@ -43,17 +43,17 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
                 aomao: fileURLToPath(new URL('./src/aomao', import.meta.url)),
                 editor: fileURLToPath(new URL('./src/editor', import.meta.url))
             }
-        },
-        server: {
-            port: Number(http.VITE_PORT) || 3000,
-            open: false,
-            proxy: {
-                '/api': {
-                    target: mode === 'development' ? http.VITE_DEV_BASE_URL : http.VITE_PRO_BASE_URL,
-                    changeOrigin: true,
-                    rewrite: (path) => path.replace(/^\/api/, '')
-                }
-            }
         }
+        // server: {
+        //     port: Number(http.VITE_PORT) || 3000,
+        //     open: false,
+        //     proxy: {
+        //         '/api': {
+        //             target: mode === 'development' ? http.VITE_DEV_BASE_URL : http.VITE_PRO_BASE_URL,
+        //             changeOrigin: true,
+        //             rewrite: (path) => path.replace(/^\/api/, '')
+        //         }
+        //     }
+        // }
     })
 }

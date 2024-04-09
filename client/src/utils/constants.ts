@@ -30,3 +30,6 @@ export const TOKEN = '__TOKEN__'
 export const ID = '__USER_ID__'
 // 数据库名
 export const DATA_BASE_NAME = '__DATA_BASE_'
+
+export const BASE_URL =
+    import.meta.env.MODE === 'development' ? import.meta.env.VITE_DEV_BASE_URL : import.meta.env.VITE_PRO_BASE_URL

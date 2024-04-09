@@ -7,8 +7,9 @@ import { omit } from 'lodash-es'
 import UserDBStore from '@/db'
 import { liveQuery } from 'dexie'
 import { useObservable } from '@vueuse/rxjs'
-import type { Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { DOC } from '@/db/type'
+import SaveModal from '@/components/modal/save-modal/index.vue'
 
 const route = useRoute()
 const id = route.params.id as string
@@ -22,17 +23,18 @@ const updateDocReadonly = async (type?: STATUS) => {
     try {
         const docs = await UserDBStore.findOneById(UserDBStore.tables.doc, 'id', id)
         if (type === STATUS.PREVIEW) {
-            const { code, data } = await DocService.UpdateDocApi(
-                id,
-                // @ts-ignore
-                omit(doc.value, ['create_time', 'update_time', 'author'])
-            )
-            if (code !== 200) return MessagePlugin.error('更新文档失败')
-            await UserDBStore.update(UserDBStore.tables.doc, 'id', id, {
-                ...docs,
-                ...data,
-                readonly: true
-            })
+            modalShow.value = true
+            // const { code, data } = await DocService.UpdateDocApi(
+            //     id,
+            //     // @ts-ignore
+            //     omit(doc.value, ['create_time', 'update_time', 'author'])
+            // )
+            // if (code !== 200) return MessagePlugin.error('更新文档失败')
+            // await UserDBStore.update(UserDBStore.tables.doc, 'id', id, {
+            //     ...docs,
+            //     ...data,
+            //     readonly: true
+            // })
         } else {
             await UserDBStore.update(UserDBStore.tables.doc, 'id', id, {
                 ...docs,
@@ -43,6 +45,8 @@ const updateDocReadonly = async (type?: STATUS) => {
         MessagePlugin.error(error.message ?? '未知错误')
     }
 }
+
+const modalShow = ref<boolean>(false)
 </script>
 
 <template>
@@ -64,6 +68,9 @@ const updateDocReadonly = async (type?: STATUS) => {
             <t-button theme="primary" v-else @click="updateDocReadonly(STATUS.PREVIEW)">更新</t-button>
         </div>
     </div>
+
+    <!-- 保存文档 -->
+    <SaveModal v-model:visible="modalShow" />
 </template>
 
 <style scoped></style>

@@ -1,9 +1,12 @@
 import axios from 'axios'
 import { useLogin } from '@/hooks/useLogin'
-import { useUserStore } from '@/stores/user'
+// import { useUserStore } from '@/stores/user'
+import { BASE_URL } from './constants'
+
+console.log(import.meta.env.MODE)
 
 const request = axios.create({
-    baseURL: import.meta.env.VITE_DEV_BASE_URL,
+    baseURL: BASE_URL,
     timeout: 10000,
     withCredentials: true,
     headers: {

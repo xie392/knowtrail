@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia'
 
 const nav = [
     { name: '首页', path: '/about', value: 'home' },
-    { name: '知识广场', path: '/playground/notes', value: 'notes' },
+    { name: '知识广场', path: '/playground/notes', value: 'notes' }
     // { name: '知识库广场', path: '/playground/books', value: 'books' }
     // { name: '工作台', path: '/workspace', value: 'workspace' },
 ]
@@ -18,17 +18,6 @@ const props = defineProps<LayoutProps>()
 
 const userStore = useUserStore()
 const { isLogin } = storeToRefs(userStore)
-
-// const route = useRoute()
-// const active = () => {
-//     const path = route.path
-
-//     if (path.includes('/workspace')) {
-//         return 'workspace'
-//     }
-
-//     return route.name
-// }
 </script>
 
 <template>
@@ -54,8 +43,9 @@ const { isLogin } = storeToRefs(userStore)
                         <div v-if="isLogin" class="flex items-center gap-6">
                             <t-dropdown
                                 :options="[
-                                    { content: '操作一', value: 1 },
-                                    { content: '操作二', value: 2 }
+                                    { content: '工作台', value: 1 },
+                                    { content: '个人中心', value: 2 },
+                                    { content: '退出登录', value: 3 }
                                 ]"
                                 direction="left"
                                 placement="bottom"

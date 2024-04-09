@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { DocService } from '@/api/doc.api'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ReadEditor } from 'aomao/index'
 import Sidebar from '@/layout/sidebar/index.vue'
+import { CategoryService } from '@/api/category.api'
+import Menu from './components/menu.vue'
 
 const route = useRoute()
 
@@ -15,14 +17,32 @@ const getDocDetail = async () => {
     console.log('doc', data)
     docs.value = data
 }
-getDocDetail()
+
+const category = ref<any>([])
+const getCategory = async () => {
+    const { data } = await CategoryService.GetCategoryByIdApi(route.params.pid as string)
+    if (!data) return
+    console.log('getCategory', data)
+    category.value = data.doc
+}
+
+watch(
+    () => route.params,
+    () => {
+        getDocDetail()
+        getCategory()
+    },
+    { immediate: true }
+)
 </script>
 
 <template>
     <div class="flex items-start">
         <div class="h-screen sticky top-0 left-0 bg-bgPrimary z-50 border-r border-gray-200 w-[260px]">
             <Sidebar :footer="false">
-                <template #header>112342</template>
+                <template #header>
+                    <Menu :key="$route.fullPath + Math.random()" :items="category" />
+                </template>
             </Sidebar>
         </div>
         <div class="flex-1 flex justify-center py-10">

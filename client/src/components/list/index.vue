@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { faker } from '@faker-js/faker'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { ReadEditor } from 'aomao/index'
 // import { useFormatNumber } from '@/hooks/useFormatNumber'
 
@@ -22,7 +22,7 @@ defineProps<{ item: any }>()
         </div>
         <!-- Body -->
         <div class="flex gap-1 mb-2 min-h-[100px]">
-            <router-link :to="`/doc/${item?.category_id}/${item?.id}`" class="flex-1">
+            <router-link :to="`/doc/${item?.category_id}/${item?.id}`" target="_blank" class="flex-1">
                 <h1
                     class="text-md font-bold mb-2 text-ellipsis whitespace-nowrap overflow-hidden w-[calc(100%-10px)] hover:text-main transition-all duration-400"
                 >
