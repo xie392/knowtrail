@@ -13,6 +13,8 @@
 /server/dist
 /client/dist
 
+/upload
+
 # Logs
 logs
 *.log
