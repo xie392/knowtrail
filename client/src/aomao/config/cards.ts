@@ -9,6 +9,8 @@ import { EmbedComponent } from '@aomao/plugin-embed'
 import { HrComponent } from '@aomao/plugin-hr'
 import { CheckboxComponent } from '@aomao/plugin-tasklist'
 import { ToolbarComponent } from 'aomao/toolbar'
+import { FileComponent } from '@aomao/plugin-file'
+import { CodeBlockComponent } from '@aomao/plugin-codeblock-vue'
 
 export const defaultCards: Array<CardEntry> = [
     HrComponent,
@@ -20,5 +22,7 @@ export const defaultCards: Array<CardEntry> = [
     MentionComponent,
     EmbedComponent,
     VideoComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    FileComponent,
+    CodeBlockComponent
 ]

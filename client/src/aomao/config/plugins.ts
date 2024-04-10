@@ -23,7 +23,7 @@ import Quote from '@aomao/plugin-quote'
 import PaintFormat from '@aomao/plugin-paintformat'
 import RemoveFormat from '@aomao/plugin-removeformat'
 import SelectAll from '@aomao/plugin-selectall'
-import Image from '@aomao/plugin-image'
+import Image, { ImageUploader } from '@aomao/plugin-image'
 import Table from '@aomao/plugin-table'
 import Math from '@aomao/plugin-math'
 import Fontfamily from '@aomao/plugin-fontfamily'
@@ -32,6 +32,8 @@ import LineHeight from '@aomao/plugin-line-height'
 import Mention from '@aomao/plugin-mention'
 import Embed from '@aomao/plugin-embed'
 import { ToolbarPlugin } from 'aomao/toolbar'
+import File, { FileUploader } from '@aomao/plugin-file'
+import Codeblock from '@aomao/plugin-codeblock-vue'
 
 export const defaultPlugins: Array<PluginEntry> = [
     Redo,
@@ -59,6 +61,7 @@ export const defaultPlugins: Array<PluginEntry> = [
     RemoveFormat,
     SelectAll,
     Image,
+    ImageUploader,
     Table,
     Math,
     Fontfamily,
@@ -66,5 +69,8 @@ export const defaultPlugins: Array<PluginEntry> = [
     LineHeight,
     Mention,
     Embed,
-    ToolbarPlugin
+    ToolbarPlugin,
+    File,
+    FileUploader,
+    Codeblock
 ]

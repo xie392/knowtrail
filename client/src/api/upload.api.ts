@@ -29,7 +29,7 @@ export class UploadService {
         const formData = new FormData()
         formData.append('file', file)
         return this.http({
-            url: '/upload/file',
+            url: '/upload/image',
             method: 'post',
             data: formData,
             headers: { 'Content-Type': 'multipart/form-data' }

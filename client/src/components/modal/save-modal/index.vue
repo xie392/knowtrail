@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { type ProgressContext } from 'tdesign-vue-next'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { AddIcon } from 'tdesign-icons-vue-next'
 import { BASE_URL } from '@/utils/constants'
+import { useLogin } from '@/hooks/useLogin'
+import { joinUrl } from '@/utils/utils'
 
-const props = defineProps<{ visible: boolean }>()
+const props = defineProps<{ visible: boolean; url?: string; tag_type?: string }>()
 const emits = defineEmits(['update:visible', 'save'])
 
 const visible = computed({
@@ -17,13 +19,15 @@ const visible = computed({
  */
 const files = ref<any[]>([])
 const progress = ref<number>(0)
+const cover = ref<string>('')
 
 const handleFail = (error: any) => {
     console.log('error', error)
 }
 
 const handleSuccess = (res: any) => {
-    console.log('res', res)
+    // console.log('上传成功', res)
+    cover.value = res.response?.data?.url
 }
 
 const onProgress = (options: ProgressContext) => {
@@ -32,10 +36,9 @@ const onProgress = (options: ProgressContext) => {
 
 const inputVisible = ref<boolean>(false)
 const input = ref<HTMLInputElement | null>(null)
-const tags = ref<any[]>([])
+const tags = ref<string[]>([])
 
 const handleClose = (index: number) => {
-    console.log(index)
     tags.value.splice(index, 1)
 }
 
@@ -45,8 +48,8 @@ const handleInputEnter = (val: string) => {
         return
     }
 
-    if (val && !tags.value.some((item) => item.name === val)) {
-        tags.value.push({ name: val, type: 'default', showClose: true })
+    if (val && !tags.value.includes(val)) {
+        tags.value.push(val)
     }
 
     inputVisible.value = false
@@ -57,6 +60,30 @@ const handleClickAdd = () => {
     nextTick(() => {
         input.value?.focus()
     })
+}
+
+const { user } = useLogin()
+const save = () => {
+    emits('save', { tags: tags.value.join(','), cover: cover.value })
+    visible.value = false
+}
+
+watch(
+    () => [props.url, props.tag_type],
+    () => {
+        if (props.tag_type) {
+            tags.value = props.tag_type?.split(',')
+        }
+
+        if (props.url) {
+            cover.value = props.url
+        }
+    }
+)
+
+const clearCover = () => {
+    cover.value = ''
+    files.value = []
 }
 </script>
 
@@ -72,10 +99,19 @@ const handleClickAdd = () => {
         >
             <div class="max-h-[300px] overflow-y-auto mt-2 mb-5">
                 <p class="mb-2 text-[0.87rem] text-[#bab9b9]">封面</p>
-
-                <!-- autoUpload -->
+                <div
+                    class="group w-full h-[120px] relative flex justify-center items-center rounded-lg bg-gray-100 cursor-pointer"
+                    v-if="cover"
+                >
+                    <img :src="joinUrl(cover)" alt="" class="w-full max-h-[120px] object-cover rounded" />
+                    <div
+                        class="group-hover:flex transition duration-300 hidden w-full h-full justify-center items-center bg-black bg-opacity-50 absolute top-0 left-0"
+                    >
+                        <t-icon class="text-white text-xl" name="delete" @click="clearCover" />
+                    </div>
+                </div>
                 <t-upload
-                    :action="BASE_URL"
+                    :action="BASE_URL + '/upload/image'"
                     theme="image"
                     showUploadProgress
                     v-model="files"
@@ -83,7 +119,9 @@ const handleClickAdd = () => {
                     @success="handleSuccess"
                     @progress="onProgress"
                     style="width: 100%"
-                    accept="image/png; image/jpg;"
+                    accept="image/png; image/jpeg; image/gif; image/svg+xml; image/webp; image/jpg"
+                    :headers="{ Authorization: user?.accessToken }"
+                    v-else
                 />
                 <p class="mb-2 mt-5 text-[0.87rem] text-[#bab9b9]">标签</p>
                 <t-space class="tag-block editable" break-line>
@@ -91,13 +129,11 @@ const handleClickAdd = () => {
                         v-for="(tag, index) in tags"
                         :key="index"
                         theme="primary"
-                        :closable="tag.showClose"
-                        :icon="tag.icon"
-                        :disabled="!!tag.disabled"
-                        :max-width="tag.maxWidth"
+                        closable
+                        :max-width="100"
                         @close="handleClose(index)"
                     >
-                        {{ tag.name }}
+                        {{ tag }}
                     </t-tag>
                     <t-tag v-if="!inputVisible" @click="handleClickAdd">
                         <add-icon />
@@ -113,7 +149,7 @@ const handleClickAdd = () => {
                     />
                 </t-space>
             </div>
-            <t-button block @click="emits('save', { tags })">保存</t-button>
+            <t-button block @click="save">保存</t-button>
         </t-dialog>
     </div>
 </template>

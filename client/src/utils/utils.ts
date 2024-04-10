@@ -30,3 +30,11 @@ export function debounce(fn: Function, delay: number = 300): Function {
     }
 }
 
+/**
+ * 拼接文件路径
+ * @param path 路径
+ * @returns 拼接后的路径
+ */
+export function joinUrl(path: string): string {
+    return import.meta.env.VITE_FILE_BASE_URL + path
+}

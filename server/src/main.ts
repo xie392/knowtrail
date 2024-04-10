@@ -90,6 +90,10 @@ async function bootstrap() {
     const port = config.get<number>('app.port') || 8080
     await app.listen(port)
 
+    // 设置静态文件目录
+    // const staticPath = path.join(__dirname, '../../upload', 'static')
+    // app.use(express.static(staticPath))
+
     // 文件上传
     const fileUploadLocationConfig = config.get<string>('app.file.location') || '../upload'
     const fileUploadBastPath = path.normalize(

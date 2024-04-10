@@ -2,6 +2,7 @@
 import { faker } from '@faker-js/faker'
 import dayjs from 'dayjs'
 import { ReadEditor } from 'aomao/index'
+import { joinUrl } from '@/utils/utils'
 // import { useFormatNumber } from '@/hooks/useFormatNumber'
 
 defineProps<{ item: any }>()
@@ -35,7 +36,7 @@ defineProps<{ item: any }>()
             </router-link>
             <div class="w-[180px] flex h-full items-center justify-end" v-if="item?.cover">
                 <img
-                    :src="item?.cover"
+                    :src="joinUrl(item?.cover)"
                     alt=""
                     srcset=""
                     height="auto"

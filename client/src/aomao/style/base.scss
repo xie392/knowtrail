@@ -70,12 +70,12 @@
         border-style: none;
     }
 
-    code,
-    kbd,
-    pre {
-        font-family: monospace, monospace;
-        font-size: 1em;
-    }
+    // code,
+    // kbd,
+    // pre {
+    //     font-family: monospace, monospace;
+    //     font-size: 1em;
+    // }
 
     hr {
         box-sizing: initial;
@@ -248,21 +248,21 @@
         margin-left: 0;
     }
 
-    code,
-    pre {
-        font-family:
-            SFMono-Regular,
-            Consolas,
-            Liberation Mono,
-            Menlo,
-            monospace;
-        font-size: 12px;
-    }
+    // code,
+    // pre {
+    //     font-family:
+    //         SFMono-Regular,
+    //         Consolas,
+    //         Liberation Mono,
+    //         Menlo,
+    //         monospace;
+    //     font-size: 12px;
+    // }
 
-    pre {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
+    // pre {
+    //     margin-top: 0;
+    //     margin-bottom: 0;
+    // }
 
     input::-webkit-inner-spin-button,
     input::-webkit-outer-spin-button {
@@ -271,7 +271,7 @@
         appearance: none;
     }
 
-    :checked + .radio-label {
+    :checked+.radio-label {
         position: relative;
         z-index: 1;
         border-color: #0366d6;
@@ -317,7 +317,7 @@
     dl,
     ol,
     p,
-    pre,
+    // pre,
     table,
     ul {
         margin-top: 0;
@@ -337,11 +337,11 @@
         border-left: 0.25em solid #dfe2e5;
     }
 
-    blockquote > :first-child {
+    blockquote> :first-child {
         margin-top: 0;
     }
 
-    blockquote > :last-child {
+    blockquote> :last-child {
         margin-bottom: 0;
     }
 
@@ -422,12 +422,12 @@
         word-wrap: break-all;
     }
 
-    li > p {
+    li>p {
         margin-top: 16px;
     }
 
-    li + li,
-    li > ul {
+    li+li,
+    li>ul {
         margin-top: 0.25em;
     }
 
@@ -496,7 +496,7 @@
         box-sizing: initial;
     }
 
-    p > img {
+    p>img {
         display: block;
         margin: 0 auto;
     }
@@ -517,19 +517,19 @@
         border-radius: 3px;
     }
 
-    pre {
-        word-wrap: normal;
-    }
+    // pre {
+    //     word-wrap: normal;
+    // }
 
-    pre > code {
-        padding: 0;
-        margin: 0;
-        font-size: 100%;
-        word-break: normal;
-        white-space: pre;
-        background: transparent;
-        border: 0;
-    }
+    // pre>code {
+    //     padding: 0;
+    //     margin: 0;
+    //     font-size: 100%;
+    //     word-break: normal;
+    //     white-space: pre;
+    //     background: transparent;
+    //     border: 0;
+    // }
 
     mark {
         display: inline-flex;

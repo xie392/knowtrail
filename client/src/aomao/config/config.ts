@@ -5,6 +5,13 @@ import Fontfamily from '@aomao/plugin-fontfamily'
 import LineHeight from '@aomao/plugin-line-height'
 import Mention from '@aomao/plugin-mention'
 import { ToolbarPlugin, fontFamilyDefaultData } from 'aomao/toolbar'
+import Image, { ImageUploader } from '@aomao/plugin-image'
+import { BASE_URL } from '@/utils/constants'
+import { useLogin } from '@/hooks/useLogin'
+import { joinUrl } from '@/utils/utils'
+import File, { FileUploader } from '@aomao/plugin-file'
+
+const { user } = useLogin()
 
 export const configs: { [key: string]: PluginOptions } = {
     // [ToolbarPlugin.pluginName]: {
@@ -93,11 +100,7 @@ export const configs: { [key: string]: PluginOptions } = {
             const item = fontFamilyDefaultData.find((item) =>
                 fontfamily
                     .split(',')
-                    .some(
-                        (name) =>
-                            item.value.toLowerCase().indexOf(name.replace(/"/, '').toLowerCase()) >
-                            -1
-                    )
+                    .some((name) => item.value.toLowerCase().indexOf(name.replace(/"/, '').toLowerCase()) > -1)
             )
             return item ? item.value : false
         }
@@ -125,5 +128,48 @@ export const configs: { [key: string]: PluginOptions } = {
             return lineHeight
         },
         defaultSize: '2'
+    },
+    [Image.pluginName]: {
+        onBeforeRender: (_status: string, url: string) => {
+            if (url.startsWith('data:image/')) return url
+            return joinUrl(url)
+        }
+    },
+    [ImageUploader.pluginName]: {
+        file: {
+            action: `${BASE_URL}/upload/image`,
+            headers: { Authorization: user?.value?.accessToken }
+        },
+        remote: {
+            // action: `${BASE_URL}/upload/image`
+            action: `${BASE_URL}/upload/image`
+        },
+        isRemote: (src: string) => src.indexOf(BASE_URL) < 0
+    },
+    [File.pluginName]: {
+        onBeforeRender: (_status: string, url: string) => {
+            if (url.startsWith('data:')) return url
+            return joinUrl(url)
+        }
+        // onDownload: (url: string) => {
+        //     console.log('下载', url)
+        //     window.open(url)
+        // }
+    },
+    [FileUploader.pluginName]: {
+        action: `${BASE_URL}/upload/file`,
+        headers: { Authorization: user?.value?.accessToken },
+        multiple: 1
+        // parse: (response: any) => {
+        //     return {
+        //         result: response.code === 200,
+        //         data: {
+        //             url: response.data?.url,
+        //             preview: response.data?.url,
+        //             download: response.data?.url,
+        //             status: response.data?.url
+        //         }
+        //     }
+        // }
     }
 }

@@ -24,6 +24,7 @@ import { CaptchaType } from '../../common/utils/constants'
 import { EmailService } from 'src/tool/email/email.service'
 import { ForgetPasswordDto } from './dto/forget-password.dto'
 import { CategoryService } from '../category/category.service'
+import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
 export class UsersService {
@@ -197,5 +198,38 @@ export class UsersService {
             expiresIn: this.config.get('jwt.refreshExpiresIn')
         })
         return { accessToken, refreshToken }
+    }
+
+    /**
+     * 登出
+     */
+    async logout(): Promise<ResultData> {
+        try {
+            return ResultData.ok(null, '登出成功')
+        } catch (error) {
+            return ResultData.fail(HttpCode.BadRequest, '登出失败')
+        }
+    }
+
+    /**
+     * 更新用户信息
+     * @param {UpdateUserDto} updateUserDto
+     */
+    async updateUserInfo(updateUserDto: UpdateUserDto, id: string) {
+        try {
+            const { nick_name, avatar } = updateUserDto
+            const result = await this.userRepo.update(id, {
+                nick_name,
+                avatar
+            })
+            if (result.affected === 1) {
+                return ResultData.ok(null, '更新成功')
+            } else {
+                return ResultData.fail(HttpCode.BadRequest, '更新失败')
+            }
+        } catch (error) {
+            console.error('更新用户信息失败', error)
+            return ResultData.fail(HttpCode.BadRequest, '更新失败')
+        }
     }
 }

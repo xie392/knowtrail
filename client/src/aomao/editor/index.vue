@@ -12,6 +12,7 @@ import { useObservable } from '@vueuse/rxjs'
 import type { DOC } from '@/db/type'
 import { useRoute } from 'vue-router'
 import { cloneDeep } from 'lodash-es'
+import { download } from '../utils/download'
 
 interface EditorProps {
     toolbarClassName?: string
@@ -43,7 +44,7 @@ const init = () => {
     if (!editorRef.value) return
     if (editor.value) return
 
-    const engine = createEditor(editorRef.value, {
+    const engine: EngineInterface | null = createEditor(editorRef.value, {
         readonly: doc.value?.readonly ?? true,
         placeholder: doc.value?.readonly ? '' : '请输入内容'
     })
@@ -64,6 +65,7 @@ watch(doc, (newVal, oldVal) => {
     if (editor.value && newVal?.readonly !== oldVal?.readonly) {
         editor.value.readonly = doc.value?.readonly ?? true
     }
+    if (editor.value) editor.value.readonly && download()
 })
 
 onUnmounted(() => editor.value?.destroy())
@@ -103,5 +105,5 @@ onUnmounted(() => editor.value?.destroy())
 </template>
 
 <style scoped lang="scss">
-@import 'aomao/style/base.scss';
+@import '../style/base.scss';
 </style>

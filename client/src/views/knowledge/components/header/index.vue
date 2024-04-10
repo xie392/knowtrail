@@ -47,6 +47,26 @@ const updateDocReadonly = async (type?: STATUS) => {
 }
 
 const modalShow = ref<boolean>(false)
+
+const save = async (options: { tags: string; cover: string }) => {
+    const docs = await UserDBStore.findOneById(UserDBStore.tables.doc, 'id', id)
+
+    const { code, data } = await DocService.UpdateDocApi(
+        id,
+        // @ts-ignore
+        {
+            ...omit(doc.value, ['create_time', 'update_time', 'author']),
+            cover: options.cover,
+            tag_type: options.tags
+        }
+    )
+    if (code !== 200) return MessagePlugin.error('更新文档失败')
+    await UserDBStore.update(UserDBStore.tables.doc, 'id', id, {
+        ...docs,
+        ...data,
+        readonly: true
+    })
+}
 </script>
 
 <template>
@@ -70,7 +90,7 @@ const modalShow = ref<boolean>(false)
     </div>
 
     <!-- 保存文档 -->
-    <SaveModal v-model:visible="modalShow" />
+    <SaveModal v-model:visible="modalShow" @save="save" :url="doc?.cover" :tag_type="doc?.tag_type" />
 </template>
 
 <style scoped></style>

@@ -21,9 +21,9 @@ app.component('avatar', Avatar)
 app.mount('#app')
 
 // 把警告都关了
-// app.config.warnHandler = () => {
-//     // console.warn(msg);
-// }
+app.config.warnHandler = () => {
+    // console.warn(msg);
+}
 
 declare module 'vue' {
     export interface GlobalComponents {

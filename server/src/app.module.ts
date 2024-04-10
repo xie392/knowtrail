@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { RedisClientOptions } from '@liaoliaots/nestjs-redis'
+// import { RedisClientOptions } from '@liaoliaots/nestjs-redis'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
 
 import configuration from './config/index'
-import { RedisModule } from './common/lib/redis/redis.module'
+// import { RedisModule } from './common/lib/redis/redis.module'
 import { JwtAuthGuard } from './tool/auth/auth.guard'
 import { AuthModule } from './tool/auth/auth.module'
 import { UsersModule } from './system/users/users.module'
@@ -37,6 +39,13 @@ import { UploadModule } from './upload/upload.module'
                 } as TypeOrmModuleOptions
             }
         }),
+        // 静态资源
+        // 访问地址： http://localhost:3000/upload/
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', '..', 'upload') // 设置上传目录的路径
+            // exclude: ['/api/(.*)']
+        }),
+
         // libs redis
         // RedisModule.forRootAsync(
         //     {

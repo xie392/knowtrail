@@ -55,8 +55,7 @@ export class BaseController {
     @Post('logout')
     @ApiOperation({ summary: '登出' })
     async logout(): Promise<ResultData> {
-        return ResultData.ok('ok')
-        // return this.usersService.logout()
+        return this.usersService.logout()
     }
 
     @Post('captcha/:type')
