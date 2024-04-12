@@ -17,9 +17,9 @@ export interface CreateDoc {
     pid?: string
     description?: string
     status?: number
-} 
- 
-export type UpdateDoc = {  id: string } & CreateDoc
+}
+
+export type UpdateDoc = { id: string } & CreateDoc
 
 export interface DocListParams {
     page?: number
@@ -27,5 +27,5 @@ export interface DocListParams {
 }
 
 export type DocParams = DocListParams & {
-    keywords: string
+    keyword: string
 }

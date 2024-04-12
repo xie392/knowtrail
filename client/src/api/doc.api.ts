@@ -90,4 +90,12 @@ export class DocService {
     static GetRecommendListApi(params: DocListParams): Promise<DataResponse> {
         return this.http({ url: `/${this.prefix}/search/recommend`, method: 'get', params })
     }
+
+    /**
+     * 获取最近文档列表
+     * @returns
+     */
+    static GetRecentDocListApi(): Promise<DataResponse> {
+        return this.http({ url: `/${this.prefix}/doc/last`, method: 'get' })
+    }
 }

@@ -74,11 +74,10 @@ const options: Options[] = [
                         </template>
                         分享
                     </t-button>
-
                     <t-dropdown placement="left-top" trigger="click">
                         <t-button variant="outline" shape="square">
                             <template #icon>
-                                <t-icon name="add" size="small" />
+                                <t-icon name="more" size="small" />
                             </template>
                         </t-button>
 

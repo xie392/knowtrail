@@ -10,6 +10,7 @@ import { BASE_URL } from '@/utils/constants'
 import { useLogin } from '@/hooks/useLogin'
 import { joinUrl } from '@/utils/utils'
 import File, { FileUploader } from '@aomao/plugin-file'
+import Video, { VideoUploader } from '@aomao/plugin-video'
 
 const { user } = useLogin()
 
@@ -141,7 +142,6 @@ export const configs: { [key: string]: PluginOptions } = {
             headers: { Authorization: user?.value?.accessToken }
         },
         remote: {
-            // action: `${BASE_URL}/upload/image`
             action: `${BASE_URL}/upload/image`
         },
         isRemote: (src: string) => src.indexOf(BASE_URL) < 0
@@ -151,25 +151,21 @@ export const configs: { [key: string]: PluginOptions } = {
             if (url.startsWith('data:')) return url
             return joinUrl(url)
         }
-        // onDownload: (url: string) => {
-        //     console.log('下载', url)
-        //     window.open(url)
-        // }
     },
     [FileUploader.pluginName]: {
         action: `${BASE_URL}/upload/file`,
         headers: { Authorization: user?.value?.accessToken },
         multiple: 1
-        // parse: (response: any) => {
-        //     return {
-        //         result: response.code === 200,
-        //         data: {
-        //             url: response.data?.url,
-        //             preview: response.data?.url,
-        //             download: response.data?.url,
-        //             status: response.data?.url
-        //         }
-        //     }
-        // }
+    },
+    [VideoUploader.pluginName]: {
+        action: `${BASE_URL}/upload/file`,
+        headers: { Authorization: user?.value?.accessToken },
+        limitSize: 1024 * 1024 * 50
+    },
+    [Video.pluginName]: {
+        onBeforeRender: (_status: string, url: string) => {
+            if (url.startsWith('data:')) return url
+            return joinUrl(url)
+        }
     }
 }

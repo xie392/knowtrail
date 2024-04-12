@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 import { TDesignResolver } from 'unplugin-vue-components/resolvers'
 import { viteMockServe } from 'vite-plugin-mock'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
 export default ({ mode }: ConfigEnv): UserConfigExport => {
     const http = loadEnv(mode, process.cwd())
@@ -25,6 +26,10 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
             }),
             Components({
                 resolvers: [
+                    AntDesignVueResolver({
+                        importCss: false,
+                        importStyle: false
+                    }),
                     TDesignResolver({
                         library: 'vue-next'
                     })
@@ -42,6 +47,14 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
                 '@': fileURLToPath(new URL('./src', import.meta.url)),
                 aomao: fileURLToPath(new URL('./src/aomao', import.meta.url)),
                 editor: fileURLToPath(new URL('./src/editor', import.meta.url))
+            }
+        },
+        css: {
+            preprocessorOptions: {
+                // 向 CSS 相关的 loader 传递选项
+                less: {
+                    javascriptEnabled: true
+                }
             }
         }
         // server: {

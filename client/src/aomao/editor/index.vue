@@ -86,7 +86,7 @@ onUnmounted(() => editor.value?.destroy())
             />
         </div>
 
-        <div class="px-6 max-w-[800px] mx-auto" :class="!doc?.readonly && 'pt-[50px]'">
+        <div class="px-10 mx-auto" :class="!doc?.readonly && 'pt-[50px]'">
             <div class="pt-8" :class="doc?.readonly && 'pt-0'">
                 <div
                     class="editor-title focus-visible:outline-none text-[28px] font-bold mb-5 border-b pb-2 break-all"

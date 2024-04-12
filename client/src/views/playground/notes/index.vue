@@ -13,7 +13,7 @@ const getRecommendList = async (isUpdate: boolean = false) => {
     if (code !== 200) return
     total.value = data.total
     docs.value = isUpdate ? [...docs.value, ...data.docs] : data.docs
-    console.log('docs.value', docs.value)
+    console.log('推荐列表', docs.value)
     if (docs.value.length >= total.value) stop()
 }
 getRecommendList()
@@ -23,7 +23,6 @@ const loadingRef = ref<HTMLDivElement | null>(null)
 
 const { stop } = useIntersectionObserver(loadingRef, (entries) => {
     if (entries[0].isIntersecting) {
-        console.log('loadingRef', total.value)
         if (loading.value) return
         if (docs.value.length >= total.value) return
         params.page++
@@ -31,17 +30,6 @@ const { stop } = useIntersectionObserver(loadingRef, (entries) => {
         loading.value = false
     }
 })
-
-// watch(loading, (val) => {
-//     if (val) {
-//         console.log('total.value', total.value, docs.value)
-
-//         if (docs.value.length >= total.value) return
-//         params.page++
-//         getRecommendList(true)
-//         loading.value = false
-//     }
-// })
 </script>
 
 <template>

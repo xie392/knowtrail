@@ -42,7 +42,7 @@ getCategory()
             :key="i"
         >
             <div class="flex flex-1 items-center gap-2 relative">
-                <t-icon name="drag-move" class="icon cursor-pointer opacity-0" style="width: 14px; height: 14px" />
+                <!-- <t-icon name="drag-move" class="icon cursor-pointer opacity-0" style="width: 14px; height: 14px" /> -->
                 <router-link class="flex items-center gap-[6px] flex-1 justify-start" :to="'/knowledge/' + v?.id">
                     <BookIcon size="24px" />
                     <div
@@ -52,7 +52,7 @@ getCategory()
                         {{ v?.title }}
                     </div>
                     <t-icon
-                        :name="v % 2 === 0 ? 'https' : 'earth'"
+                        :name="v.status === 0 ? 'https' : 'earth'"
                         style="width: 12px; height: 12px"
                         class="icon"
                     ></t-icon>

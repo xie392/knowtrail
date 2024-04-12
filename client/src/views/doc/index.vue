@@ -6,6 +6,7 @@ import { ReadEditor } from 'aomao/index'
 import Sidebar from '@/layout/sidebar/index.vue'
 import { CategoryService } from '@/api/category.api'
 import Menu from './components/menu.vue'
+import { joinUrl } from '@/utils/utils'
 
 const route = useRoute()
 
@@ -46,7 +47,10 @@ watch(
             </Sidebar>
         </div>
         <div class="flex-1 flex justify-center py-10">
-            <div class="w-[90%]">
+            <div class="flex-1 px-10">
+                <div class="w-full bg-gray-200 max-h-[200px] mb-5 relative" v-if="docs?.cover">
+                    <img :src="joinUrl(docs?.cover)" alt="" class="w-full max-h-[200px] rounded-lg object-cover" />
+                </div>
                 <div
                     class="editor-title focus-visible:outline-none text-[28px] font-bold mb-5 border-b pb-2 break-all"
                     :textContent="docs?.title"
@@ -56,6 +60,7 @@ watch(
                     <ReadEditor :content="docs?.content ?? '无内容'" />
                 </div>
             </div>
+            <div class="w-[300px]"></div>
         </div>
     </div>
 </template>

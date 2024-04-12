@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, Req, Query } from '@nestjs/common'
 import { CategoryService } from './category.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
-import { UpdateCategoryDto } from './dto/update-category.dto'
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger'
+// import { UpdateCategoryDto } from './dto/update-category.dto'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiResult } from 'src/common/decorators/api-result.decorator'
-import { AllowAnon } from 'src/common/decorators/allow-anon.decorator'
+// import { AllowAnon } from 'src/common/decorators/allow-anon.decorator'
 import { CategoryEntity } from './entities/category.entity'
 
 @ApiTags('知识库相关')
@@ -14,15 +14,15 @@ export class CategoryController {
 
     @Post('create')
     @ApiOperation({ summary: '创建知识库' })
-    create(@Body() dto: CreateCategoryDto, @Req() req) {
-        return this.categoryService.create(dto, req.user)
+    async create(@Body() dto: CreateCategoryDto, @Req() req) {
+        return await this.categoryService.create(dto, req.user)
     }
 
     @Get('doc/:id')
     @ApiOperation({ summary: '查询知识库' })
     @ApiResult(CategoryEntity)
-    findOneById(@Param('id') id: string, @Req() req, @Query('password') password?: string) {
-        return this.categoryService.findOne(id, req.user, password)
+    async findOneById(@Param('id') id: string, @Req() req, @Query('password') password?: string) {
+        return await this.categoryService.findOne(id, req.user, password)
     }
 
     // @Patch('doc/:id')
@@ -41,8 +41,14 @@ export class CategoryController {
     @Get('list')
     @ApiOperation({ summary: '查询所有知识库' })
     @ApiResult(CategoryEntity)
-    findAll(@Query() params: { page: number; limit: number }, @Req() req) {
-        return this.categoryService.findUserAll(params, req.user)
+    async findAll(@Query() params: { page: number; limit: number }, @Req() req) {
+        return await this.categoryService.findUserAll(params, req.user)
+    }
+
+    @Delete('doc/:id')
+    @ApiOperation({ summary: '删除知识库' })
+    async remove(@Param('id') id: string, @Req() req) {
+        return await this.categoryService.remove(id, req.user)
     }
 
     // @Get('search')
@@ -52,4 +58,11 @@ export class CategoryController {
     // search(@Query('keyword') keyword: string, @Query('page') page: number, @Query('limit') limit: number) {
     //     return this.categoryService.search(keyword, page, limit)
     // }
+
+    @Get('last/carate')
+    @ApiOperation({ summary: '获取最近创建的知识库' })
+    @ApiResult(CategoryEntity)
+    async getLastCreated(@Req() req) {
+        return await this.categoryService.getLastCreated(req.user)
+    }
 }

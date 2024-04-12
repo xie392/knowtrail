@@ -2,6 +2,9 @@
 import Logo from '@/layout/components/logo/index.vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+// import { DocService } from '@/api/doc.api'
 // import { useRoute } from 'vue-router'
 
 const nav = [
@@ -18,6 +21,12 @@ const props = defineProps<LayoutProps>()
 
 const userStore = useUserStore()
 const { isLogin } = storeToRefs(userStore)
+
+const router = useRouter()
+const keyword = ref('')
+const handlerDown = async (value: string) => {
+    router.push(`/search?keyword=${value}`)
+}
 </script>
 
 <template>
@@ -36,9 +45,20 @@ const { isLogin } = storeToRefs(userStore)
                 </t-space>
                 <template #operations>
                     <div class="flex items-center">
-                        <router-link to="/search">
+                        <!-- <router-link to="/search">
                             <t-icon class="t-menu__operations-icon" name="search" />
-                        </router-link>
+                        </router-link> -->
+                        <t-input
+                            clearable
+                            placeholder="请输入文档名称"
+                            v-model="keyword"
+                            class="w-[300px] mr-5"
+                            :onEnter="handlerDown"
+                        >
+                            <template #prefix-icon>
+                                <t-icon name="search" size="small" @click="handlerDown(keyword)" />
+                            </template>
+                        </t-input>
 
                         <div v-if="isLogin" class="flex items-center gap-6">
                             <t-dropdown
@@ -47,9 +67,9 @@ const { isLogin } = storeToRefs(userStore)
                                     { content: '个人中心', value: 2 },
                                     { content: '退出登录', value: 3 }
                                 ]"
-                                direction="left"
                                 placement="bottom"
                                 trigger="click"
+                                :min-column-width="100"
                             >
                                 <t-avatar
                                     image="https://tdesign.gtimg.com/site/avatar.jpg"

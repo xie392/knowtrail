@@ -1,5 +1,3 @@
-import './assets/styles/base.scss'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
@@ -7,10 +5,13 @@ import App from './App.vue'
 import router from './router'
 import { createHead } from '@unhead/vue'
 
+// import Ant from 'ant-design-vue'
+
 import RouterViews from './components/router-views/index.vue'
 import Avatar from '@/components/avatar/index.vue'
 import 'animate.css'
 import './permission'
+import './assets/styles/base.scss'
 
 const app = createApp(App)
 app.use(createPinia().use(piniaPluginPersistedstate))

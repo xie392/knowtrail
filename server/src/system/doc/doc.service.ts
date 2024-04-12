@@ -95,7 +95,8 @@ export class DocService {
                 title: dto.title || '未命名文档',
                 id: generateId(8),
                 user_id: user.id,
-                category_id: category?.id ? category.id : dto.pid
+                category_id: category?.id ? category.id : dto.pid,
+                status: category.status
             }
             data = plainToInstance(DocEntity, data, { ignoreDecorators: true })
             const result = await this.docManager.transaction(async (transactionalEntityManager) => {
@@ -222,11 +223,7 @@ export class DocService {
                 relations: ['user'],
                 take: limit
             })
-            const data = docs.map((doc) =>
-                instanceToPlain(doc, {
-                    excludePrefixes: ['user']
-                })
-            )
+            const data = docs.map((doc) => instanceToPlain(doc))
             return ResultData.ok({
                 docs: data,
                 total
@@ -261,6 +258,70 @@ export class DocService {
                 total,
                 page: Number(page),
                 limit: Number(limit)
+            })
+        } catch (error) {
+            return ResultData.fail(HttpCode.BadRequest, '查询文档失败')
+        }
+    }
+
+    /**
+     * 搜索自己的文档
+     * @param keyword    关键字
+     * @param user       用户
+     * @param page       页码
+     * @param limit      条数
+     */
+    async searchMyDoc(
+        keyword: string,
+        user: UserEntity,
+        page: number,
+        limit: number
+    ): Promise<ResultData> {
+        try {
+            const [docs, total] = await this.docRepo.findAndCount({
+                where: {
+                    user_id: user.id,
+                    hidden: 1,
+                    title: Like(`%${keyword}%`)
+                },
+                take: limit,
+                skip: (page - 1) * limit
+            })
+            const data = docs.map((doc) => instanceToPlain(doc))
+
+            return ResultData.ok({
+                docs: data,
+                total,
+                page: Number(page),
+                limit: Number(limit)
+            })
+        } catch (error) {
+            return ResultData.fail(HttpCode.BadRequest, '查询文档失败')
+        }
+    }
+
+    /**
+     * 获取最近更改的文档，获取 10 篇
+     * @param user       用户
+     * @returns
+     */
+    async getLastDocList(user: UserEntity): Promise<ResultData> {
+        try {
+            const [docs, total] = await this.docRepo.findAndCount({
+                where: {
+                    user_id: user.id,
+                    hidden: 1
+                },
+                order: {
+                    update_time: 'DESC'
+                },
+                relations: ['category', 'user'],
+                take: 10
+            })
+            const data = docs.map((doc) => instanceToPlain(doc))
+            return ResultData.ok({
+                docs: data,
+                total
             })
         } catch (error) {
             return ResultData.fail(HttpCode.BadRequest, '查询文档失败')

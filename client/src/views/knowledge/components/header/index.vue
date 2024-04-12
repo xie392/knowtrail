@@ -79,11 +79,11 @@ const save = async (options: { tags: string; cover: string }) => {
             </h2>
         </div>
         <div class="flex gap-2">
-            <t-button variant="text">
+            <!-- <t-button variant="text">
                 <template #icon>
                     <t-icon name="star"></t-icon>
                 </template>
-            </t-button>
+            </t-button> -->
             <t-button theme="primary" v-if="doc?.readonly" @click="updateDocReadonly(STATUS.EDIT)">编辑</t-button>
             <t-button theme="primary" v-else @click="updateDocReadonly(STATUS.PREVIEW)">更新</t-button>
         </div>

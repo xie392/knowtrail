@@ -29,7 +29,7 @@ defineProps<{ item: any }>()
                 >
                     {{ item?.title }}
                 </h1>
-                <p class="text-[0.85rem] text-ellipsis overflow-hidden line-clamp-3">
+                <p class="text-[0.85rem] text-ellipsis overflow-hidden line-clamp-2 -mt-3">
                     <!-- {{ faker.lorem.paragraph() }} -->
                     <ReadEditor :content="item?.content ?? '该文章无简介'" />
                 </p>

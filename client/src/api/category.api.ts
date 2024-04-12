@@ -80,4 +80,15 @@ export class CategoryService {
     static SearchApi(params: DocParams): Promise<DataResponse> {
         return this.http({ url: `/${this.prefix}/search`, method: 'get', params })
     }
+
+    /**
+     * 获取最近的知识库
+     * @param page 页码
+     * @param limit 每页数量
+     * @param sort 排序方式
+     * @returns
+     */
+    static GetRecentCategoryApi(): Promise<DataResponse> {
+        return this.http({ url: `/${this.prefix}/last/carate`, method: 'get' })
+    }
 }

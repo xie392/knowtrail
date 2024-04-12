@@ -1,50 +1,49 @@
 <script setup lang="ts">
 import Tree from '@/components/tree/index.vue'
-import { CategoryService } from '@/api/category.api'
-import { useRoute } from 'vue-router'
-import { watch } from 'vue'
-import UserDBStore from '@/db'
+// import { CategoryService } from '@/api/category.api'
+// import { useRoute } from 'vue-router'
+// import { watch } from 'vue'
+// import UserDBStore from '@/db'
+// const route = useRoute()
+// const GetCategoryById = async () => {
+//     const { data } = await CategoryService.GetCategoryByIdApi(route.params.pid as string)
+//     if (!data) return
 
-const route = useRoute()
-const GetCategoryById = async () => {
-    const { data } = await CategoryService.GetCategoryByIdApi(route.params.pid as string)
-    if (!data) return
+//     const docs = await UserDBStore.findOneById(UserDBStore.tables.docs, 'id', route.params.pid as string)
 
-    const docs = await UserDBStore.findOneById(UserDBStore.tables.docs, 'id', route.params.pid as string)
-    
-    // 更新文档库
-    if (docs) {
-        await UserDBStore.update(UserDBStore.tables.docs, 'id', route.params.pid as string, {
-            ...docs,
-            ...data
-        })
-    } else {
-        await UserDBStore.add(UserDBStore.tables.docs, data)
-    }
+//     // 更新文档库
+//     if (docs) {
+//         await UserDBStore.update(UserDBStore.tables.docs, 'id', route.params.pid as string, {
+//             ...docs,
+//             ...data
+//         })
+//     } else {
+//         await UserDBStore.add(UserDBStore.tables.docs, data)
+//     }
 
-    data?.doc?.forEach(async (item: any) => {
-        const doc = await UserDBStore.findOneById(UserDBStore.tables.doc, 'id', item.id)
-        if (doc) {
-            await UserDBStore.update(UserDBStore.tables.doc, 'id', item.id, {
-                ...doc,
-                ...item
-            })
-        } else {
-            await UserDBStore.add(UserDBStore.tables.doc, {
-                ...item,
-                readonly: true
-            })
-        }
-    })
-}
+//     data?.doc?.forEach(async (item: any) => {
+//         const doc = await UserDBStore.findOneById(UserDBStore.tables.doc, 'id', item.id)
+//         if (doc) {
+//             await UserDBStore.update(UserDBStore.tables.doc, 'id', item.id, {
+//                 ...doc,
+//                 ...item
+//             })
+//         } else {
+//             await UserDBStore.add(UserDBStore.tables.doc, {
+//                 ...item,
+//                 readonly: true
+//             })
+//         }
+//     })
+// }
 
-watch(
-    route,
-    () => {
-        GetCategoryById()
-    },
-    { immediate: true }
-)
+// watch(
+//     route,
+//     () => {
+//         GetCategoryById()
+//     },
+//     { immediate: true }
+// )
 </script>
 
 <template>

@@ -119,6 +119,11 @@ export class CategoryService {
             })
             if (!category) return ResultData.fail(HttpCode.NotFound, '知识库不存在')
 
+            // 判断是不是私密且是自己的
+            if (category.status === 0 && user.id !== category.user_id) {
+                return ResultData.fail(HttpCode.Unauthorized, '该知识库私密')
+            }
+
             // 如果是自己请求就不需要校验密码
             if (
                 user.id !== category.user_id &&
@@ -133,6 +138,94 @@ export class CategoryService {
         } catch (error) {
             console.error('查询知识库失败：', error)
             return ResultData.fail(HttpCode.BadRequest, '查找失败')
+        }
+    }
+
+    /**
+     * 删除知识库
+     * @param id 知识库id
+     * @param user 用户
+     * @returns
+     */
+    async remove(id: string, user: UserEntity) {
+        try {
+            const category = await this.docManager.findOne(CategoryEntity, {
+                where: {
+                    id,
+                    user_id: user.id,
+                    hidden: 1
+                }
+            })
+            if (!category) return ResultData.fail(HttpCode.BadRequest, '知识库不存在')
+            category.hidden = 0
+            await this.docManager.transaction(async (transactionalEntityManager) => {
+                return await transactionalEntityManager.save<CategoryEntity>(category)
+            })
+            return ResultData.ok(null)
+        } catch (error) {
+            console.error('删除知识库失败：', error)
+            return ResultData.fail(HttpCode.BadRequest, '删除失败')
+        }
+    }
+
+    /**
+     * 更新知识库
+     * @param id 知识库id
+     * @param dto 更新数据
+     * @param user 用户
+     * @returns
+     */
+    // async update(id: string, dto: UpdateCategoryDto, user: UserEntity) {
+    //     try {
+    //         const category = await this.docManager.findOne(CategoryEntity, {
+    //             where: {
+    //                 id,
+    //                 user_id: user.id,
+    //                 hidden: 1
+    //             }
+    //         })
+    //         if (!category) return ResultData.fail(HttpCode.BadRequest, '知识库不存在')
+    //         const data = pick(dto, ['title', 'description', 'password'])
+    //         if (dto.password) {
+    //             data.status = 2
+    //             data.password = encryptPassword(dto.password)
+    //         }
+    //         category.title = data.title
+    //         category.description = data.description
+    //         category.password = data.password
+    //         category.status = data.status
+    //         return await this.docManager.transaction(async (transactionalEntityManager) => {
+    //             return await transactionalEntityManager.save<CategoryEntity>(category)
+    //         })
+    //     } catch (error) {
+    //         console.error('更新知识库失败：', error)
+    //         return ResultData.fail(HttpCode.BadRequest, '更新失败')
+    //     }
+    // }
+
+    /**
+     * 获取最近创建的知识库
+     * @param user 用户
+     * @param params     { page: number, limit: number, sort: string }
+     */
+    async getLastCreated(user: UserEntity) {
+        try {
+            // 查找前面 3 条
+            const categories = await this.docManager.find(CategoryEntity, {
+                where: {
+                    user_id: user.id,
+                    hidden: 1
+                },
+                order: {
+                    update_time: 'DESC'
+                },
+                take: 3,
+                relations: ['user']
+            })
+            return ResultData.ok(instanceToPlain(categories))
+        } catch (error) {
+            console.error('获取最近的知识库失败：', error)
+            return ResultData.fail(HttpCode.BadRequest, '获取失败')
         }
     }
 }

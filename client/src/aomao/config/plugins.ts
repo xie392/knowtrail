@@ -34,6 +34,8 @@ import Embed from '@aomao/plugin-embed'
 import { ToolbarPlugin } from 'aomao/toolbar'
 import File, { FileUploader } from '@aomao/plugin-file'
 import Codeblock from '@aomao/plugin-codeblock-vue'
+import Video, { VideoUploader } from '@aomao/plugin-video'
+import Link from '@aomao/plugin-link-vue'
 
 export const defaultPlugins: Array<PluginEntry> = [
     Redo,
@@ -72,5 +74,8 @@ export const defaultPlugins: Array<PluginEntry> = [
     ToolbarPlugin,
     File,
     FileUploader,
-    Codeblock
+    Codeblock,
+    Video,
+    VideoUploader,
+    Link
 ]

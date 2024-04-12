@@ -43,7 +43,7 @@ onUnmounted(() => editor.value?.destroy())
 
 <template>
     <div class="w-full">
-        <div class="max-w-[800px]">
+        <div class="w-full h-full">
             <div class="mt-3" ref="editorRef"></div>
         </div>
     </div>
