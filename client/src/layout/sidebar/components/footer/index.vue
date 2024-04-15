@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useLogin } from '@/hooks/useLogin'
+import { joinUrl } from '@/utils/utils'
+
+const { user } = useLogin()
+</script>
 
 <template>
     <div
@@ -12,8 +17,8 @@
         </t-button> -->
         <div class="w-full flex justify-between items-center cursor-pointer list py-1 px-2 pr-0">
             <div class="flex items-center gap-2">
-                <t-avatar size="24px" image="https://tdesign.gtimg.com/site/avatar.jpg" />
-                <span class="text-[0.875rem]">知识库</span>
+                <t-avatar size="24px" :image="joinUrl(user?.data?.avatar)" />
+                <span class="text-[0.875rem]">{{ user?.data?.nick_name }}</span>
             </div>
             <t-button shape="square" theme="default" variant="text">
                 <template #icon>

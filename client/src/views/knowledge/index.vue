@@ -9,6 +9,9 @@ import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { CategoryService } from '@/api/category.api'
 import UserDBStore from '@/db'
+// import { onMounted } from 'vue'
+// import { io } from 'socket.io-client'
+// import { useLogin } from '@/hooks/useLogin'
 
 const route = useRoute()
 const category = ref<any>(null)
@@ -53,6 +56,21 @@ watch(
     },
     { immediate: true }
 )
+
+// const { user } = useLogin()
+// onMounted(() => {
+//     const token = route.query.token as string
+//     const socket = io(import.meta.env.VITE_SOCKET_URL as string, {
+//         auth: {
+//             token: token ?? user.value?.accessToken
+//         },
+//         transports: ['websocket']
+//     })
+
+//     socket.on('docUpdate', function (data) {
+//         console.log('docUpdate', data)
+//     })
+// })
 </script>
 
 <template>

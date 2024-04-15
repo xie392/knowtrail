@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div>知识库</div>
+    <div class=""></div>
 </template>
 
 <style scoped></style>

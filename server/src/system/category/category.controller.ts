@@ -3,8 +3,8 @@ import { CategoryService } from './category.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
 // import { UpdateCategoryDto } from './dto/update-category.dto'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
-import { ApiResult } from 'src/common/decorators/api-result.decorator'
-// import { AllowAnon } from 'src/common/decorators/allow-anon.decorator'
+import { ApiResult } from '../../common/decorators/api-result.decorator'
+import { AllowAnon } from '../../common/decorators/allow-anon.decorator'
 import { CategoryEntity } from './entities/category.entity'
 
 @ApiTags('知识库相关')
@@ -21,6 +21,7 @@ export class CategoryController {
     @Get('doc/:id')
     @ApiOperation({ summary: '查询知识库' })
     @ApiResult(CategoryEntity)
+    @AllowAnon()
     async findOneById(@Param('id') id: string, @Req() req, @Query('password') password?: string) {
         return await this.categoryService.findOne(id, req.user, password)
     }

@@ -36,9 +36,12 @@ const { stop } = useIntersectionObserver(loadingRef, (entries) => {
     <div>
         <div class="min-h-[80vh]">
             <List v-for="v in docs" :key="v" :item="v" />
+            <span v-if="!docs.length" class="w-full h-5 text-center text-sm text-gray-400 pt-5">暂无数据</span>
         </div>
         <div class="w-full h-5 text-center text-sm text-gray-400 pt-5" ref="loadingRef">
-            {{ !docs.length || docs.length >= total ? '到底了~' : '加载中...' }}
+            <span v-if="!!docs.length">
+                {{ docs.length >= total ? '到底了~' : '加载中...' }}
+            </span>
         </div>
     </div>
 </template>

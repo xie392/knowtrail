@@ -12,9 +12,18 @@ const getCategory = async () => {
     const { code, data } = await CategoryService.GetCategoryListApi({ page: 1, limit: 30 })
     if (code !== 200) return
     categoryList.value = data.list
-    console.log('data', data)
+    // console.log('data', data)
 }
 getCategory()
+
+const visible = ref(false)
+const pid = ref<string>('')
+const handleConfirm = async () => {
+    visible.value = false
+    const { code } = await CategoryService.DeleteCategoryApi(pid.value)
+    if (code !== 200) return
+    getCategory()
+}
 </script>
 
 <template>
@@ -35,7 +44,7 @@ getCategory()
         </router-link>
     </div>
 
-    <div class="w-full flex flex-col gap-1 max-h-[200px] overflow-y-auto scrollbar-none" v-show="!collapse">
+    <div class="w-full flex flex-col gap-1 max-h-[400px] overflow-y-auto scrollbar-none" v-show="!collapse">
         <div
             class="list w-full px-4 py-1 flex items-center justify-between cursor-pointer"
             v-for="(v, i) in categoryList"
@@ -59,8 +68,28 @@ getCategory()
                 </router-link>
             </div>
 
-            <t-icon name="ellipsis" class="opacity-0 icon"></t-icon>
+            <t-icon
+                name="delete"
+                class="opacity-0 icon"
+                @click="
+                    () => {
+                        pid = v?.id
+                        visible = true
+                    }
+                "
+            ></t-icon>
         </div>
+
+        <t-dialog
+            :preventScrollThrough="false"
+            showOverlay
+            theme="danger"
+            v-model:visible="visible"
+            :onConfirm="handleConfirm"
+        >
+            <template #header>删除知识库</template>
+            <p class="text-gray-500 text-center">删除后不可恢复，且会删除该知识库下所有内容，确定删除吗？</p>
+        </t-dialog>
     </div>
 </template>
 

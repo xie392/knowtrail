@@ -14,6 +14,7 @@ import { generateId } from '../../common/utils/utils'
 import { CategoryEntity } from './entities/category.entity'
 import { UserEntity } from '../users/entities/user.entity'
 import { encryptPassword } from 'src/common/utils/crypto'
+import { DocEntity } from '../doc/entities/doc.entity'
 
 interface Params {
     page: number
@@ -87,7 +88,8 @@ export class CategoryService {
                 skip,
                 take: limit,
                 where: {
-                    user_id: user.id
+                    user_id: user.id,
+                    hidden: 1
                 },
                 relations: ['user']
             })
@@ -111,7 +113,8 @@ export class CategoryService {
      */
     async findOne(id: string, user: UserEntity, password: string) {
         try {
-            const params = { id, user_id: user.id, password: password, hidden: 1 }
+            const params = { id, password: password, hidden: 1 }
+            if (user) params['user_id'] = user.id
             if (!password) delete params.password
             const category = await this.docManager.findOne(CategoryEntity, {
                 where: params,
@@ -120,13 +123,14 @@ export class CategoryService {
             if (!category) return ResultData.fail(HttpCode.NotFound, '知识库不存在')
 
             // 判断是不是私密且是自己的
-            if (category.status === 0 && user.id !== category.user_id) {
+            if (category.status === 0 && user?.id !== category.user_id) {
                 return ResultData.fail(HttpCode.Unauthorized, '该知识库私密')
             }
 
             // 如果是自己请求就不需要校验密码
             if (
-                user.id !== category.user_id &&
+                user &&
+                user?.id !== category.user_id &&
                 category.password &&
                 category.password !== encryptPassword(password)
             )
@@ -158,8 +162,23 @@ export class CategoryService {
             })
             if (!category) return ResultData.fail(HttpCode.BadRequest, '知识库不存在')
             category.hidden = 0
+
+            // 删除该库下面的所有文档
+            const docs = await this.docManager.find(DocEntity, {
+                where: {
+                    category_id: id
+                }
+            })
+
+            docs.forEach((doc) => {
+                doc.hidden = 0
+            })
+
             await this.docManager.transaction(async (transactionalEntityManager) => {
                 return await transactionalEntityManager.save<CategoryEntity>(category)
+            })
+            await this.docManager.transaction(async (transactionalEntityManager) => {
+                return await transactionalEntityManager.save<DocEntity>(docs)
             })
             return ResultData.ok(null)
         } catch (error) {

@@ -6,18 +6,13 @@ const menus = [
     // { name: '收藏', icon: 'star', path: '/workspace/collections' },
     // { name: '关注', icon: 'user-add', path: '/workspace/focus' },
     // { name: '模板', icon: 'template', path: '/workspace/templates' },
-    { name: '广场', icon: 'book', path: '/playground'  }
+    { name: '广场', icon: 'book', path: '/playground' }
 ]
 </script>
 
 <template>
     <t-menu width="100%" :value="$route.path">
-        <t-menu-item
-            :value="item.path"
-            v-for="item in menus"
-            :key="item.name"
-            @click="$router.push(item.path)"
-        >
+        <t-menu-item :value="item.path" v-for="item in menus" :key="item.name" @click="$router.push(item.path)">
             <template #icon>
                 <t-icon :name="item.icon" style="width: 16px; height: 16px" />
             </template>

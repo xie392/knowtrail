@@ -33,7 +33,8 @@ export const baseRoutes: RouteRecordRaw[] = [
         meta: {
             title: '文档',
             layout: true,
-            keepAlive: false
+            keepAlive: false,
+            auth: false
         }
     },
     {

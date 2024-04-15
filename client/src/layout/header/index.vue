@@ -20,13 +20,19 @@ interface LayoutProps {
 const props = defineProps<LayoutProps>()
 
 const userStore = useUserStore()
-const { isLogin } = storeToRefs(userStore)
+const { isLogin, user } = storeToRefs(userStore)
 
 const router = useRouter()
 const keyword = ref('')
 const handlerDown = async (value: string) => {
     router.push(`/search?keyword=${value}`)
 }
+
+const options = [
+    { content: '工作台', value: 1, onClick: () => router.push('/workspace') },
+    { content: '个人中心', value: 2, onClick: () => router.push(`user/${user.value?.data?.id}`) },
+    { content: '退出登录', value: 3, onClick: () => userStore.logout() }
+]
 </script>
 
 <template>
@@ -61,21 +67,8 @@ const handlerDown = async (value: string) => {
                         </t-input>
 
                         <div v-if="isLogin" class="flex items-center gap-6">
-                            <t-dropdown
-                                :options="[
-                                    { content: '工作台', value: 1 },
-                                    { content: '个人中心', value: 2 },
-                                    { content: '退出登录', value: 3 }
-                                ]"
-                                placement="bottom"
-                                trigger="click"
-                                :min-column-width="100"
-                            >
-                                <t-avatar
-                                    image="https://tdesign.gtimg.com/site/avatar.jpg"
-                                    size="small"
-                                    class="cursor-pointer"
-                                />
+                            <t-dropdown :options="options" placement="bottom" trigger="click" :min-column-width="100">
+                                <t-avatar :image="user?.data?.avatar" size="small" class="cursor-pointer" />
                             </t-dropdown>
                         </div>
                         <router-link to="/login" v-else>

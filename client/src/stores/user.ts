@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { removeAllCookie } from '@/utils/cookies'
 // import type { User } from '@/models/user'
 
 export const useUserStore = defineStore(
@@ -8,9 +9,17 @@ export const useUserStore = defineStore(
         const isLogin = ref<boolean>(false)
         const user = ref<any>()
 
+        const logout = () => {
+            removeAllCookie()
+            isLogin.value = false
+            user.value = null
+            // location.reload()
+        }
+
         return {
             isLogin,
-            user
+            user,
+            logout
         }
     },
     {

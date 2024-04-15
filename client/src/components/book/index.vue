@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // import { faker } from '@faker-js/faker'
+import { joinUrl } from '@/utils/utils'
 import ReadEditor from 'aomao/editor/read.vue'
 
 interface BookProps {
@@ -18,7 +19,7 @@ const props = withDefaults(defineProps<BookProps>(), {
     >
         <router-link :to="`/knowledge/${item?.id}`">
             <img
-                :src="item?.cover"
+                :src="joinUrl(item?.cover)"
                 alt=""
                 srcset=""
                 class="w-full h-[150px] object-cover rounded-lg"
