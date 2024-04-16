@@ -42,7 +42,7 @@ const options: Options[] = [
             if (pid) {
                 // 创建知识库
                 const { code, data } = await DocService.CreateDocApi({ pid })
-                if (code !== 200) return MessagePlugin.error('创建知识库失败')
+                if (code !== 200) return MessagePlugin.error('创建文档失败')
                 // is_cretaed.value = true
                 // readonly.value = false
                 // doc.value = data
@@ -60,7 +60,7 @@ const options: Options[] = [
         onclick: () => {
             books_modal.value = true
         }
-    },
+    }
     // { name: '从模板创建', icon: templateIcon, onclick: () => (template_modal.value = true) }
 ]
 </script>

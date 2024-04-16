@@ -37,7 +37,7 @@ export class ContextTrace {
     ) {}
 }
 
-Log4js.addLayout('Nest-Admin', (logConfig: any) => {
+Log4js.addLayout('KnowTrail', (logConfig: any) => {
     return (logEvent: Log4js.LoggingEvent): string => {
         let moduleName = ''
         let position = ''
@@ -164,7 +164,7 @@ const getConfigure = () => {
     if (env === 'development') {
         log4jsConfigure.appenders['console'] = {
             type: 'console',
-            layout: { type: 'Nest-Admin' }
+            layout: { type: 'KnowTrail' }
         }
         log4jsConfigure.categories.default.appenders.unshift('console')
         log4jsConfigure.categories.info.appenders.unshift('console')

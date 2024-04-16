@@ -31,7 +31,7 @@ const options = ref<{ [key: string]: any }[]>([
 
 const router = useRouter()
 const create = async () => {
-    console.log('keyword', keyword.value, desc.value, value.value)
+    // console.log('keyword', keyword.value, desc.value, value.value)
     try {
         const { code, data } = await CategoryService.CreateCategoryApi({
             title: keyword.value,
@@ -40,6 +40,7 @@ const create = async () => {
             cover: cover.value
         })
         if (code !== 200) return MessagePlugin.error('创建知识库失败')
+        visible.value = false
         router.push(`/knowledge/${data.id}`)
     } catch (error) {
         MessagePlugin.error('创建知识库失败')

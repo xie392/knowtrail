@@ -11,6 +11,8 @@ declare module 'vue' {
     Book: typeof import('./src/components/book/index.vue')['default']
     BookIcon: typeof import('./src/components/icon/BookIcon.vue')['default']
     BooksModal: typeof import('./src/components/modal/books-modal/index.vue')['default']
+    CollaboratorIcon: typeof import('./src/components/icon/CollaboratorIcon.vue')['default']
+    Conf: typeof import('./src/components/icon/Conf.vue')['default']
     DocIcon: typeof import('./src/components/icon/DocIcon.vue')['default']
     DocModal: typeof import('./src/components/modal/doc-modal/index.vue')['default']
     GithubIcon: typeof import('./src/components/icon/GithubIcon.vue')['default']

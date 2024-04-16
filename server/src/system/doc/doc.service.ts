@@ -88,6 +88,7 @@ export class DocService {
                         default: 1
                     }
                 })
+
                 if (!category) return ResultData.fail(HttpCode.BadRequest, '没有默认分类')
             }
             data = {
@@ -96,7 +97,7 @@ export class DocService {
                 id: generateId(8),
                 user_id: user.id,
                 category_id: category?.id ? category.id : dto.pid,
-                status: category.status
+                status: category?.status ?? 1
             }
             data = plainToInstance(DocEntity, data, { ignoreDecorators: true })
             const result = await this.docManager.transaction(async (transactionalEntityManager) => {
