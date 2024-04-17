@@ -2,7 +2,7 @@
 import AomaoEditor from 'aomao/index'
 import { useRoute } from 'vue-router'
 import { DocService } from '@/api/doc.api'
-import { watch, type Ref } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import UserDBStore from '@/db'
 import type { DOC } from '@/db/type'
 import { liveQuery } from 'dexie'
@@ -41,11 +41,23 @@ watch(
     },
     { immediate: true }
 )
+
+const isCollaboration = ref(false)
+watch(
+    () => route.query.token,
+    () => {
+        isCollaboration.value = !!route.query.token
+    },
+    { immediate: true }
+)
 </script>
 
 <template>
     <div class="flex w-full">
-        <div class="flex-1 h-full flex-col items-center justify-center">
+        <div
+            class="flex-1 h-full flex-col items-center justify-center"
+            :class="isCollaboration ? 'mx-auto max-w-[1000px]' : ''"
+        >
             <div class="w-full max-h-[200px] relative px-10 pt-5" v-if="doc?.readonly && doc?.cover">
                 <img :src="joinUrl(doc?.cover)" alt="" class="w-full max-h-[200px] rounded-lg object-cover" />
             </div>
@@ -54,7 +66,7 @@ watch(
         </div>
 
         <!-- 侧边栏 -->
-        <div class="w-[300px] mt-5 min-h-min p-5"></div>
+        <div class="w-[300px] mt-5 min-h-min p-5" v-if="isCollaboration"></div>
     </div>
 
     <!-- <div v-if="doc?.readonly">

@@ -16,6 +16,7 @@ import { useClipboard } from '@vueuse/core'
 import { useLogin } from '@/hooks/useLogin'
 
 const route = useRoute()
+const pid = route.params.pid as string
 const id = route.params.id as string
 
 const doc: Ref<DOC> = useObservable(
@@ -76,7 +77,7 @@ const { copy, isSupported } = useClipboard()
 const { user } = useLogin()
 const copyLink = () => {
     // 生成链接
-    const url = `${window.location.origin}/doc/${id}?token=${user.value?.accessToken?.split(' ')?.[1]}`
+    const url = `${window.location.origin}/knowledge/${pid}/${id}?token=${user.value?.accessToken?.split(' ')?.[1]}`
     // 复制链接
     if (isSupported) {
         copy(url)
