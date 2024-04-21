@@ -38,10 +38,10 @@ const handleConfirm = async () => {
                 </template>
             </t-button>
         </div>
-        <router-link to="/workspace/knowledge" class="flex w-full pl-10 justify-between items-center">
+        <div to="/workspace/knowledge" class="flex w-full pl-10 justify-between items-center">
             <span class="text-[0.875rem]">知识库</span>
             <t-icon name="chevron-right" style="width: 18px; height: 18px" />
-        </router-link>
+        </div>
     </div>
 
     <div class="w-full flex flex-col gap-1 max-h-[400px] overflow-y-auto scrollbar-none" v-show="!collapse">

@@ -30,7 +30,7 @@ const handlerDown = async (value: string) => {
 
 const options = [
     { content: '工作台', value: 1, onClick: () => router.push('/workspace') },
-    { content: '个人中心', value: 2, onClick: () => router.push(`user/${user.value?.data?.id}`) },
+    { content: '个人中心', value: 2, onClick: () => router.push(`/user/${user.value?.data?.id}`) },
     { content: '退出登录', value: 3, onClick: () => userStore.logout() }
 ]
 </script>

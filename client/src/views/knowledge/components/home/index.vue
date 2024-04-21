@@ -3,12 +3,12 @@ import { useRoute } from 'vue-router'
 import { CategoryService } from '@/api/category.api'
 import { ref, watch } from 'vue'
 
-interface Options {
-    name: string
-    icon: any
-    divider?: boolean
-    onclick: () => void
-}
+// interface Options {
+//     name: string
+//     icon: any
+//     divider?: boolean
+//     onclick: () => void
+// }
 
 const route = useRoute()
 
@@ -28,30 +28,30 @@ watch(
     { immediate: true }
 )
 
-const options: Options[] = [
-    {
-        name: '重命名',
-        icon: 'add',
-        onclick: async () => {}
-    },
-    {
-        name: '编辑首页',
-        icon: 'add',
+// const options: Options[] = [
+//     {
+//         name: '重命名',
+//         icon: 'add',
+//         onclick: async () => {}
+//     },
+//     {
+//         name: '编辑首页',
+//         icon: 'add',
 
-        onclick: () => {}
-    },
-    {
-        name: '更多设置',
-        icon: 'add',
-        divider: true,
-        onclick: async () => {}
-    },
-    {
-        name: '删除',
-        icon: 'add',
-        onclick: async () => {}
-    }
-]
+//         onclick: () => {}
+//     },
+//     {
+//         name: '更多设置',
+//         icon: 'add',
+//         divider: true,
+//         onclick: async () => {}
+//     },
+//     {
+//         name: '删除',
+//         icon: 'add',
+//         onclick: async () => {}
+//     }
+// ]
 </script>
 
 <template>
@@ -61,7 +61,7 @@ const options: Options[] = [
                 <h2 class="text-2xl font-bold max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap">
                     {{ doc?.title }}
                 </h2>
-                <t-space>
+                <!-- <t-space>
                     <t-button variant="outline">
                         <template #icon>
                             <t-icon name="star"></t-icon>
@@ -97,7 +97,7 @@ const options: Options[] = [
                             </t-dropdown-item>
                         </t-dropdown-menu>
                     </t-dropdown>
-                </t-space>
+                </t-space> -->
             </div>
 
             <div class="w-full py-10">

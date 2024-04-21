@@ -10,10 +10,10 @@ import { useObservable } from '@vueuse/rxjs'
 import { ref, type Ref } from 'vue'
 import type { DOC } from '@/db/type'
 import SaveModal from '@/components/modal/save-modal/index.vue'
-import CollaboratorIcon from '@/components/icon/CollaboratorIcon.vue'
-import { LinkIcon } from 'tdesign-icons-vue-next'
-import { useClipboard } from '@vueuse/core'
-import { useLogin } from '@/hooks/useLogin'
+// import CollaboratorIcon from '@/components/icon/CollaboratorIcon.vue'
+// import { LinkIcon } from 'tdesign-icons-vue-next'
+// import { useClipboard } from '@vueuse/core'
+// import { useLogin } from '@/hooks/useLogin'
 
 const route = useRoute()
 const id = route.params.id as string
@@ -72,19 +72,19 @@ const save = async (options: { tags: string; cover: string }) => {
     })
 }
 
-const { copy, isSupported } = useClipboard()
-const { user } = useLogin()
-const copyLink = () => {
-    // 生成链接
-    const url = `${window.location.origin}/doc/${id}?token=${user.value?.accessToken?.split(' ')?.[1]}`
-    // 复制链接
-    if (isSupported) {
-        copy(url)
-        MessagePlugin.success('复制成功')
-    } else {
-        MessagePlugin.error('浏览器不支持复制功能')
-    }
-}
+// const { copy, isSupported } = useClipboard()
+// const { user } = useLogin()
+// const copyLink = () => {
+//     // 生成链接
+//     const url = `${window.location.origin}/doc/${id}?token=${user.value?.accessToken?.split(' ')?.[1]}`
+//     // 复制链接
+//     if (isSupported) {
+//         copy(url)
+//         MessagePlugin.success('复制成功')
+//     } else {
+//         MessagePlugin.error('浏览器不支持复制功能')
+//     }
+// }
 </script>
 
 <template>
@@ -97,7 +97,7 @@ const copyLink = () => {
             </h2>
         </div>
         <div class="flex gap-2">
-            <t-popup trigger="click" placement="bottom-right">
+            <!-- <t-popup trigger="click" placement="bottom-right">
                 <t-button theme="primary" v-show="!doc?.readonly">协作</t-button>
 
                 <template #content>
@@ -118,7 +118,7 @@ const copyLink = () => {
                         </div>
                     </div>
                 </template>
-            </t-popup>
+            </t-popup> -->
 
             <t-button theme="primary" v-if="doc?.readonly" @click="updateDocReadonly(STATUS.EDIT)">编辑</t-button>
             <t-button theme="primary" v-else @click="updateDocReadonly(STATUS.PREVIEW)">更新</t-button>

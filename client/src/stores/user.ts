@@ -13,7 +13,7 @@ export const useUserStore = defineStore(
             removeAllCookie()
             isLogin.value = false
             user.value = null
-            // location.reload()
+            location.reload()
         }
 
         return {

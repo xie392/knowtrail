@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, IsString, IsOptional, IsNumber } from 'class-validator'
+import { IsString, IsOptional, IsNumber } from 'class-validator'
 export class CreateCategoryDto {
     @ApiProperty({ description: '知识库标题', required: true })
     @IsString({ message: 'title 类型错误，正确类型 string' })

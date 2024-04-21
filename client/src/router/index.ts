@@ -22,9 +22,14 @@ export const baseRoutes: RouteRecordRaw[] = [
         }
     },
     {
-        path: '/:name',
+        path: '/user/:id',
         name: 'user',
-        component: () => import('@/views/user/index.vue')
+        component: () => import('@/views/user/index.vue'),
+        meta: {
+            layout: true,
+            keepAlive: false,
+            auth: false
+        }
     },
     {
         path: '/doc/:pid/:id',

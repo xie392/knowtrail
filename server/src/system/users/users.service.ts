@@ -232,4 +232,17 @@ export class UsersService {
             return ResultData.fail(HttpCode.BadRequest, '更新失败')
         }
     }
+
+    /**
+     * 通过 id 查询用户信息
+     * @param id
+     */
+    async findOne(id: string): Promise<ResultData> {
+        const result = await this.findOneById(id)
+        if (result) {
+            return ResultData.ok(instanceToPlain(result))
+        } else {
+            return ResultData.fail(HttpCode.BadRequest, '查询失败')
+        }
+    }
 }

@@ -120,11 +120,11 @@ const handleConfirm = async () => {
                     <t-icon name="delete" />
                 </template>
             </t-button>
-            <t-button size="small" shape="square" variant="text">
+            <!-- <t-button size="small" shape="square" variant="text">
                 <template #icon>
                     <t-icon name="add" />
                 </template>
-            </t-button>
+            </t-button> -->
         </div>
 
         <t-dialog

@@ -91,4 +91,15 @@ export class CategoryService {
     static GetRecentCategoryApi(): Promise<DataResponse> {
         return this.http({ url: `/${this.prefix}/last/carate`, method: 'get' })
     }
+
+    /**
+     * 获取用户开放的知识库列表
+     * @param id 用户 id
+     * @param params
+     * @param params.page 页码
+     * @param params.limit 每页数量
+     */
+    static GetUserCategoryApi(id: string, params: DocListParams): Promise<DataResponse> {
+        return this.http({ url: `/${this.prefix}/list/${id}`, method: 'get', params })
+    }
 }

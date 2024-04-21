@@ -247,4 +247,36 @@ export class CategoryService {
             return ResultData.fail(HttpCode.BadRequest, '获取失败')
         }
     }
+
+    /**
+     * 获取开放的知识库
+     * @param {string} id 用户 id
+     * @param {Params} params 分页参数
+     * @returns
+     */
+    async getOpenCategory(id: string, params: Params) {
+        try {
+            const { page = 1, limit = 6 } = params
+            const skip = (page - 1) * limit
+
+            const [list, total] = await this.docManager.findAndCount(CategoryEntity, {
+                skip,
+                take: limit,
+                where: {
+                    user_id: id,
+                    status: 1,
+                    hidden: 1
+                },
+                relations: ['user']
+            })
+            return ResultData.ok({
+                list: instanceToPlain(list),
+                page,
+                total
+            })
+        } catch (error) {
+            console.error('获取开放的知识库失败：', error)
+            return ResultData.fail(HttpCode.BadRequest, '获取失败')
+        }
+    }
 }

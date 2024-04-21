@@ -36,7 +36,7 @@ export class UsersController {
     @ApiResult(UserEntity)
     @AllowAnon()
     async findOneById(@Param('id') id: string) {
-        return await this.usersService.findOneById(id)
+        return await this.usersService.findOne(id)
     }
 
     @Patch(':id')

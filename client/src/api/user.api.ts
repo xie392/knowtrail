@@ -62,4 +62,12 @@ export class UserService {
     static forgetPasswordApi(data: RegisterData): Promise<DataResponse> {
         return this.http({ url: '/forget', method: 'post', data })
     }
+
+    /**
+     * 获取用户信息
+     * @returns
+     */
+    static getUserInfoApi(id: string): Promise<DataResponse> {
+        return this.http({ url: `/user/${id}`, method: 'get' })
+    }
 }

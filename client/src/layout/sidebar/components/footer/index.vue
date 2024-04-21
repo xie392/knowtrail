@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { useLogin } from '@/hooks/useLogin'
+import { useUserStore } from '@/stores/user'
 import { joinUrl } from '@/utils/utils'
+import { useRouter } from 'vue-router'
 
 const { user } = useLogin()
+const userStore = useUserStore()
+const router = useRouter()
+const options = [
+    { content: '个人中心', value: 2, onClick: () => router.push(`/user/${user.value?.data?.id}`) },
+    { content: '退出登录', value: 3, onClick: () => userStore.logout() }
+]
 </script>
 
 <template>
@@ -20,11 +28,25 @@ const { user } = useLogin()
                 <t-avatar size="24px" :image="joinUrl(user?.data?.avatar)" />
                 <span class="text-[0.875rem]">{{ user?.data?.nick_name }}</span>
             </div>
-            <t-button shape="square" theme="default" variant="text">
-                <template #icon>
-                    <t-icon name="ellipsis" />
+            <!-- <t-popup>
+                <t-button shape="square" theme="default" variant="text">
+                    <template #icon>
+                        <t-icon name="ellipsis" />
+                    </template>
+                </t-button>
+                <template #content>
+                    <div class="flex gap-2 items-center min-w-[100px] p-2 rounded-md bg-white">
+
+                    </div>
                 </template>
-            </t-button>
+            </t-popup> -->
+            <t-dropdown :options="options" placement="bottom" trigger="click" :min-column-width="100">
+                <t-button shape="square" theme="default" variant="text">
+                    <template #icon>
+                        <t-icon name="ellipsis" />
+                    </template>
+                </t-button>
+            </t-dropdown>
         </div>
     </div>
 </template>

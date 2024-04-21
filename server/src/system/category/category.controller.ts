@@ -66,4 +66,15 @@ export class CategoryController {
     async getLastCreated(@Req() req) {
         return await this.categoryService.getLastCreated(req.user)
     }
+
+    @Get('list/:id')
+    @ApiOperation({ summary: '查看用户开放的知识库列表' })
+    @ApiResult(CategoryEntity)
+    @AllowAnon()
+    async findUserCategory(
+        @Param('id') id: string,
+        @Query() params: { page: number; limit: number }
+    ) {
+        return await this.categoryService.getOpenCategory(id, params)
+    }
 }

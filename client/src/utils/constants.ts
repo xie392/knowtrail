@@ -22,7 +22,7 @@ export enum Status {
     PREVIEW = 'preview'
 }
 
-export const HeaderWhiteList: string[] = ['home', 'playground', 'notes', 'books', 'read', 'search']
+export const HeaderWhiteList: string[] = ['home', 'playground', 'notes', 'books', 'read', 'search', 'user']
 
 // Token
 export const TOKEN = '__TOKEN__'

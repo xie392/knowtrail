@@ -21,11 +21,11 @@ defineProps<{ category: any }>()
                 class="icon"
             ></t-icon>
         </div>
-        <t-button size="small" shape="square" theme="default" variant="text">
+        <!-- <t-button size="small" shape="square" theme="default" variant="text">
             <template #icon>
                 <t-icon name="ellipsis" style="width: 18px; height: 18px" />
             </template>
-        </t-button>
+        </t-button> -->
     </div>
 </template>
 
