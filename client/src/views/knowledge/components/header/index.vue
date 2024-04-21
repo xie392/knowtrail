@@ -16,6 +16,7 @@ import SaveModal from '@/components/modal/save-modal/index.vue'
 // import { useLogin } from '@/hooks/useLogin'
 
 const route = useRoute()
+const pid = route.params.pid as string
 const id = route.params.id as string
 
 const doc: Ref<DOC> = useObservable(

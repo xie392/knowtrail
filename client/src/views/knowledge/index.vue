@@ -9,9 +9,6 @@ import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { CategoryService } from '@/api/category.api'
 import UserDBStore from '@/db'
-// import { onMounted } from 'vue'
-// import { io } from 'socket.io-client'
-// import { useLogin } from '@/hooks/useLogin'
 
 const route = useRoute()
 const category = ref<any>(null)
@@ -57,25 +54,22 @@ watch(
     { immediate: true }
 )
 
-// const { user } = useLogin()
-// onMounted(() => {
-//     const token = route.query.token as string
-//     const socket = io(import.meta.env.VITE_SOCKET_URL as string, {
-//         auth: {
-//             token: token ?? user.value?.accessToken
-//         },
-//         transports: ['websocket']
-//     })
+const isCollaboration = ref(!!route.query.token)
+console.log('route.query', route.query)
 
-//     socket.on('docUpdate', function (data) {
-//         console.log('docUpdate', data)
-//     })
-// })
+watch(
+    () => route.query.token,
+    () => {
+        isCollaboration.value = !!route.query.token
+        console.log('isCollaboration', isCollaboration.value)
+    },
+    { immediate: true }
+)
 </script>
 
 <template>
     <div class="flex items-start">
-        <div class="h-screen sticky top-0 left-0 bg-bgPrimary z-50 border-r border-gray-200">
+        <div class="h-screen sticky top-0 left-0 bg-bgPrimary z-50 border-r border-gray-200" v-if="!isCollaboration">
             <Sidebar :footer="false">
                 <template #header>
                     <div class="mt-4">

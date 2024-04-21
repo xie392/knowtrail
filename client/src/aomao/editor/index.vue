@@ -13,9 +13,17 @@ import type { DOC } from '@/db/type'
 import { useRoute } from 'vue-router'
 import { cloneDeep } from 'lodash-es'
 import { download } from '../utils/download'
+import { onMounted } from 'vue'
+import { createSocket } from '@/utils/socket'
+import { useLogin } from '@/hooks/useLogin'
+import type { Socket } from 'socket.io-client'
 
 interface EditorProps {
     toolbarClassName?: string
+    /** 是否开启协作 */
+    collaboration?: boolean
+    /** 是否开启编辑 */
+    readonly?: boolean
 }
 
 const route = useRoute()
@@ -45,19 +53,36 @@ const init = () => {
     if (editor.value) return
 
     const engine: EngineInterface | null = createEditor(editorRef.value, {
-        readonly: doc.value?.readonly ?? true,
+        readonly: props.collaboration ? true : false ?? doc.value?.readonly ?? true,
         placeholder: doc.value?.readonly ? '' : '请输入内容'
     })
     if (!engine) return
     engine.setValue(doc.value?.content)
 
-    engine.on('change', () => debounceSave({ content: engine.model.toValue() }))
+    engine.on('change', () => {
+        debounceSave({ content: engine.model.toValue() })
+        if (wsSocket.value) {
+            wsSocket.value.emit('content', {
+                id: doc.value?.id,
+                userId: user.value?.data?.id,
+                content: engine.model.toValue()
+            })
+        }
+    })
     editor.value = engine
 }
 
 const saveTitle = async (e: FocusEvent) => {
     const title = (e.target as HTMLDivElement)!.textContent as string
     debounceSave({ title })
+
+    if (wsSocket.value) {
+        wsSocket.value.send('title', {
+            id: doc.value?.id,
+            userId: user.value?.data?.id,
+            title
+        })
+    }
 }
 
 watch(doc, (newVal, oldVal) => {
@@ -66,6 +91,32 @@ watch(doc, (newVal, oldVal) => {
         editor.value.readonly = doc.value?.readonly ?? true
     }
     if (editor.value) editor.value.readonly && download()
+})
+
+const { user } = useLogin()
+const wsSocket = ref<Socket | null>(null)
+
+const initCollaboration = () => {
+    let token = route.query?.token as string
+    token = token ? 'Bearer ' + token : user.value?.accessToken
+    // console.log('token', token)
+    const socket = createSocket(token)
+
+    socket.on('docUpdate', function (data) {
+        console.log('docUpdate', data)
+    })
+
+    socket.on('content', function (data) {
+        console.log('docUpdate', data)
+    })
+
+    wsSocket.value = socket
+}
+
+onMounted(() => {
+    if (props.collaboration) {
+        initCollaboration()
+    }
 })
 
 onUnmounted(() => editor.value?.destroy())

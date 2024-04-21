@@ -21,6 +21,7 @@ interface DocParams {
     password?: string
     status: number
     hidden: number
+    user_id: string
 }
 const doc_keys = ['id', 'title', 'cover', 'create_time', 'update_time', 'category_id', 'content']
 const author_keys = ['id', 'name', 'avatar']
@@ -39,9 +40,9 @@ export class DocService {
      * @param id  文档 id
      * @returns
      */
-    async findOne(id: string, password?: string): Promise<ResultData> {
+    async findOne(id: string, user: UserEntity, password?: string): Promise<ResultData> {
         try {
-            const params: DocParams = { id, status: 1, hidden: 1 }
+            const params: DocParams = { id, status: 1, hidden: 1, user_id: user.id }
             // 如果是私有文档,就添加私有文档查询参数
             if (password) {
                 params.password = password
@@ -52,6 +53,7 @@ export class DocService {
                 where: params,
                 relations: ['user']
             })
+
             const result = instanceToPlain(doc)
             if (result) {
                 const data = {

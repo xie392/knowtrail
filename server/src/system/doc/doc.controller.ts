@@ -37,8 +37,8 @@ export class DocController {
     @ApiOperation({ summary: '查询文档' })
     @ApiResult(DocEntity)
     @AllowAnon()
-    async findOneById(@Param('id') id: string, @Query('password') password?: string) {
-        return await this.docService.findOne(id, password)
+    async findOneById(@Param('id') id: string, @Req() req, @Query('password') password?: string) {
+        return await this.docService.findOne(id, req.user, password)
     }
 
     @Patch(':id')

@@ -31,4 +31,28 @@ export class WsGateway {
     docUpdate(@MessageBody() data: any): Observable<WsResponse<any>> {
         return from([1, 2, 3]).pipe(map((item) => ({ event: 'events', data: { data, item } })))
     }
+
+    /**
+     * 获取文章内容
+     * @param data
+     * @returns
+     */
+    @SubscribeMessage('content')
+    async getWContent(@MessageBody() data: { id: string }): Promise<WsResponse<string>> {
+        console.log('获取文章内容', data)
+        const content = await this.wsService.getWContent(data.id)
+        return { event: 'content', data: content }
+    }
+
+    /**
+     * 获取文章标题
+     * @param data
+     * @returns
+     */
+    @SubscribeMessage('content')
+    async getWTitle(@MessageBody() data: { id: string }): Promise<WsResponse<string>> {
+        console.log('获取文章内容', data)
+        const content = await this.wsService.getWContent(data.id)
+        return { event: 'content', data: content }
+    }
 }
