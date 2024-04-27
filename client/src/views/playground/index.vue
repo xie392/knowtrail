@@ -1,8 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class="max-w-[800px] mx-auto flex gap-5 py-10 px-8">
-        <div class="flex-1">
+    <div class="w-full mx-auto flex gap-5 py-10 px-8">
+        <div class="flex-1 max-w-[800px] mx-auto">
             <router-views />
         </div>
         <!-- <div class="w-[300px] pl-5">

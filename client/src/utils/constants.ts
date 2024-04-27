@@ -5,7 +5,7 @@ export enum CaptchaType {
     FORGET = 'forget'
 }
 
-export const CommonRules = {
+export const CommonRules: any = {
     account: [{ required: true, message: '账号不能为空', type: 'warning' }],
     captcha: [{ required: true, message: '邮箱验证码不能为空', type: 'warning' }],
     password: [{ required: true, message: '密码不能为空', type: 'warning' }],

@@ -13,9 +13,9 @@ import { joinPath } from '@/utils/utils'
 import { CommonRules } from '@/utils/constants'
 
 const formData = reactive({
-    account: '1728129873@qq.com',
-    password: '123456qq',
-    confirmPassword: '123456qq',
+    account: '',
+    password: '',
+    confirmPassword: '',
     captcha: ''
 })
 const userStore = storeToRefs(useUserStore())
@@ -23,11 +23,10 @@ const route = useRoute()
 const router = useRouter()
 const visable = ref<boolean>(true)
 
-const onSubmit = async ({ validateResult, firstError }) => {
+const onSubmit = async ({ validateResult, firstError }: any) => {
     if (validateResult === true) {
         if (!validPassword(formData.password)) return MessagePlugin.warning('密码强度不够')
-        if (formData.password !== formData.confirmPassword)
-            return MessagePlugin.warning('两次密码不一致')
+        if (formData.password !== formData.confirmPassword) return MessagePlugin.warning('两次密码不一致')
 
         const { success, message } = await useEmail(formData.account)
         if (success) {
@@ -65,12 +64,7 @@ const submit = async () => {
                 class="max-w-[350px]"
             >
                 <t-form-item name="account">
-                    <t-input
-                        v-model="formData.account"
-                        clearable
-                        placeholder="请输入邮箱"
-                        size="large"
-                    >
+                    <t-input v-model="formData.account" clearable placeholder="请输入邮箱" size="large">
                         <template #prefix-icon>
                             <!-- user-1   -->
                             <t-icon name="mark-as-unread" />
@@ -111,9 +105,7 @@ const submit = async () => {
                 </t-form-item>
             </t-form>
             <p class="mt-5 flex justify-between">
-                <router-link
-                    :to="'/login' + joinPath($route.fullPath)"
-                    class="text-textLink text-[0.89rem]"
+                <router-link :to="'/login' + joinPath($route.fullPath)" class="text-textLink text-[0.89rem]"
                     >登录</router-link
                 >
             </p>

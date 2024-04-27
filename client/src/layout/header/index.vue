@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Logo from '@/layout/components/logo/index.vue'
 import { useUserStore } from '@/stores/user'
+import { joinUrl } from '@/utils/utils'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -68,7 +69,7 @@ const options = [
 
                         <div v-if="isLogin" class="flex items-center gap-6">
                             <t-dropdown :options="options" placement="bottom" trigger="click" :min-column-width="100">
-                                <t-avatar :image="user?.data?.avatar" size="small" class="cursor-pointer" />
+                                <t-avatar :image="joinUrl(user?.data?.avatar)" size="small" class="cursor-pointer" />
                             </t-dropdown>
                         </div>
                         <router-link to="/login" v-else>

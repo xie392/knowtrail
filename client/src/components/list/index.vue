@@ -1,11 +1,23 @@
 <script setup lang="ts">
 import { faker } from '@faker-js/faker'
 import dayjs from 'dayjs'
-import { ReadEditor } from 'aomao/index'
 import { joinUrl } from '@/utils/utils'
-// import { useFormatNumber } from '@/hooks/useFormatNumber'
+import { ref } from 'vue'
+import { watch } from 'vue'
 
-defineProps<{ item: any }>()
+const props = defineProps<{ item: any }>()
+
+const content = ref('该文章无简介')
+
+watch(
+    () => props.item,
+    (val) => {
+        // 转为 html字符串转为 html 格式
+        const html = new DOMParser().parseFromString(val?.content, 'text/html')
+        content.value = html.body.textContent ?? '该文章无简介'
+    },
+    { immediate: true }
+)
 
 // console.log(props.item)
 </script>
@@ -15,7 +27,11 @@ defineProps<{ item: any }>()
         <!-- Header -->
         <div class="flex-1 flex items-center justify-between mb-4">
             <div class="flex items-center gap-2">
-                <avatar :url="item?.user?.avatar ?? faker.image.avatar()" :name="item?.user?.nick_name" />
+                <avatar
+                    :url="joinUrl(item?.user?.avatar) ?? faker.image.avatar()"
+                    :user="item?.user"
+                    :name="item?.user?.nick_name"
+                />
             </div>
             <div class="flex items-center text-[0.8rem] text-gray-400">
                 <span>{{ dayjs(item?.create_time).format('YYYY-MM-DD HH:mm') }}</span>
@@ -29,9 +45,8 @@ defineProps<{ item: any }>()
                 >
                     {{ item?.title }}
                 </h1>
-                <p class="text-[0.85rem] text-ellipsis overflow-hidden line-clamp-2 -mt-3">
-                    <!-- {{ faker.lorem.paragraph() }} -->
-                    <ReadEditor :content="item?.content ?? '该文章无简介'" />
+                <p class="text-[0.85rem] text-ellipsis overflow-hidden line-clamp-2 mt-3">
+                    {{ content }}
                 </p>
             </router-link>
             <div class="w-[180px] flex h-full items-center justify-end" v-if="item?.cover">

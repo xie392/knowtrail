@@ -16,10 +16,16 @@ export const useUserStore = defineStore(
             location.reload()
         }
 
+        // 更新用户信息
+        const updateUserInfo = (userInfo: any) => {
+            user.value.data = userInfo
+        }
+
         return {
             isLogin,
             user,
-            logout
+            logout,
+            updateUserInfo
         }
     },
     {

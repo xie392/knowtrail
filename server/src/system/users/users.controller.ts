@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Req } from '@nestjs/common'
+import { Controller, Get, Body, Patch, Param } from '@nestjs/common'
 import { UsersService } from './users.service'
 // import { CreateUserDto } from './dto/create-user.dto'
-// import { UpdateUserDto } from './dto/update-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
 
 // import { ApiResult } from '../../common/decorators/api-result.decorator'
 // import { AllowAnon } from '../../common/decorators/allow-anon.decorator'
@@ -41,7 +41,7 @@ export class UsersController {
 
     @Patch(':id')
     @ApiOperation({ summary: '更新用户信息' })
-    async updateUserInfo(@Body() updateUserDto: any, @Param('id') id: string) {
+    async updateUserInfo(@Body() updateUserDto: UpdateUserDto, @Param('id') id: string) {
         return await this.usersService.updateUserInfo(updateUserDto, id)
     }
 }

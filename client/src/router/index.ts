@@ -5,6 +5,7 @@ import playground from './children/playground'
 import workspace from './children/workspace'
 import settings from './children/settings'
 import knowledge from './children/knowledge'
+import { useLoading } from '@/hooks/useLoading'
 
 /**
  * 白名单路由
@@ -111,6 +112,19 @@ const router = createRouter({
             return { top: 0 }
         }
     }
+})
+
+router.beforeEach((to, _from, next) => {
+    useLoading(true)
+    if (to.meta.title) {
+        document.title = to.meta.title as string
+    }
+    next()
+})
+
+router.afterEach(() => {
+    // 关闭loading动画
+    useLoading(false)
 })
 
 export default router

@@ -13,7 +13,7 @@ const getRecommendList = async (isUpdate: boolean = false) => {
     if (code !== 200) return
     total.value = data.total
     docs.value = isUpdate ? [...docs.value, ...data.docs] : data.docs
-    console.log('推荐列表', docs.value)
+    // console.log('推荐列表', docs.value)
     if (docs.value.length >= total.value) stop()
 }
 getRecommendList()
@@ -34,7 +34,7 @@ const { stop } = useIntersectionObserver(loadingRef, (entries) => {
 
 <template>
     <div>
-        <div class="min-h-[80vh]">
+        <div class="min-h-[80vh] mx-auto">
             <List v-for="v in docs" :key="v" :item="v" />
             <span v-if="!docs.length" class="w-full h-5 text-center text-sm text-gray-400 pt-5">暂无数据</span>
         </div>

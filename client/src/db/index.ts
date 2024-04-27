@@ -4,9 +4,6 @@ import { ID, DATA_BASE_NAME } from '@/utils/constants'
 import { dbImpl } from './dbImpl'
 import { getCookie } from '@/utils/cookies'
 
-/**
- ** 注意: 该数据库字段可以随意添加或者删除,这里只给出一些基础的字段,需要的请自行添加,无需更改以下字段
- */
 class UseDBImpl extends Dexie {
     doc!: Table<DOC>
     docs!: Table<any>

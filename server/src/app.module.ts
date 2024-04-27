@@ -15,7 +15,7 @@ import { DocModule } from './system/doc/doc.module'
 import { CategoryModule } from './system/category/category.module'
 import { EmailModule } from './tool/email/email.module'
 import { UploadModule } from './upload/upload.module'
-import { WsModule } from './ws/ws.module'
+// import { WsModule } from './ws/ws.module'
 
 @Module({
     imports: [
@@ -69,7 +69,7 @@ import { WsModule } from './ws/ws.module'
         CategoryModule,
         EmailModule,
         UploadModule,
-        WsModule
+        // WsModule
     ],
     providers: [
         {

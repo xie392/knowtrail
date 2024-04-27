@@ -88,6 +88,7 @@ declare module 'vue' {
     TTooltip: typeof import('tdesign-vue-next')['Tooltip']
     TTree: typeof import('tdesign-vue-next')['Tree']
     TUpload: typeof import('tdesign-vue-next')['Upload']
+    UpdatModel: typeof import('./src/components/modal/updat-model/index.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }

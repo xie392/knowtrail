@@ -10,12 +10,12 @@ import { useRouter, useRoute } from 'vue-router'
 import { joinPath } from '@/utils/utils'
 import { LoginRules } from '@/utils/constants'
 
-const formData = reactive({ account: '123@qq.com', password: '123456' })
+const formData = reactive({ account: '1728129873@qq.com', password: '123456qq' })
 const userStore = storeToRefs(useUserStore())
 const route = useRoute()
 const router = useRouter()
 
-const onSubmit = async ({ validateResult, firstError }:any) => {
+const onSubmit = async ({ validateResult, firstError }: any) => {
     if (validateResult === true) {
         const { code, data, msg } = await UserService.LoginApi(formData)
         if (code !== 200) return MessagePlugin.error(msg || '登录失败')
@@ -46,7 +46,7 @@ const onSubmit = async ({ validateResult, firstError }:any) => {
             :data="formData"
             :colon="true"
             :label-width="0"
-            :rules="(LoginRules as any)"
+            :rules="LoginRules as any"
             @submit="onSubmit"
             class="max-w-[350px]"
         >

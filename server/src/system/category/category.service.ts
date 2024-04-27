@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { CreateCategoryDto } from './dto/create-category.dto'
-import { UpdateCategoryDto } from './dto/update-category.dto'
+// import { UpdateCategoryDto } from './dto/update-category.dto'
 
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm'
-import { Like, Repository, In, EntityManager } from 'typeorm'
+import { Repository, EntityManager } from 'typeorm'
 import { instanceToPlain, plainToInstance } from 'class-transformer'
-import { pick } from 'lodash'
+// import { pick } from 'lodash'
 
 import { ResultData } from '../../common/utils/result'
 import { HttpCode } from '../../common/utils/constants'
@@ -39,7 +39,7 @@ export class CategoryService {
                 ...dto,
                 id: generateId(8),
                 user_id: user.id,
-                status: dto?.password ? 2 : 0
+                status: dto?.status ?? 0
             }
             data = plainToInstance(CategoryEntity, data, { ignoreDecorators: true })
             const result = await this.docManager.transaction(async (transactionalEntityManager) => {

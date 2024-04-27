@@ -32,7 +32,7 @@ export class CategoryEntity {
     public description: string
 
     @ApiProperty({ type: String, description: '状态 1 正常 0 私有 2需要密码' })
-    @Column({ type: 'int', comment: '状态 1正常  0 私有 2需要密码', default: 0 })
+    @Column({ type: 'int', comment: '状态 1 正常  0 私有 2需要密码', default: 0 })
     public status: number
 
     @ApiProperty({ type: String, description: '知识库密码，私有时可能需要' })

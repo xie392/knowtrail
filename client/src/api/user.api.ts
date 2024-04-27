@@ -70,4 +70,14 @@ export class UserService {
     static getUserInfoApi(id: string): Promise<DataResponse> {
         return this.http({ url: `/user/${id}`, method: 'get' })
     }
+
+    /**
+     * 更新用户信息
+     * @param data
+     * @param data.nick_name 昵称
+     * @param data.avatar 头像
+     */
+    static updateUserInfoApi(id: string, data: { nick_name: string; avatar: string }): Promise<DataResponse> {
+        return this.http({ url: `/user/${id}`, method: 'patch', data })
+    }
 }

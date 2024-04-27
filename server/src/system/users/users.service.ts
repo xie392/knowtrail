@@ -86,9 +86,8 @@ export class UsersService {
             id: generateId(6),
             email: account,
             password: encryptPassword(password),
-            // TODO: 后续两个值由前端提供
-            avatar: '',
-            nick_name: '随机用户1'
+            avatar: '/avt.jpg',
+            nick_name: Math.random().toString(36).substring(2)
         }
         // plainToInstance  忽略转换 @Exclude 装饰器
         const data = plainToInstance(UserEntity, userData, { ignoreDecorators: true })
@@ -217,11 +216,12 @@ export class UsersService {
      */
     async updateUserInfo(updateUserDto: UpdateUserDto, id: string) {
         try {
+            // 验证字段参数
             const { nick_name, avatar } = updateUserDto
-            const result = await this.userRepo.update(id, {
-                nick_name,
-                avatar
-            })
+            if (!nick_name && !avatar) return ResultData.fail(HttpCode.BadRequest, '参数错误')
+
+            const result = await this.userRepo.update(id, updateUserDto)
+
             if (result.affected === 1) {
                 return ResultData.ok(null, '更新成功')
             } else {

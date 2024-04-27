@@ -10,7 +10,7 @@ services:
     volumes:
       - upload:/usr/share/nginx/html/static
     depends_on:
-      - server
+      - servers
 
   servers:
     build:
