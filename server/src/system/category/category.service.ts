@@ -41,6 +41,16 @@ export class CategoryService {
                 user_id: user.id,
                 status: dto?.status ?? 0
             }
+
+            // 先查找有无相同名称的知识库
+            const category = await this.docManager.findOne(CategoryEntity, {
+                where: {
+                    title: dto.title,
+                    user_id: user.id
+                }
+            })
+            if (category) return ResultData.fail(HttpCode.BadRequest, '知识库名称已存在')
+            // 创建知识库
             data = plainToInstance(CategoryEntity, data, { ignoreDecorators: true })
             const result = await this.docManager.transaction(async (transactionalEntityManager) => {
                 return await transactionalEntityManager.save<CategoryEntity>(data)
